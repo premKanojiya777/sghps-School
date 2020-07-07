@@ -28,10 +28,7 @@ class _DOSpacesFileUploadState extends State<DOSpacesFileUpload> {
     secretKey: Constant.secretKey,
   );
 
-  // AwsS3 awsS3 = AwsS3(
-
-  //         region: Regions.AP_NORTHEAST_1,
-  //         bucketName: 'sghps');
+  
 
   Future singleImageGallery() async {
     singleImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -147,43 +144,7 @@ class _DOSpacesFileUploadState extends State<DOSpacesFileUpload> {
                             }
                           }
                         }
-                    // String spacesEndpoint =
-                    //     "https://ams3.digitaloceanspaces.com";
-                    // new Bucket(
-                    //   region: "ams3",
-                    //   accessKey: 'NEL6K7I7SHBNSOH343CF',
-                    //   secretKey: 'orJ7QCymCWnjpwYeZeqHeO9EOjTBBVInRxDEwgOPWnU',
-                    //   endpointUrl: "https://sghps.am3.digitaloceanspaces.com",
-                    //   httpClient: httpClient,
-                    // );
-
-                    // const expireSeconds = 60 * 5;
-
-                    // var url = spaces.signRequest(request);
-                    // print('url:$url');
-                  
-                    // var url = this.s3.getSignedUrl('getObject', {
-                    //   Bucket: 'sghps',
-                    //   Key: "audio/" + audio,
-                    //   Expires: expireSeconds
-                    // });
-                    // window.open(url, '_system');
-
-                    // var url = new AwsS3(
-                    //     file: singleImage,
-                    //     fileNameWithExt: fileName,
-                    //     awsFolderPath: singleImage.path.split('/').last,
-                    //     poolId: null,
-                    //     bucketName: 'sghps');
-
-                    // const spacesEndpoint =
-                    //     const aws.Endpoint('ams3.digitaloceanspaces.com');
-                    // this.s3 = new aws.S3({
-                    //   endpoint: 'ams3.digitaloceanspaces.com',
-                    //   accessKeyId: 'NEL6K7I7SHBNSOH343CF',
-                    //   secretAccessKey:
-                    //       'orJ7QCymCWnjpwYeZeqHeO9EOjTBBVInRxDEwgOPWnU'
-                    // });
+                 
                   },
                   child: Text('Get File'),
                   color: Colors.yellow,
