@@ -1,0 +1,28 @@
+// void _sendDataToServer(lat,lng,speed,rout,routId,vehicleId) async {
+    // var url = 'http://smart.sksk.in/location_flutter?latitude=$lat&longitude=$lng&speed=$speed&route=$rout&routeId=$routId&vehicleId=$vehicleId';
+    //  var data=  http.post(url).then((response){
+    //    print(response);
+    //    print(response.statusCode);
+    //  }).catchError((onError){
+    //    print(onError);
+    //  });
+    // 
+  //  void _sendDataToServer() async {
+  //     var url = 'http://smart.sksk.in/location_flutter';
+  //  // var data= 
+  //       http.post(url,  body: json.encode({
+  //       'latitude': currentLocation.latitude,
+  //       'longitude': currentLocation.longitude,
+  //       // 'speed': currentLocation.speed,
+  //        'route': 'mor',
+  //        'routeId': 11,
+  //        'vehicleId':1,
+ 
+
+     
+  //     }),);
+  //   // print('$data');
+  //    var response = await http.post(url);
+  //    print(response.body);
+    
+  //  }

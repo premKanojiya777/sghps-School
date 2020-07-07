@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>872344387674-07v9707j823dk3q2jgqfh34fjqpoeuc2.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.872344387674-07v9707j823dk3q2jgqfh34fjqpoeuc2</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>872344387674-d35momc178rirdctrmv83gciiekan371.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC30CZ40pm7A8UE0opMgCg8eKTWuYjY9wA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>872344387674</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.sksksk.school</string>
+	<key>PROJECT_ID</key>
+	<string>sksk-school-686e1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sksk-school-686e1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:872344387674:ios:d8802837ace1f788b31863</string>
+	<key>DATABASE_URL</key>
+	<string>https://sksk-school-686e1.firebaseio.com</string>
+</dict>
+</plist>
