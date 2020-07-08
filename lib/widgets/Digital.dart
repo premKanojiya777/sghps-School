@@ -11,7 +11,6 @@ class DOSpacesFileUpload extends StatefulWidget {
 }
 
 class _DOSpacesFileUploadState extends State<DOSpacesFileUpload> {
-  http.Client _httpClient = http.Client();
   http.BaseRequest request;
   String fileName;
   File singleImageFile;
@@ -27,8 +26,6 @@ class _DOSpacesFileUploadState extends State<DOSpacesFileUpload> {
     accessKey: Constant.accessKey,
     secretKey: Constant.secretKey,
   );
-
-  
 
   Future singleImageGallery() async {
     singleImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -103,58 +100,33 @@ class _DOSpacesFileUploadState extends State<DOSpacesFileUpload> {
                 )),
                 RaisedButton(
                   onPressed: () async {
-                        for (String name in await spaces.listAllBuckets()) {
-                          print('bucket: $name');
-                          dospace.Bucket bucket = spaces.bucket(name);
-                            
-                          await for (dospace.BucketContent content
-                              in bucket.listContents(maxKeys: 1)) {
-                           print({"xmlDAtaaaaaaaa":"xml.toString()"});
-                            // print('key:$endPoint/${content.key}');
-                            bucket.signRequest(request);
-                             spaces.getUri(Uri(host: 'https://sghps.ams3.digitaloceanspaces.com', path:content.key)).then((xml){
-                           print({"xmlDAtaaaaaaaa":xml.toString()});
+                    for (String name in await spaces.listAllBuckets()) {
+                      print('bucket: $name');
+                      dospace.Bucket bucket = spaces.bucket(name);
 
-                            }).catchError((onError){
-                           print({"xmlDAtaaaaaaaa":"errrrrr"});
-
-                              print(onError);
-                            });
-                            if ('${content.key}'.contains("jpg")) {
-                              int i = 5;
-                              if (i < 2) {
-                                i--;
-                                print("hiiiiiiiiii");
-                           
-
-
-                              }
-                
-                              // dospace
-                              // const url = s3.getSignedUrl('getObject', {
-                              //   Bucket: 'example-space-name',
-                              //   Key: 'file.ext',
-                              //   Expires: expireSeconds
-                              // });
-                              imgContainer.add(Container(
-                                height: 100,
-                                width: 100,
-                                child: Image.network('$endPoint/${content.key}'),
-                              ));
-                            }
-                          }
+                      await for (dospace.BucketContent content
+                          in bucket.listContents(maxKeys: 1)) {
+                        if ('${content.key}'.contains("jpg")) {
+                          request = http.Request(
+                              "GET", Uri.parse('$endPoint/${content.key}'));
+                          String sighenUrl =
+                              spaces.signRequest(request, preSignedUrl: true);
+                          print(sighenUrl);
+                          setState(() {
+                            imgContainer.add(Container(
+                              height: 100,
+                              width: 100,
+                              child: Image.network(sighenUrl),
+                            ));
+                          });
                         }
-                 
+                      }
+                    }
                   },
                   child: Text('Get File'),
                   color: Colors.yellow,
                 ),
                 ...imgContainer
-                // Container(
-                //     height: 100,
-                //     width: 100,
-                //     child: Image.network(
-                //         'https://sghps.ams3.digitaloceanspaces.com/prem/4f762e87-1058-4c5d-822a-83725daf7129.jpg'))
               ],
             ),
           ),
