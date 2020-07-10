@@ -1,12 +1,11 @@
-import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:dospace/dospace.dart' as dospace;
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/flutter_full_pdf_viewer.dart';
+import 'package:google_live/widgets/Constant.dart';
 import 'package:google_live/widgets/UpdateData.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UploadedFilesInfo extends StatefulWidget {
@@ -39,12 +38,26 @@ class UploadedFilesInfo extends StatefulWidget {
 
 class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
   final assetsAudioPlayer = AssetsAudioPlayer();
+  http.BaseRequest request;
+
   String pathPDF = "";
+  String imgUrl;
+  String pdfUrl;
+  String audioUrl;
   @override
   void initState() {
     super.initState();
+    getImage();
+    getAudio();
+    getPDF();
     super.initState();
   }
+
+  dospace.Spaces spaces = new dospace.Spaces(
+    region: Constant.region,
+    accessKey: Constant.accessKey,
+    secretKey: Constant.secretKey,
+  );
 
   _openVideo() async {
     var video = widget.video_link;
@@ -55,7 +68,27 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
       throw 'Could not launch $url';
     }
   }
-  
+
+  getImage() {
+    String endPoint = "https://sghps.ams3.digitaloceanspaces.com/images";
+    request = http.Request("GET", Uri.parse('$endPoint/${widget.image_link}'));
+    this.imgUrl = spaces.signRequest(request, preSignedUrl: true);
+    print(this.imgUrl);
+  }
+
+  getAudio() {
+    String endPoint = "https://sghps.ams3.digitaloceanspaces.com/audio";
+    request = http.Request("GET", Uri.parse('$endPoint/${widget.audio_link}'));
+    this.audioUrl = spaces.signRequest(request, preSignedUrl: true);
+    print(this.audioUrl);
+  }
+
+  getPDF() {
+    String endPoint = "https://sghps.ams3.digitaloceanspaces.com/pdf";
+    request = http.Request("GET", Uri.parse('$endPoint/${widget.pdf_link}'));
+    this.pdfUrl = spaces.signRequest(request, preSignedUrl: true);
+    print(this.pdfUrl);
+  }
 
   _openLiveClass() async {
     var video = widget.live_class_link;
@@ -67,34 +100,7 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
     }
   }
 
-  Future<void> _playSound() async {
-    try {
-      await assetsAudioPlayer.open(
-        Audio.network(
-            "http://sghps.cityschools.co/uploads/online/audio/${widget.audio_link}"),
-      );
-    } catch (t) {}
-  }
 
-  Future<void> _pauseSound() async {
-    try {
-      await assetsAudioPlayer.pause();
-    } catch (t) {}
-  }
-
-  Future<File> _openPDF() async {
-    var url =
-        'http://sghps.cityschools.co/uploads/online/pdf/${widget.pdf_link}';
-    final filename = url.substring(url.lastIndexOf("/") + 1);
-    var request = await HttpClient().getUrl(Uri.parse(url));
-    var response = await request.close();
-    var bytes = await consolidateHttpClientResponseBytes(response);
-    String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = new File('$dir/$filename');
-    await file.writeAsBytes(bytes);
-
-    return file;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,25 +205,17 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                                             child: FloatingActionButton(
                                               backgroundColor:
                                                   Color.fromRGBO(33, 23, 47, 1),
-                                              onPressed: _playSound,
+                                              onPressed: () async {
+                                                var url = this.audioUrl;
+                                                if (await canLaunch(url)) {
+                                                  await launch(url);
+                                                } else {
+                                                  throw 'Could not launch $url';
+                                                }
+                                              },
                                               tooltip: 'Play',
                                               child: Icon(Icons.play_arrow),
                                               heroTag: 'btn1',
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 3,
-                                          ),
-                                          Container(
-                                            height: 40,
-                                            width: 40,
-                                            child: FloatingActionButton(
-                                              backgroundColor:
-                                                  Color.fromRGBO(33, 23, 47, 1),
-                                              onPressed: _pauseSound,
-                                              tooltip: 'Play',
-                                              child: Icon(Icons.pause),
-                                              heroTag: 'btn2',
                                             ),
                                           ),
                                         ],
@@ -260,14 +258,13 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                                         width: 90,
                                         height: 90,
                                         child: GestureDetector(
-                                          child: Image.network(
-                                              'http://sghps.cityschools.co/uploads/online/images/${widget.image_link}'),
+                                          child: Image.network(this.imgUrl),
                                           onTap: () {
                                             return showDialog(
                                               context: context,
                                               builder: (_) => AlertDialog(
                                                 content: Image.network(
-                                                  ('http://sghps.cityschools.co/uploads/online/images/${widget.image_link}'),
+                                                  (this.imgUrl),
                                                   fit: BoxFit.fill,
                                                 ),
                                                 actions: <Widget>[
@@ -323,19 +320,13 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                         child: Material(
                           color: Colors.white, // button color
                           child: InkWell(
-                            onTap: () {
-                              _openPDF().then((f) {
-                                setState(() {
-                                  pathPDF = f.path;
-                                  print(pathPDF);
-                                });
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PDFScreen(pathPDF),
-                                  ),
-                                );
-                              });
+                            onTap: () async {
+                              var url = this.pdfUrl;
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
                             }, // button pressed
 
                             child: Column(

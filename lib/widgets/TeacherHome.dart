@@ -363,7 +363,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                DOSpacesFileUpload()),
+                                                ClassAttendance()),
                                       );
                                     }, // button pressed
                                     child: Column(
