@@ -1,9 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:dospace/dospace.dart' as dospace;
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_full_pdf_viewer/flutter_full_pdf_viewer.dart';
 import 'package:google_live/widgets/Constant.dart';
 import 'package:google_live/widgets/UpdateData.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,7 +12,7 @@ class UploadedFilesInfo extends StatefulWidget {
   final int periodId;
   final int sectionId;
   final int subjectId;
-  final String video_link;
+  final List video_link;
   final String audio_link;
   final String image_link;
   final String pdf_link;
@@ -37,9 +35,8 @@ class UploadedFilesInfo extends StatefulWidget {
 }
 
 class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
-  final assetsAudioPlayer = AssetsAudioPlayer();
   http.BaseRequest request;
-
+  bool imageClick = false;
   String pathPDF = "";
   String imgUrl;
   String pdfUrl;
@@ -100,8 +97,6 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,7 +131,59 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                             child: Material(
                               color: Colors.white, // button color
                               child: InkWell(
-                                onTap: _openVideo,
+                                onTap: () {
+                                  return showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      content: Container(
+                                        width: 400,
+                                        height: 400,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.all(1),
+                                            itemCount: widget.video_link.length,
+                                            itemBuilder:
+                                                (BuildContext context, int i) {
+                                              return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(widget
+                                                      .video_link[i].title),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  RaisedButton(
+                                                    onPressed: () async {
+                                                      print(widget
+                                                          .video_link[i].link);
+                                                      var url = widget
+                                                          .video_link[i].link;
+                                                      if (await canLaunch(
+                                                          url)) {
+                                                        await launch(url);
+                                                      } else {
+                                                        throw 'Could not launch $url';
+                                                      }
+                                                    },
+                                                    child: Text('Link'),
+                                                    color: Colors.blue,
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                      ),
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(context);
+                                          },
+                                          child: Text('Close'),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -248,41 +295,25 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                         child: Material(
                           color: Colors.white, // button color
                           child: InkWell(
-                            onTap: () {}, // button pressed
+                            onTap: () {
+                              setState(() {
+                                imageClick = true;
+                              });
+                            }, // button pressed
 
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 widget.image_link != null
-                                    ? Container(
-                                        width: 90,
-                                        height: 90,
-                                        child: GestureDetector(
-                                          child: Image.network(this.imgUrl),
-                                          onTap: () {
-                                            return showDialog(
-                                              context: context,
-                                              builder: (_) => AlertDialog(
-                                                content: Image.network(
-                                                  (this.imgUrl),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                actions: <Widget>[
-                                                  new FlatButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(context);
-                                                    },
-                                                    child: Text('Close'),
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                    ? Text(
+                                        'Image Content ',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
                                       )
                                     : Text(
-                                        'Image Content',
+                                        'No Image',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
@@ -446,57 +477,144 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                 ),
               ],
             ),
-            Spacer(),
-            RaisedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => UpdateData(
-                            videoLink: widget.video_link,
-                            textLink: widget.text_link,
-                            liveClassLink: widget.live_class_link,
-                            imageLink: widget.image_link,
-                            pdfLink: widget.pdf_link,
-                            audioLink: widget.audio_link,
-                            dateT: widget.dateT,
-                            periodId: widget.periodId,
-                            sectionId: widget.sectionId,
-                            subjectId: widget.subjectId,
-                            classId: widget.classId,
-                          )),
-                );
-                print(widget.pdf_link);
-              },
-              color: Color.fromRGBO(33, 23, 47, 1),
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(18.0),
-              ),
-              child: Text(
-                'Update Data',
-                style: TextStyle(color: Colors.white),
-              ),
+            SizedBox(
+              height: 4,
+            ),
+            Row(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: SizedBox.fromSize(
+                      size: Size(110, 110), // button width and height
+                      child: ClipOval(
+                        child: Material(
+                          color: Colors.white, // button color
+                          child: InkWell(
+                            onTap: () async {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdateData(
+                                          videoLink: widget.video_link,
+                                          textLink: widget.text_link,
+                                          liveClassLink: widget.live_class_link,
+                                          imageLink: widget.image_link,
+                                          pdfLink: widget.pdf_link,
+                                          audioLink: widget.audio_link,
+                                          dateT: widget.dateT,
+                                          periodId: widget.periodId,
+                                          sectionId: widget.sectionId,
+                                          subjectId: widget.subjectId,
+                                          classId: widget.classId,
+                                        )),
+                              );
+                              print(widget.pdf_link);
+                            }, // button pressed
+
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Update',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: SizedBox.fromSize(
+                      size: Size(110, 110), // button width and height
+                      child: ClipOval(
+                        child: Material(
+                          color: Colors.white, // button color
+                          child: InkWell(
+                            onTap: () {}, // button pressed
+
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Assignment',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(
-              height: 200,
+              height: 10,
             ),
+            imageClick == true
+                ? Row(
+                    children: <Widget>[
+                      Container(
+                        width: 120,
+                        height: 100,
+                        child: GestureDetector(
+                          child: Image.network(this.imgUrl),
+                          onTap: () {
+                            // imageClick = true;
+                            return showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                content: Image.network(
+                                  (this.imgUrl),
+                                  fit: BoxFit.fill,
+                                ),
+                                actions: <Widget>[
+                                  new FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(context);
+                                    },
+                                    child: Text('Close'),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),
     );
-  }
-}
-
-class PDFScreen extends StatelessWidget {
-  String pathPDF = "";
-  PDFScreen(this.pathPDF);
-
-  @override
-  Widget build(BuildContext context) {
-    return PDFViewerScaffold(
-        appBar: AppBar(
-          title: Text("Document"),
-        ),
-        path: pathPDF);
   }
 }

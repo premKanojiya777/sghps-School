@@ -8,6 +8,7 @@ import 'package:google_live/widgets/Constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dospace/dospace.dart' as dospace;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class UploadFiles extends StatefulWidget {
   final DateTime dateT;
@@ -30,6 +31,9 @@ class _UploadFilesState extends State<UploadFiles> {
   String pdfFileName;
   String audioFilename;
   bool visible = false;
+  bool audioDone = false;
+  bool pdfDone = false;
+  bool imageDone = false;
   var image;
   String pdfPath;
   String audioPath;
@@ -41,7 +45,6 @@ class _UploadFilesState extends State<UploadFiles> {
   File singleImageFile;
   var singleImage;
   List<File> _imageList = [];
-  List<String> _imageLists = new List();
   List videoLinkTitle = [];
   String imageDecoded;
   String audioDecoded;
@@ -64,7 +67,6 @@ class _UploadFilesState extends State<UploadFiles> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          // Text('Person ${cards.length + 1}'),
           TextField(
             controller: titleController,
             style: TextStyle(color: Colors.blue),
@@ -139,6 +141,7 @@ class _UploadFilesState extends State<UploadFiles> {
   }
 
   Future<void> singleImageGallery() async {
+    imageDone = true;
     String extension = 'jpg';
 
     singleImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -146,12 +149,55 @@ class _UploadFilesState extends State<UploadFiles> {
     setState(() {
       singleImageFile = singleImage;
     });
+  }
 
+  Future singleImageCamera() async {
+    imageDone = true;
+
+    singleImage = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      singleImageFile = singleImage;
+    });
+  }
+
+  void _pdfUpload() async {
     String projectName = "sghps";
 
     String region = "ams3";
 
-    String folderName = "prem";
+    String extension = 'pdf';
+    String folderName = "pdf";
+    this.pdfFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+
+    print(this.pdfFileName);
+    String uploadedFileUrl = "https://" +
+        projectName +
+        "." +
+        region +
+        ".digitaloceanspaces.com/" +
+        folderName +
+        "/" +
+        this.pdfFileName.toString();
+    print('url: $uploadedFileUrl');
+    dospace.Bucket bucketpdf = spaces.bucket('sghps');
+    String etagpdf = await bucketpdf.uploadFile(
+        folderName + '/' + this.pdfFileName.toString(),
+        pdfFile,
+        'application/pdf',
+        dospace.Permissions.private);
+
+    print('upload: $etagpdf');
+    print('done');
+  }
+
+  void _galleryImageUpload() async {
+    String extension = 'jpg';
+    String projectName = "sghps";
+
+    String region = "ams3";
+
+    String folderName = "images";
     this.imgFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
 
     print(this.imgFileName);
@@ -175,23 +221,16 @@ class _UploadFilesState extends State<UploadFiles> {
     print('done');
   }
 
-  Future singleImageCamera() async {
-    String extension = 'jpg';
-
-    singleImage = await ImagePicker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      singleImageFile = singleImage;
-    });
-
+  void _mp3Upload() async {
     String projectName = "sghps";
 
     String region = "ams3";
 
-    String folderName = "prem";
-    this.imgFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+    String extension = 'mp3';
+    String folderName = "audio";
+    this.audioFilename = "${DateTime.now().millisecondsSinceEpoch}.$extension";
 
-    print(this.imgFileName);
+    print(this.audioFilename);
     String uploadedFileUrl = "https://" +
         projectName +
         "." +
@@ -199,20 +238,32 @@ class _UploadFilesState extends State<UploadFiles> {
         ".digitaloceanspaces.com/" +
         folderName +
         "/" +
-        this.imgFileName.toString();
+        this.audioFilename.toString();
     print('url: $uploadedFileUrl');
-    dospace.Bucket bucketcam = spaces.bucket('sghps');
-    String etagcam = await bucketcam.uploadFile(
-        folderName + '/' + this.imgFileName.toString(),
-        singleImage,
-        'image/jpeg',
+    dospace.Bucket bucketmp3 = spaces.bucket('sghps');
+    String etagmp3 = await bucketmp3.uploadFile(
+        folderName + '/' + this.audioFilename.toString(),
+        audioFile,
+        'audio/mpeg',
         dospace.Permissions.private);
+    // setState(() {
+    //   if (etagmp3 == null) {
+    //     Toast.show('Error Uploading File', context,
+    //         duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    //     audioDone = false;
+    //   } else {
+    //     audioDone = false;
+    //   }
+    // });
 
-    print('upload: $etagcam');
+    print('upload: $etagmp3');
     print('done');
   }
 
   void _uploadImages() async {
+    _galleryImageUpload();
+    _mp3Upload();
+    _pdfUpload();
     String _text = enterText.text;
     List videoLinkTitle = [];
     for (int i = 0; i < _linkTitle.length; i++) {
@@ -225,20 +276,20 @@ class _UploadFilesState extends State<UploadFiles> {
     print(videoLinkTitle);
     String _liveClass = liveClass.text;
     final prefs = await SharedPreferences.getInstance();
-    String url =
-        'http://sghps.cityschools.co/studentapi/test_image?access_token=' +
-            prefs.get('token');
+    String url = 'http://sghps.cityschools.co/studentapi/live_data_upload';
+
     Map dataMap = {
+      "access_token": prefs.get('token'),
       "text": _text,
-      "video_link": videoLinkTitle,
+      "video": videoLinkTitle,
       "live_class": _liveClass,
       "period_id": widget.periodId,
       "subject_id": widget.subjectId,
       "class_id": widget.classId,
       "section_id": widget.sectionId,
       "date": widget.dateT.toString(),
-      "solo_image": this.imgFileName,
-      "image": this.pdfFileName,
+      "image": this.imgFileName,
+      "pdf": this.pdfFileName,
       "audio": this.audioFilename,
     };
 
@@ -322,6 +373,7 @@ class _UploadFilesState extends State<UploadFiles> {
                         onPressed: () {
                           _singleImageDialogBox();
                         }),
+                   
                   ],
                 ),
               ),
@@ -351,56 +403,26 @@ class _UploadFilesState extends State<UploadFiles> {
                         ),
                         Spacer(),
                         IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.blue,
-                            ),
-                            onPressed: () async {
-                              pdfFile = await FilePicker.getFile(
-                                type: FileType.custom,
-                                allowedExtensions: [
-                                  'pdf',
-                                ],
-                              );
+                          icon: Icon(
+                            Icons.add,
+                            color: Colors.blue,
+                          ),
+                          onPressed: () async {
+                            pdfDone = true;
+                            pdfFile = await FilePicker.getFile(
+                              type: FileType.custom,
+                              allowedExtensions: [
+                                'pdf',
+                              ],
+                            );
 
-                              setState(() {
-                                pdfFiles = pdfFile;
-
-                                print(pdfFiles);
-                              });
-
-                              String projectName = "sghps";
-
-                              String region = "ams3";
-
-                              String extension = 'pdf';
-                              String folderName = "prem";
-                              this.pdfFileName =
-                                  "${DateTime.now().millisecondsSinceEpoch}.$extension";
+                            setState(() {
+                              pdfFiles = pdfFile;
                               this.pdfPath = pdfFile.path.split('/').last;
-
-                              print(this.pdfFileName);
-                              String uploadedFileUrl = "https://" +
-                                  projectName +
-                                  "." +
-                                  region +
-                                  ".digitaloceanspaces.com/" +
-                                  folderName +
-                                  "/" +
-                                  this.pdfFileName.toString();
-                              print('url: $uploadedFileUrl');
-                              dospace.Bucket bucketpdf = spaces.bucket('sghps');
-                              String etagpdf = await bucketpdf.uploadFile(
-                                  folderName +
-                                      '/' +
-                                      this.pdfFileName.toString(),
-                                  pdfFile,
-                                  'application/pdf',
-                                  dospace.Permissions.private);
-
-                              print('upload: $etagpdf');
-                              print('done');
-                            }),
+                              print(pdfFiles);
+                            });
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -435,48 +457,34 @@ class _UploadFilesState extends State<UploadFiles> {
 
                               setState(() {
                                 audio = audioFile;
+                                this.audioPath = audioFile.path.split('/').last;
 
                                 print(audioFile);
                               });
-
-                              String projectName = "sghps";
-
-                              String region = "ams3";
-
-                              String extension = 'mp3';
-                              String folderName = "prem";
-                              this.audioFilename =
-                                  "${DateTime.now().millisecondsSinceEpoch}.$extension";
-                              this.audioPath = audioFile.path.split('/').last;
-
-                              print(this.audioFilename);
-                              String uploadedFileUrl = "https://" +
-                                  projectName +
-                                  "." +
-                                  region +
-                                  ".digitaloceanspaces.com/" +
-                                  folderName +
-                                  "/" +
-                                  this.audioFilename.toString();
-                              print('url: $uploadedFileUrl');
-                              dospace.Bucket bucketmp3 = spaces.bucket('sghps');
-                              String etagmp3 = await bucketmp3.uploadFile(
-                                  folderName +
-                                      '/' +
-                                      this.audioFilename.toString(),
-                                  audioFile,
-                                  'audio/mpeg',
-                                  dospace.Permissions.private);
-
-                              print('upload: $etagmp3');
-                              print('done');
                             }),
+                        Visibility(
+                          visible: audioDone,
+                          child: Column(
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Uploading Please Wait....",
+                                style: TextStyle(color: Colors.blueAccent),
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: audioFile == null ? Text('') : Text(audioPath),
+                    child: audioFile == null
+                        ? Text('')
+                        : Text('${this.audioPath}'),
                   ),
                 ],
               ),

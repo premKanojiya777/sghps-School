@@ -1,11 +1,9 @@
 import 'dart:io';
-import 'package:assets_audio_player/assets_audio_player.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
-import 'package:google_live/widgets/OnlineTeaching.dart';
-import 'package:google_live/widgets/StudentSubjects.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,7 +37,7 @@ class ViewUploadedData extends StatefulWidget {
 }
 
 class _ViewUploadedDataState extends State<ViewUploadedData> {
-  final assetsAudioPlayer = AssetsAudioPlayer();
+  
   String pathPDF = "";
   bool isPlaying;
   bool visible = false;
@@ -230,21 +228,7 @@ class _ViewUploadedDataState extends State<ViewUploadedData> {
 
   
 
-  Future<void> _playSound() async {
-    try {
-      await assetsAudioPlayer.open(
-        Audio.network(
-            "http://sghps.cityschools.co/uploads/online/audio/${widget.audioLink}"),
-      );
-    } catch (t) {}
-  }
-
-  Future<void> _pauseSound() async {
-    try {
-      await assetsAudioPlayer.pause();
-    } catch (t) {}
-  }
-
+  
   Future<File> _openPDF() async {
     var url =
         'http://sghps.cityschools.co/uploads/online/pdf/${widget.pdfLink}';
@@ -439,7 +423,7 @@ class _ViewUploadedDataState extends State<ViewUploadedData> {
                     children: <Widget>[
                       FloatingActionButton(
                         backgroundColor: Color.fromRGBO(33, 23, 47, 1),
-                        onPressed: _playSound,
+                        onPressed: null,
                         tooltip: 'Play',
                         child: const Icon(Icons.play_arrow),
                         heroTag: 'btn1',
@@ -449,7 +433,7 @@ class _ViewUploadedDataState extends State<ViewUploadedData> {
                       ),
                       FloatingActionButton(
                         backgroundColor: Color.fromRGBO(33, 23, 47, 1),
-                        onPressed: _pauseSound,
+                        onPressed: null,
                         tooltip: 'Play',
                         child: const Icon(Icons.pause),
                         heroTag: 'btn2',

@@ -52,12 +52,10 @@ dependencies:
   multi_image_picker: ^4.6.7
   file_picker: ^1.9.0+1
   url_launcher: ^5.4.10
-  assets_audio_player: ^1.6.3
   toast: ^0.1.5
   dospace: ^0.12.12
-  firebase_storage: ^3.1.6
-  uuid: ^2.1.0
-  aws_s3: ^0.1.1+hotfix.5
+  
+  
 
 
 

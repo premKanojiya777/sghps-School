@@ -242,6 +242,7 @@ class _SyllabusState extends State<Syllabus> {
                       width: 65,
                     ),
                     Visibility(
+                      
                       visible: loader,
                       child: Column(
                         children: [

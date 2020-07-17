@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_live/models/SingleTimeTable.dart';
+import 'package:google_live/models/VideosModel.dart';
 import 'package:google_live/widgets/UploadFiles.dart';
 import 'package:google_live/widgets/UploadedFilesInfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ class ShowSubjects extends StatefulWidget {
 
 class _ShowSubjectsState extends State<ShowSubjects> {
   Future<List<SingleTimeTable>> singleTimeTable;
+  List<VideosModel> videolist = [];
   var dateT;
   var sectionID;
   var periodID;
@@ -62,37 +64,19 @@ class _ShowSubjectsState extends State<ShowSubjects> {
             this.sectionID,
             this.subjectId,
             this.isData,
-            u['teacher_name']);
+            u['section_name']);
         list.add(single);
       }
 
       print(list.length);
     }).catchError((onError) {
       print(onError);
-      //  if(this.isData) {
-      //     Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => UploadFiles(
-      //             dateT: widget.datepick,
-      //             sectionId: this.sectionID,
-      //             periodId: this.periodID,
-      //             classId: this.classID,
-      //             subjectId: this.sectionId,
-      //           ),
-      //         ),
-      //       );
-      //  }
-      //  else{
-      //    print('update Data');
-      //   //  _chooseSubject(secId, periId, clsId, subId);
-      //  }
     });
     return list;
   }
 
   Future<void> _chooseSubject(secId, periId, clsId, subId) async {
-   
+    videolist = [];
     final prefs = await SharedPreferences.getInstance();
     var header = {
       "Accept": "application/json",
@@ -116,11 +100,18 @@ class _ShowSubjectsState extends State<ShowSubjects> {
         .get(url, headers: {'Accept': 'application/json'}).then((res) {
       setState(() {
         this.live_data = json.decode(res.body);
-        // print({"json.decode(res.body)": json.decode(res.body)});
         var live_class_data = this.live_data['live_class_data'];
+
+        // print(videos);
         if (live_class_data != null) {
-          print('data');
-          print(live_class_data);
+          var videos = live_class_data['videos'];
+
+          for (var v in videos) {
+            VideosModel videosModel = VideosModel(v['title'], v['link']);
+
+            videolist.add(videosModel);
+          }
+          print(videolist.length);
           var live_periodID = live_class_data['period_id'];
           var live_classID = live_class_data['class_id'];
           var live_sectionID = live_class_data['section'];
@@ -140,7 +131,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
                 periodId: periId,
                 classId: clsId,
                 subjectId: subId,
-                video_link: live_video,
+                video_link: videolist,
                 audio_link: live_audio,
                 image_link: live_image,
                 pdf_link: live_pdf,
@@ -167,7 +158,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
           );
         }
 
-        print('Button Click:$live_class_data');
+        // print('Button Click:$live_class_data');
       });
     }).catchError((onError) {
       print(onError);
@@ -271,12 +262,18 @@ class _ShowSubjectsState extends State<ShowSubjects> {
                                 Text(
                                   '${snapshot.data[i].subject_name}' +
                                       '\t' +
-                                      '${snapshot.data[i].period_ID}',
+                                      '${snapshot.data[i].period_name}',
                                   style: TextStyle(color: Colors.black),
                                 ),
-                                Text('${snapshot.data[i].class_name}',
-                                    style: TextStyle(color: Colors.black)),
-                                Text('${snapshot.data[i].teacher_name}',
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                    '${snapshot.data[i].class_name}'
+                                    '\t'
+                                    '-'
+                                    '\t'
+                                    '${snapshot.data[i].section_name}',
                                     style: TextStyle(color: Colors.black)),
                               ],
                             ),

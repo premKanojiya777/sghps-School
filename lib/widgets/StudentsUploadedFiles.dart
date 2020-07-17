@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class StudentsUploadedFilesInfo extends StatefulWidget {
 }
 
 class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
-  final assetsAudioPlayer = AssetsAudioPlayer();
+  
   String pathPDF = "";
   @override
   void initState() {
@@ -68,17 +68,17 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
   }
 
   Future<void> _playSound() async {
-    try {
-      await assetsAudioPlayer.open(
-        Audio.network(
-            "http://sghps.cityschools.co/uploads/online/audio/${widget.audio_link}"),
-      );
-    } catch (t) {}
+    // try {
+    //   await assetsAudioPlayer.open(
+    //     Audio.network(
+    //         "http://sghps.cityschools.co/uploads/online/audio/${widget.audio_link}"),
+    //   );
+    // } catch (t) {}
   }
 
   Future<void> _pauseSound() async {
     try {
-      await assetsAudioPlayer.pause();
+      // await assetsAudioPlayer.pause();
     } catch (t) {}
   }
 
