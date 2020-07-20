@@ -9,6 +9,7 @@ import 'package:google_live/widgets/LibraryList.dart';
 import 'package:google_live/widgets/OnlineExam.dart';
 import 'package:google_live/widgets/SearchHomework.dart';
 import 'package:google_live/widgets/StudentNotifications.dart';
+import 'package:google_live/widgets/StudentOnlineTeaching.dart';
 import 'package:google_live/widgets/Syllabus.dart';
 import 'package:google_live/widgets/holiday.dart';
 import 'package:google_live/widgets/studentProfile.dart';
@@ -609,77 +610,43 @@ class _StudentHomeState extends State<StudentHome> {
                   // ),
                 ],
               ),
-              // Row(
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 3),
-              //       child: SizedBox.fromSize(
-              //         size: Size(110, 110), // button width and height
-              //         child: ClipOval(
-              //           child: Material(
-              //             color: Color.fromRGBO(33, 23, 47, 1), // button color
-              //             child: InkWell(
-              //               splashColor: Colors.green, // splash color
-              //               onTap: () {
-              //                 _addAttendance();
-              //                 // Navigator.push(
-              //                 //   context,
-              //                 //   MaterialPageRoute(
-              //                 //       builder: (context) =>
-              //                 //           MarkAttendance()),
-              //                 // );
-              //               }, // button pressed
-              //               child: Column(
-              //                 mainAxisAlignment: MainAxisAlignment.center,
-              //                 children: <Widget>[
-              //                   Icon(Icons.present_to_all,
-              //                       color: Colors.white), // icon
-              //                   Text(
-              //                     "Mark Attendance",
-              //                     style: TextStyle(color: Colors.white),
-              //                   ), // text
-              //                 ],
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 3),
-              //   child: SizedBox.fromSize(
-              //     size: Size(110, 110), // button width and height
-              //     child: ClipOval(
-              //       child: Material(
-              //         color: Color.fromRGBO(33, 23, 47, 1), // button color
-              //         child: InkWell(
-              //           splashColor: Colors.green, // splash color
-              //           onTap: () {
-              //             Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) =>
-              //                       StudentOnlineTeaching()),
-              //             );
-              //           }, // button pressed
-              //           child: Column(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: <Widget>[
-              //               Icon(Icons.textsms,
-              //                   color: Colors.white), // icon
-              //               Text(
-              //                 "Online Teching",
-              //                 style: TextStyle(color: Colors.white),
-              //               ), // text
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // ],
-              //),
+              Row(
+                children: <Widget>[
+                           Padding(
+                padding: const EdgeInsets.only(left: 3),
+                child: SizedBox.fromSize(
+                  size: Size(110, 110), // button width and height
+                  child: ClipOval(
+                    child: Material(
+                      color: Color.fromRGBO(33, 23, 47, 1), // button color
+                      child: InkWell(
+                        splashColor: Colors.green, // splash color
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StudentOnlineTeaching()),
+                          );
+                        }, // button pressed
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.textsms,
+                                color: Colors.white), // icon
+                            Text(
+                              "Online Teching",
+                              style: TextStyle(color: Colors.white),
+                            ), // text
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              ],
+              ),
             ],
           ),
         ),

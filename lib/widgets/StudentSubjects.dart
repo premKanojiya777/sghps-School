@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_live/models/SingleTimeTable.dart';
+import 'package:google_live/models/VideosModel.dart';
 import 'package:google_live/widgets/StudentsUploadedFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,8 @@ class StudentSubject extends StatefulWidget {
 
 class _StudentSubjectState extends State<StudentSubject> {
   Future<List<SingleTimeTable>> singleTimeTable;
+  List<VideosModel> videolist = [];
+  var liveClassId;
   var sectionID;
   var periodID;
   var classID;
@@ -29,12 +32,12 @@ class _StudentSubjectState extends State<StudentSubject> {
   Map<String, dynamic> live_data;
   var accessdata;
   var error;
-  int _radioValue1 =-1;
+  int _radioValue1 = -1;
   @override
   void initState() {
     super.initState();
     singleTimeTable = _singleTimeTable();
-    
+
     super.initState();
   }
 
@@ -65,6 +68,7 @@ class _StudentSubjectState extends State<StudentSubject> {
             this.sectionID,
             this.subjectId,
             this.isData,
+            u['section_name'],
             u['teacher_name']);
         list.add(single);
       }
@@ -78,37 +82,8 @@ class _StudentSubjectState extends State<StudentSubject> {
     return list;
   }
 
-  Future<void> _addAttendance(int value) async {
-   
-    
-    final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/attendance_student';
-
-    final response = await http.post(url, body: {
-      'access_token': prefs.get('token'),
-      'date': widget.datepick.toString(),
-    }, headers: {
-      "Accept": "application/json"
-    }).then((res) {
-      setState(() {
-        var added = json.decode(res.body);
-        this.error = added['error'];
-        var attendance = added['message'];
-        print(added);
-        Toast.show(attendance, context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      });
-    }).catchError((onError) {
-      print(onError);
-
-    });
-     setState(() {
-      _radioValue1 =value;
-    });
-  }
-
   Future<void> _chooseSubject(secId, periId, clsId, subId) async {
-    print(periId);
+    videolist = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
         'http://sghps.cityschools.co/studentapi/class_live_data?access_token=' +
@@ -128,17 +103,31 @@ class _StudentSubjectState extends State<StudentSubject> {
       setState(() {
         this.live_data = json.decode(res.body);
         var live_class_data = this.live_data['live_class_data'];
-        var live_periodID = live_class_data['period_id'];
-        var live_classID = live_class_data['class_id'];
-        var live_sectionID = live_class_data['section'];
-        var live_subjectID = live_class_data['subject_id'];
-        var live_video = live_class_data['video_link'];
-        var live_audio = live_class_data['audio_link'];
-        var live_class = live_class_data['live_class_link'];
-        var live_image = live_class_data['image'];
-        var live_pdf = live_class_data['pdf'];
-        var live_text = live_class_data['text'];
+        var check_assignment = this.live_data['assignment_check'];
         if (live_class_data != null) {
+          var videos = live_class_data['videos'];
+
+          for (var v in videos) {
+            this.liveClassId = v['id'];
+            VideosModel videosModel =
+                VideosModel(v['title'], v['link'], this.liveClassId);
+
+            videolist.add(videosModel);
+          }
+          print(videolist.length);
+          var liveClassDataID = live_class_data['id'];
+          print(liveClassDataID);
+          var live_periodID = live_class_data['period_id'];
+          var live_classID = live_class_data['class_id'];
+          var live_sectionID = live_class_data['section'];
+          var live_subjectID = live_class_data['subject_id'];
+          var live_video = live_class_data['video_link'];
+          var live_audio = live_class_data['audio_link'];
+          var live_class = live_class_data['live_class_link'];
+          var live_image = live_class_data['image'];
+          var live_pdf = live_class_data['pdf'];
+          var live_text = live_class_data['text'];
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -148,16 +137,18 @@ class _StudentSubjectState extends State<StudentSubject> {
                 periodId: periId,
                 classId: clsId,
                 subjectId: subId,
-                video_link: live_video,
+                video_link: videolist,
                 audio_link: live_audio,
                 image_link: live_image,
                 pdf_link: live_pdf,
                 live_class_link: live_class,
                 text_link: live_text,
+                liveClassID: liveClassDataID,
+                assignment: check_assignment,
               ),
             ),
           );
-          print('Button Click:$live_class_data');
+          // print('Button Click:$live_class_data');
         } else if (live_class_data == null) {
           print('No Data Founds');
         }
@@ -224,13 +215,15 @@ class _StudentSubjectState extends State<StudentSubject> {
                                     Text(
                                       '${snapshot.data[i].subject_name}' +
                                           '\t' +
-                                          '${snapshot.data[i].period_ID}',
+                                          '${snapshot.data[i].period_name}',
                                       style: TextStyle(color: Colors.black),
                                     ),
-                                    Text('${snapshot.data[i].class_name}',
-                                        style: TextStyle(color: Colors.black)),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Text('${snapshot.data[i].teacher_name}',
-                                        style: TextStyle(color: Colors.black,fontSize: 12)),
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 12)),
                                   ],
                                 ),
                               ),
@@ -238,38 +231,11 @@ class _StudentSubjectState extends State<StudentSubject> {
                           ),
                         ),
                       ),
-                    
                     );
                   },
                 );
               }
             },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Align(
-                alignment: Alignment(0.7, 0.0),
-                child: Text(
-                  'Mark Your Attendance',
-                  style: new TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                  ),
-                ),
-              ),
-               new Radio(
-                  value: 1,
-                  groupValue: error == false ? _radioValue1 : null,
-                  onChanged: _addAttendance,
-                ),
-              // new FlatButton(
-              //   child: Icon(this.error == false
-              //       ? Icons.radio_button_checked
-              //       : Icons.radio_button_unchecked),
-              //   onPressed: () {},
-              // ),
-            ],
           ),
         ],
       ),

@@ -18,6 +18,7 @@ class UploadedFilesInfo extends StatefulWidget {
   final String pdf_link;
   final String live_class_link;
   final String text_link;
+  final int check_assign;
   UploadedFilesInfo(
       {this.dateT,
       this.periodId,
@@ -29,7 +30,7 @@ class UploadedFilesInfo extends StatefulWidget {
       this.image_link,
       this.pdf_link,
       this.text_link,
-      this.live_class_link});
+      this.live_class_link,this.check_assign});
   @override
   _UploadedFilesInfoState createState() => _UploadedFilesInfoState();
 }
@@ -37,7 +38,6 @@ class UploadedFilesInfo extends StatefulWidget {
 class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
   http.BaseRequest request;
   bool imageClick = false;
-  String pathPDF = "";
   String imgUrl;
   String pdfUrl;
   String audioUrl;
@@ -56,15 +56,6 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
     secretKey: Constant.secretKey,
   );
 
-  _openVideo() async {
-    var video = widget.video_link;
-    var url = '$video';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   getImage() {
     String endPoint = "https://sghps.ams3.digitaloceanspaces.com/images";
@@ -541,7 +532,7 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color:widget.check_assign == 0 ? Colors.red:Colors.green,
                     borderRadius: BorderRadius.all(
                       Radius.circular(100),
                     ),

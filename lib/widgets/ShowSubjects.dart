@@ -24,6 +24,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
   var periodID;
   var classID;
   var subjectId;
+  var liveClassId;
   bool isData = false;
   int periodId, classId, sectionId, subIds;
   int secId, periId, clsId, subId;
@@ -64,7 +65,8 @@ class _ShowSubjectsState extends State<ShowSubjects> {
             this.sectionID,
             this.subjectId,
             this.isData,
-            u['section_name']);
+            u['section_name'],
+            u['teacher_name']);
         list.add(single);
       }
 
@@ -101,13 +103,15 @@ class _ShowSubjectsState extends State<ShowSubjects> {
       setState(() {
         this.live_data = json.decode(res.body);
         var live_class_data = this.live_data['live_class_data'];
-
-        // print(videos);
+        var check_assignment = this.live_data['assignment_check'];
+       
         if (live_class_data != null) {
           var videos = live_class_data['videos'];
 
           for (var v in videos) {
-            VideosModel videosModel = VideosModel(v['title'], v['link']);
+            this.liveClassId = v['id'];
+            print(this.liveClassId);
+            VideosModel videosModel = VideosModel(v['title'], v['link'],this.liveClassId);
 
             videolist.add(videosModel);
           }
@@ -137,6 +141,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
                 pdf_link: live_pdf,
                 live_class_link: live_class,
                 text_link: live_text,
+                check_assign: check_assignment,
               ),
             ),
           );

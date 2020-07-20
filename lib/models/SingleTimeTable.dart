@@ -8,6 +8,7 @@ class SingleTimeTable {
   final int period_ID;
   final bool isData;
   final String section_name;
+  final String teacher_name;
 
   SingleTimeTable(
       this.subject_name,
@@ -18,5 +19,5 @@ class SingleTimeTable {
       this.section_id,
       this.subject_id,
       this.isData,
-      this.section_name);
+      this.section_name,this.teacher_name);
 }

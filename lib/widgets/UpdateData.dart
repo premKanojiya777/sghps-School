@@ -5,14 +5,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
+import 'package:google_live/models/VideosModel.dart';
 import 'package:google_live/widgets/Constant.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
 class UpdateData extends StatefulWidget {
-  final List videoLink;
+  final List<VideosModel> videoLink;
   final String textLink;
   final String liveClassLink;
   final String imageLink;
@@ -43,9 +43,10 @@ class UpdateData extends StatefulWidget {
 class _UpdateDataState extends State<UpdateData> {
   http.BaseRequest request;
   String audioPath;
+  String imgFileName;
+  String pdfFileName;
+  String audioFilename;
   File pdfFiles;
-  String pathPDF = "";
-  bool isPlaying;
   bool visible = false;
   var pdfFile;
   String pdfPath;
@@ -56,24 +57,24 @@ class _UpdateDataState extends State<UpdateData> {
   File audio;
   File imageFile;
   File singleImageFile;
-  List<File> _imageList = [];
-  List<String> _imageLists = new List();
-  String imageDecoded;
-  String audioDecoded;
+  // String image
   String singleImageDecoded;
-  final enterText = TextEditingController();
-
-  final liveClass = TextEditingController();
+  var enterText = TextEditingController();
+  List videoLinkTitle = [];
+  var liveClass = TextEditingController();
   List<TextEditingController> _linkTitle = new List();
   List<TextEditingController> _link = new List();
-  List<TextEditingController> _upTitle = new List();
-  List<TextEditingController> _uplink = new List();
+  List<TextEditingController> _linkID = new List();
   var cards = <Card>[];
-  var videolink = <Card>[];
 
   void initState() {
     super.initState();
     getImage();
+    widget.videoLink.forEach((f) {
+      cards.add(createCard(f.title, f.link));
+    });
+    enterText.text = widget.textLink;
+    liveClass.text = widget.liveClassLink;
     super.initState();
   }
 
@@ -83,16 +84,14 @@ class _UpdateDataState extends State<UpdateData> {
     secretKey: Constant.secretKey,
   );
 
-  Card createCard() {
+  Card createCard([String optTitleText, String optLinkText]) {
     var titleController = TextEditingController();
     var linkController = TextEditingController();
-    // for (int i = 0; i <= widget.videoLink.length; i++) {
-    // _upTitle = widget.videoLink[i].title;
-    // _uplink = widget.videoLink[i].link;
+    titleController.text = optTitleText;
+    linkController.text = optLinkText;
     _linkTitle.add(titleController);
     _link.add(linkController);
-    // _upTitle.add(titleController);
-    // _uplink.add(titleController);
+    _linkID.add(titleController);
 
     return Card(
       child: Column(
@@ -100,7 +99,7 @@ class _UpdateDataState extends State<UpdateData> {
         children: <Widget>[
           TextField(
             controller: titleController,
-            style: TextStyle(color: Colors.blue),
+            // style: TextStyle(color: Colors.blue),
             decoration: InputDecoration(labelText: 'Title'),
           ),
           TextField(
@@ -109,48 +108,7 @@ class _UpdateDataState extends State<UpdateData> {
         ],
       ),
     );
-    // }
   }
-
-  // Card updateCard() {
-  //   var titleController = TextEditingController();
-  //   var linkController = TextEditingController();
-
-  //   _linkTitle.add(titleController);
-  //   _link.add(linkController);
-
-  //   return Card(
-  //     child: ListView.builder(
-  //       shrinkWrap: true,
-  //       itemCount: widget.videoLink.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         var titleController = TextEditingController();
-  //         var linkController = TextEditingController();
-
-  //         _linkTitle.add(titleController);
-  //         _link.add(linkController);
-  //         return Card(
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: <Widget>[
-  //               // Text('Person ${cards.length + 1}'),
-  //               TextField(
-  //                 controller: titleController,
-  //                 style: TextStyle(color: Colors.blue),
-  //                 decoration:
-  //                     InputDecoration(labelText: widget.videoLink[index].title),
-  //               ),
-  //               TextField(
-  //                   controller: linkController,
-  //                   decoration: InputDecoration(
-  //                       labelText: widget.videoLink[index].link)),
-  //             ],
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
 
   Future<void> _singleImageDialogBox() {
     return showDialog(
@@ -226,68 +184,130 @@ class _UpdateDataState extends State<UpdateData> {
     });
   }
 
-  Future openGallery() async {
-    image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  void _pdfUpload() async {
+    String projectName = "sghps";
 
-    setState(() {
-      imageFile = image;
-      final path = imageFile.readAsBytesSync();
-      this.imageDecoded = base64Encode(path);
-      _imageLists.add(this.imageDecoded);
-      _imageList.add(imageFile);
-      // print(imageFile);
-    });
+    String region = "ams3";
+
+    String extension = 'pdf';
+    String folderName = "pdf";
+    this.pdfFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+
+    print(this.pdfFileName);
+    String uploadedFileUrl = "https://" +
+        projectName +
+        "." +
+        region +
+        ".digitaloceanspaces.com/" +
+        folderName +
+        "/" +
+        this.pdfFileName.toString();
+    print('url: $uploadedFileUrl');
+    dospace.Bucket bucketpdf = spaces.bucket('sghps');
+    String etagpdf = await bucketpdf.uploadFile(
+        folderName + '/' + this.pdfFileName.toString(),
+        pdfFile,
+        'application/pdf',
+        dospace.Permissions.private);
+
+    print('upload: $etagpdf');
+    print('done');
   }
 
-  Future openCamera() async {
-    image = await ImagePicker.pickImage(source: ImageSource.camera);
+  void _galleryImageUpload() async {
+    String extension = 'jpg';
+    String projectName = "sghps";
 
-    setState(() {
-      imageFile = image;
-      final path = imageFile.readAsBytesSync();
-      this.imageDecoded = base64Encode(path);
-      _imageLists.add(this.imageDecoded);
-      _imageList.add(imageFile);
-      // print(imageFile);
-    });
+    String region = "ams3";
+
+    String folderName = "images";
+    this.imgFileName = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+
+    print(this.imgFileName);
+    String uploadedFileUrl = "https://" +
+        projectName +
+        "." +
+        region +
+        ".digitaloceanspaces.com/" +
+        folderName +
+        "/" +
+        this.imgFileName.toString();
+    print('url: $uploadedFileUrl');
+    dospace.Bucket bucket1 = spaces.bucket('sghps');
+    String etagal = await bucket1.uploadFile(
+        folderName + '/' + this.imgFileName.toString(),
+        singleImage,
+        'image/jpeg',
+        dospace.Permissions.private);
+
+    print('upload: $etagal');
+    print('done');
   }
 
-  Future getAudioGallery() async {
-    audioFile = await FilePicker.getFile(type: FileType.audio);
+  void _mp3Upload() async {
+    String projectName = "sghps";
 
-    setState(() {
-      audio = audioFile;
-      final audiopath = audioFile.readAsBytesSync();
-      this.audioDecoded = base64Encode(audiopath);
-    });
+    String region = "ams3";
+
+    String extension = 'mp3';
+    String folderName = "audio";
+    this.audioFilename = "${DateTime.now().millisecondsSinceEpoch}.$extension";
+
+    print(this.audioFilename);
+    String uploadedFileUrl = "https://" +
+        projectName +
+        "." +
+        region +
+        ".digitaloceanspaces.com/" +
+        folderName +
+        "/" +
+        this.audioFilename.toString();
+    print('url: $uploadedFileUrl');
+    dospace.Bucket bucketmp3 = spaces.bucket('sghps');
+    String etagmp3 = await bucketmp3.uploadFile(
+        folderName + '/' + this.audioFilename.toString(),
+        audioFile,
+        'audio/mpeg',
+        dospace.Permissions.private);
+
+    print('upload: $etagmp3');
+    print('done');
   }
 
   void _uploadImages() async {
-    List videoLinkTitle = [];
+    videoLinkTitle = [];
+    // _galleryImageUpload();
+    // _mp3Upload();
+    // _pdfUpload();
+
     for (int i = 0; i < _linkTitle.length; i++) {
       videoLinkTitle.add({
         'title': _linkTitle[i].text,
         'link': _link[i].text,
+        'id': _linkID == null ? widget.videoLink[i].id : 0
       });
     }
+    print(videoLinkTitle.length);
     print(videoLinkTitle);
     String _text = enterText.text;
     String _liveClass = liveClass.text;
     final prefs = await SharedPreferences.getInstance();
-    String url =
-        'http://sghps.cityschools.co/studentapi/test_imag?access_token=' +
-            prefs.get('token');
+    String url = 'http://sghps.cityschools.co/studentapi/live_data_update';
+
     Map dataMap = {
-      "solo_image": this.singleImageDecoded,
-      "image": _imageLists.toString(),
-      "audio": this.audioDecoded,
+      "access_token": prefs.get('token'),
       "text": _text,
+      "video": videoLinkTitle,
       "live_class": _liveClass,
       "period_id": widget.periodId,
       "subject_id": widget.subjectId,
       "class_id": widget.classId,
       "section_id": widget.sectionId,
-      "date": widget.dateT.toString()
+      "date": widget.dateT.toString(),
+      "image": this.imgFileName == null ? widget.imageLink : this.imgFileName,
+      "pdf": this.pdfFileName == null ? widget.pdfLink : this.pdfFileName,
+      "audio":
+          this.audioFilename == null ? widget.audioLink : this.audioFilename,
     };
 
     print(await apiRequest(url, dataMap));
@@ -304,24 +324,14 @@ class _UpdateDataState extends State<UpdateData> {
     print(jsonString);
     HttpClientResponse response = await request.close();
     String reply = await response.transform(utf8.decoder).join();
-    Map<String, dynamic> respond = jsonDecode(reply);
+    // Map<String, dynamic> respond = jsonDecode(reply);
 
     setState(() {
       visible = false;
     });
     httpClient.close();
-    print(_imageList.length);
+    print(cards.length);
     return reply;
-  }
-
-  _openLiveClass() async {
-    var video = widget.liveClassLink;
-    var url = '$video';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
   }
 
   @override
@@ -353,44 +363,9 @@ class _UpdateDataState extends State<UpdateData> {
                     IconButton(
                         icon: Icon(Icons.remove, color: Colors.blue),
                         onPressed: () => setState(() {
-                              cards.removeAt(0);
+                              cards.removeAt(cards.length - 1);
                             })),
                   ],
-                ),
-              ),
-              SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(12),
-                  // width: 350,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.videoLink.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      var titleController = TextEditingController();
-                      var linkController = TextEditingController();
-
-                      _linkTitle.add(titleController);
-                      _link.add(linkController);
-                      return Card(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            // Text('Person ${cards.length + 1}'),
-                            TextField(
-                              controller: titleController,
-                              style: TextStyle(color: Colors.blue),
-                              decoration: InputDecoration(
-                                  labelText: widget.videoLink[i].title),
-                            ),
-                            TextField(
-                                controller: linkController,
-                                decoration: InputDecoration(
-                                    labelText: widget.videoLink[i].link)),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
                 ),
               ),
               Padding(
@@ -588,7 +563,6 @@ class _UpdateDataState extends State<UpdateData> {
                   setState(() {
                     visible = true;
                   });
-                  print(_imageLists.length);
                 },
               ),
               SizedBox(
