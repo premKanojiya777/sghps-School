@@ -50,7 +50,6 @@ class _UploadFilesState extends State<UploadFiles> {
   String audioDecoded;
   String singleImageDecoded;
   final enterText = TextEditingController();
-  final videoLink = TextEditingController();
   final liveClass = TextEditingController();
   List<TextEditingController> _linkTitle = new List();
   List<TextEditingController> _link = new List();

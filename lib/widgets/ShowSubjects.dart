@@ -116,6 +116,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
             videolist.add(videosModel);
           }
           print(videolist.length);
+          var liveClassDataID = live_class_data['id'];
           var live_periodID = live_class_data['period_id'];
           var live_classID = live_class_data['class_id'];
           var live_sectionID = live_class_data['section'];
@@ -142,6 +143,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
                 live_class_link: live_class,
                 text_link: live_text,
                 check_assign: check_assignment,
+                liveClassId:liveClassDataID
               ),
             ),
           );

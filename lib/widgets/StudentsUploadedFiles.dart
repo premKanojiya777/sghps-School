@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentsUploadedFilesInfo extends StatefulWidget {
@@ -36,7 +37,8 @@ class StudentsUploadedFilesInfo extends StatefulWidget {
       this.pdf_link,
       this.text_link,
       this.live_class_link,
-      this.liveClassID,this.assignment});
+      this.liveClassID,
+      this.assignment});
   @override
   _StudentsUploadedFilesInfoState createState() =>
       _StudentsUploadedFilesInfoState();
@@ -619,7 +621,9 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                 children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
-                      color: widget.assignment == 0 ? Colors.red : Colors.green,
+                      color: widget.assignment == 0 || widget.assignment == null
+                          ? Colors.red
+                          : Colors.green,
                       borderRadius: BorderRadius.all(
                         Radius.circular(100),
                       ),
@@ -634,7 +638,21 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                             child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  isAssignmet = true;
+                                  if (widget.assignment == null ||
+                                      widget.assignment == 0) {
+                                    Toast.show(
+                                        'Submit Your Assignment Here ', context,
+                                        duration: Toast.LENGTH_LONG,
+                                        gravity: Toast.BOTTOM);
+                                    isAssignmet = true;
+                                  } else if (widget.assignment != null ||
+                                      widget.assignment != 0) {
+                                    Toast.show(
+                                        'Assignment Already Submitted', context,
+                                        duration: Toast.LENGTH_LONG,
+                                        gravity: Toast.BOTTOM);
+                                    isAssignmet = false;
+                                  }
                                 });
                               }, // button pressed
 

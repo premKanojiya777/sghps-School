@@ -276,9 +276,9 @@ class _UpdateDataState extends State<UpdateData> {
 
   void _uploadImages() async {
     videoLinkTitle = [];
-    // _galleryImageUpload();
-    // _mp3Upload();
-    // _pdfUpload();
+    _galleryImageUpload();
+    _mp3Upload();
+    _pdfUpload();
 
     for (int i = 0; i < _linkTitle.length; i++) {
       videoLinkTitle.add({
