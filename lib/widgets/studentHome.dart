@@ -10,6 +10,8 @@ import 'package:google_live/widgets/OnlineExam.dart';
 import 'package:google_live/widgets/SearchHomework.dart';
 import 'package:google_live/widgets/StudentNotifications.dart';
 import 'package:google_live/widgets/StudentOnlineTeaching.dart';
+import 'package:google_live/widgets/Student_Leaves.dart';
+import 'package:google_live/widgets/StudentsResults.dart';
 import 'package:google_live/widgets/Syllabus.dart';
 import 'package:google_live/widgets/holiday.dart';
 import 'package:google_live/widgets/studentProfile.dart';
@@ -32,12 +34,11 @@ class _StudentHomeState extends State<StudentHome> {
   bool visible = false;
   var savekey = '';
 
-@override
+  @override
   void initState() {
     super.initState();
     visible = true;
   }
-
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -157,500 +158,599 @@ class _StudentHomeState extends State<StudentHome> {
           new IconButton(icon: new Icon(Icons.exit_to_app), onPressed: _logout),
         ],
       ),
-      body: visible ? SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StudentProfile()),
-                              );
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.school,
-                                  color: Colors.white,
+      body: visible
+          ? SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StudentProfile()),
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.school,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "Profile",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  "Profile",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  //  ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CalendarPage2()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.assignment,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "Attendence",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CalendarPage2()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.assignment,
+                                          color: Colors.white,
+                                        ), // icon
+                                        Text(
+                                          "Attendence",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  // ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TimeTable()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.date_range,
-                                    color: Colors.white), // icon
-                                Text(
-                                  "Time Table",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => TimeTable()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.date_range,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Time Table",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  // ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ImageGallery()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.photo_library,
-                                    color: Colors.white), // icon
-                                Text(
-                                  "Gallery",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ImageGallery()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.photo_library,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Gallery",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  // ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Syllabus()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.picture_as_pdf,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "Sylabus",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Syllabus()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.picture_as_pdf,
+                                          color: Colors.white,
+                                        ), // icon
+                                        Text(
+                                          "Sylabus",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  // ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HolidayHomeWork()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.event_available, color: Colors.white), // icon
-                                Text(
-                                  "Holiday HW",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HolidayHomeWork()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.event_available,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Holiday HW",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  // ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StudentNotific()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.notifications,
-                                    color: Colors.white), // icon
-                                Text(
-                                  "Notification",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StudentNotific()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.notifications,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Notification",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  //  ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchHomework()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.format_list_numbered,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "HomeWork",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SearchHomework()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.format_list_numbered,
+                                          color: Colors.white,
+                                        ), // icon
+                                        Text(
+                                          "HomeWork",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  //  ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => OnlineExams()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.desktop_mac, color: Colors.white), // icon
-                                Text(
-                                  "Online Exam",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                OnlineExams()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.desktop_mac,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Online Exam",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  // ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DateSheet()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.card_giftcard,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "DateSheet",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DateSheet()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.card_giftcard,
+                                          color: Colors.white,
+                                        ), // icon
+                                        Text(
+                                          "DateSheet",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  // ),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LibraryList()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.library_books,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "Library",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LibraryList()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.library_books,
+                                          color: Colors.white,
+                                        ), // icon
+                                        Text(
+                                          "Library",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  //),
-                  // Expanded(
-                  //   child:
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              _addAttendance();
-                              // return showDialog(
-                              //     context: context,
-                              //     builder: (_) => AlertDialog(
-                              //           title: Text('Coming Soon'),
-                              //         ));
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.check,
-                                    color: Colors.white), // icon
-                                Text(
-                                  "Mark Attendance",
-                                  style: TextStyle(color: Colors.white),
-                                  
-                                ), // text
-                              ],
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      _addAttendance();
+                                      // return showDialog(
+                                      //     context: context,
+                                      //     builder: (_) => AlertDialog(
+                                      //           title: Text('Coming Soon'),
+                                      //         ));
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.check,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Mark Attendance",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  // ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                           Padding(
-                padding: const EdgeInsets.only(left: 3),
-                child: SizedBox.fromSize(
-                  size: Size(110, 110), // button width and height
-                  child: ClipOval(
-                    child: Material(
-                      color: Color.fromRGBO(33, 23, 47, 1), // button color
-                      child: InkWell(
-                        splashColor: Colors.green, // splash color
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    StudentOnlineTeaching()),
-                          );
-                        }, // button pressed
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.textsms,
-                                color: Colors.white), // icon
-                            Text(
-                              "Online Teching",
-                              style: TextStyle(color: Colors.white),
-                            ), // text
-                          ],
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                                                  child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StudentOnlineTeaching()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.textsms,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Online Teching",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                       
+                        Expanded(
+                                                  child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StudentLeaves()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.launch,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Leave",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                                                  child: Padding(
+                            padding: const EdgeInsets.only(left: 3),
+                            child: SizedBox.fromSize(
+                              size: Size(110, 110), // button width and height
+                              child: ClipOval(
+                                child: Material(
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
+                                  child: InkWell(
+                                    splashColor: Colors.green, // splash color
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                StudentsResults()),
+                                      );
+                                    }, // button pressed
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Icon(Icons.trending_up,
+                                            color: Colors.white), // icon
+                                        Text(
+                                          "Result",
+                                          style: TextStyle(color: Colors.white),
+                                        ), // text
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
               ),
-              ],
-              ),
-            ],
-          ),
-        ),
-      ) : bodyProgress,
+            )
+          : bodyProgress,
     );
   }
 }

@@ -112,8 +112,8 @@ class _TeacherHomeState extends State<TeacherHome> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          // Expanded(
-                          //   child: 
+                          Expanded(
+                            child: 
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: SizedBox.fromSize(
@@ -150,9 +150,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                                 ),
                               ),
                             ),
-                          // ),
-                          // Expanded(
-                          //   child:
+                          ),
+                          Expanded(
+                            child:
                              Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: SizedBox.fromSize(
@@ -189,9 +189,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                                 ),
                               ),
                             ),
-                          // ),
-                          // Expanded(
-                          //   child: 
+                          ),
+                          Expanded(
+                            child: 
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: SizedBox.fromSize(
@@ -226,13 +226,13 @@ class _TeacherHomeState extends State<TeacherHome> {
                                 ),
                               ),
                             ),
-                          // ),
+                          ),
                         ],
                       ),
                       Row(
                         children: <Widget>[
-                          // Expanded(
-                          //   child: 
+                          Expanded(
+                            child: 
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: SizedBox.fromSize(
@@ -269,9 +269,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                                 ),
                               ),
                             ),
-                          // ),
-                          // Expanded(
-                          //   child:
+                          ),
+                          Expanded(
+                            child:
                           this.cordi== true ?
                            Padding(
                               padding: const EdgeInsets.all(2.0),
@@ -308,9 +308,9 @@ class _TeacherHomeState extends State<TeacherHome> {
                                 ),
                               ),
                             ) : Container(),
-                          // ),
-                          // Expanded(
-                          //   child: 
+                          ),
+                          Expanded(
+                            child: 
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: SizedBox.fromSize(
@@ -345,7 +345,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                                 ),
                               ),
                             ),
-                          
+                          ),
                         ],
                       ),
                       Row(children: <Widget>[

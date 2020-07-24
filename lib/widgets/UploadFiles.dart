@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_live/widgets/Constant.dart';
+import 'package:google_live/widgets/ShowSubjects.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dospace/dospace.dart' as dospace;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -259,7 +260,7 @@ class _UploadFilesState extends State<UploadFiles> {
     print('done');
   }
 
-  void _uploadImages() async {
+  void _uploadFiles() async {
     _galleryImageUpload();
     _mp3Upload();
     _pdfUpload();
@@ -372,7 +373,6 @@ class _UploadFilesState extends State<UploadFiles> {
                         onPressed: () {
                           _singleImageDialogBox();
                         }),
-                   
                   ],
                 ),
               ),
@@ -516,8 +516,15 @@ class _UploadFilesState extends State<UploadFiles> {
                   textColor: Colors.white,
                   child: Text('Upload Files'),
                   onPressed: () {
-                    _uploadImages();
+                    _uploadFiles();
                     setState(() {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShowSubjects(
+                                  datepick: widget.dateT,
+                                )),
+                      );
                       visible = true;
                     });
                   },

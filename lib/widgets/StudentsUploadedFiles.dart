@@ -18,13 +18,14 @@ class StudentsUploadedFilesInfo extends StatefulWidget {
   final int sectionId;
   final int subjectId;
   final List video_link;
+  final List image_List;
   final String audio_link;
   final String image_link;
   final String pdf_link;
   final String live_class_link;
   final String text_link;
   final int liveClassID;
-  final int assignment;
+  var assignment;
   StudentsUploadedFilesInfo(
       {this.dateT,
       this.periodId,
@@ -38,7 +39,8 @@ class StudentsUploadedFilesInfo extends StatefulWidget {
       this.text_link,
       this.live_class_link,
       this.liveClassID,
-      this.assignment});
+      this.assignment,
+      this.image_List});
   @override
   _StudentsUploadedFilesInfoState createState() =>
       _StudentsUploadedFilesInfoState();
@@ -46,8 +48,10 @@ class StudentsUploadedFilesInfo extends StatefulWidget {
 
 class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
   http.BaseRequest request;
+  String assignmentImagesUrl;
   bool imageClick = false;
   bool isAssignmet = false;
+  bool showMarks = false;
   bool image = false;
   List<File> _imageList = [];
   List<String> _fileNameList = [];
@@ -57,13 +61,17 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
   String pdfUrl;
   String audioUrl;
   String imgFileName;
+  String remarks;
+  String marks;
   @override
   void initState() {
     super.initState();
-    print(widget.liveClassID);
     getImage();
     getAudio();
     getPDF();
+    print('Assignment:${widget.assignment}');
+    this.remarks = widget.assignment['remarks'];
+    this.marks = widget.assignment['marks'];
     super.initState();
   }
 
@@ -227,6 +235,113 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
     });
   }
 
+  Widget _showAssignmentMarks() {
+    print(widget.image_List.length);
+    return Column(
+      children: <Widget>[
+        Text(
+          'Uploaded Assignment ',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          itemCount: widget.image_List.length,
+          gridDelegate:
+              new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+          itemBuilder: (BuildContext context, int i) {
+            String endPoint =
+                "https://sghps.ams3.digitaloceanspaces.com/images";
+            request = http.Request("GET",
+                Uri.parse('$endPoint/' + '${widget.image_List[i].image}'));
+
+            this.assignmentImagesUrl =
+                spaces.signRequest(request, preSignedUrl: true);
+            return GestureDetector(
+              child: GridTile(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                    ),
+                  ),
+                  child: Card(
+                    child: Image.network(
+                      ('${this.assignmentImagesUrl}'),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+              onTap: () {
+                String endPoint =
+                    "https://sghps.ams3.digitaloceanspaces.com/images";
+                request = http.Request("GET",
+                    Uri.parse('$endPoint/' + '${widget.image_List[i].image}'));
+
+                this.assignmentImagesUrl =
+                    spaces.signRequest(request, preSignedUrl: true);
+
+                return showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    content: Image.network(
+                      ('${this.assignmentImagesUrl}'),
+                      fit: BoxFit.fill,
+                    ),
+                    actions: <Widget>[
+                      new FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(context);
+                        },
+                        child: Text(
+                          'Close',
+                          style:
+                              TextStyle(color: Color.fromRGBO(33, 23, 47, 1)),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        Divider(),
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                'Remarks : ${this.remarks}',
+                style: TextStyle(fontSize: 17),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                'Marks : ${this.marks}',
+                style: TextStyle(fontSize: 17),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -360,7 +475,14 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                           child: Material(
                             color: Colors.white, // button color
                             child: InkWell(
-                              onTap: () {}, // button pressed
+                              onTap: () async {
+                                var url = this.audioUrl;
+                                if (await canLaunch(url)) {
+                                  await launch(url);
+                                } else {
+                                  throw 'Could not launch $url';
+                                }
+                              }, // button pressed
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -371,7 +493,7 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             Text(
-                                              'Audio Lecture',
+                                              'No Audio',
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 13,
@@ -379,31 +501,15 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                                             ),
                                           ],
                                         )
-                                      : Row(
-                                          children: <Widget>[
-                                            Container(
-                                              height: 40,
-                                              width: 40,
-                                              child: FloatingActionButton(
-                                                backgroundColor: Color.fromRGBO(
-                                                    33, 23, 47, 1),
-                                                onPressed: () async {
-                                                  var url = this.audioUrl;
-                                                  if (await canLaunch(url)) {
-                                                    await launch(url);
-                                                  } else {
-                                                    throw 'Could not launch $url';
-                                                  }
-                                                },
-                                                tooltip: 'Play',
-                                                child: Icon(Icons.play_arrow),
-                                                heroTag: 'btn1',
-                                              ),
+                                      : Text(
+                                              'Audio Lecture',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          ],
-                                        ),
-                                ],
-                              ),
+                                  ]  ),
+                             
                             ),
                           ),
                         ),
@@ -502,13 +608,19 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                                   widget.pdf_link == null ||
                                           widget.pdf_link == ""
                                       ? Text(
+                                          'No PDF EBook',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : Text(
                                           'PDF EBook',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         )
-                                      : Text(widget.pdf_link)
                                 ],
                               ),
                             ),
@@ -621,9 +733,10 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                 children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
-                      color: widget.assignment == 0 || widget.assignment == null
-                          ? Colors.red
-                          : Colors.green,
+                      color:
+                          widget.assignment == "" || widget.assignment == null
+                              ? Colors.red
+                              : Colors.green,
                       borderRadius: BorderRadius.all(
                         Radius.circular(100),
                       ),
@@ -639,19 +752,21 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                               onTap: () {
                                 setState(() {
                                   if (widget.assignment == null ||
-                                      widget.assignment == 0) {
+                                      widget.assignment == "") {
                                     Toast.show(
                                         'Submit Your Assignment Here ', context,
                                         duration: Toast.LENGTH_LONG,
                                         gravity: Toast.BOTTOM);
                                     isAssignmet = true;
+                                    showMarks = false;
                                   } else if (widget.assignment != null ||
-                                      widget.assignment != 0) {
-                                    Toast.show(
-                                        'Assignment Already Submitted', context,
+                                      widget.assignment != "") {
+                                    Toast.show('Your Assignment Marks', context,
                                         duration: Toast.LENGTH_LONG,
                                         gravity: Toast.BOTTOM);
                                     isAssignmet = false;
+                                    showMarks = true;
+                                    // for(var assi in widget.image_link)
                                   }
                                 });
                               }, // button pressed
@@ -768,6 +883,7 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
                       ),
                     )
                   : Container(),
+              showMarks ? _showAssignmentMarks() : Container(),
               image
                   ? Container(
                       width: 380,

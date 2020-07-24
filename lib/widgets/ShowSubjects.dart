@@ -147,7 +147,8 @@ class _ShowSubjectsState extends State<ShowSubjects> {
               ),
             ),
           );
-        } else if (live_class_data == null) {
+        }
+         else if (live_class_data == null) {
           print('empty');
 
           print(live_class_data);

@@ -26,6 +26,8 @@ class _StudentLeavesState extends State<StudentLeaves> {
   File imageFile;
   String imageDecoded;
   bool loader = false;
+  bool visible = false;
+  int index;
 
   String _showDate = DateFormat.yMMMMEEEEd().format(_currentDate);
 
@@ -35,12 +37,73 @@ class _StudentLeavesState extends State<StudentLeaves> {
     _leaveListsShow();
   }
 
+  Future<void> _singleImageDialogBox() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                      child: Row(
+                        children: <Widget>[
+                          new Icon(Icons.photo_camera),
+                          Padding(
+                            padding: EdgeInsets.only(left: 3),
+                          ),
+                          new Text('Take a picture',
+                              style: TextStyle(color: Colors.redAccent)),
+                        ],
+                      ),
+                      onTap: () async {
+                        singleImageCamera();
+                      }),
+                  Divider(),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                  ),
+                  GestureDetector(
+                    child: Row(
+                      children: <Widget>[
+                        new Icon(Icons.photo_album),
+                        Padding(
+                          padding: EdgeInsets.only(left: 3),
+                        ),
+                        new Text(
+                          'Select from gallery',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ],
+                    ),
+                    onTap: getImage,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future singleImageCamera() async {
+    image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      imageFile = image;
+      final path = imageFile.readAsBytesSync();
+      this.imageDecoded = base64Encode(path);
+      print(imageFile);
+    });
+  }
+
   Future getImage() async {
     image = await ImagePicker.pickImage(source: ImageSource.gallery);
     //  image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       imageFile = image;
+      final path = imageFile.readAsBytesSync();
+      this.imageDecoded = base64Encode(path);
       print(imageFile);
     });
   }
@@ -59,41 +122,61 @@ class _StudentLeavesState extends State<StudentLeaves> {
       //print({"res", res.body});
       Map<String, dynamic> user = jsonDecode(res.body);
       leaveModel = LeaveModel.fromJson(user);
-      // print(user);
+      print(user);
       if (leaveModel.leave == null) {
         print('error');
       } else {
         for (Leave leaves in leaveModel.leave.leavelist) {
-          listofLeaves.add(_commonRow(
-              '${leaves.id}',
-              '${leaves.date}',
-              '${leaves.reason_for}',
-              '${leaves.attachement}',
-              '${leaves.status}'));
+          setState(() {
+            listofLeaves.add(_commonRow(
+                '${leaves.id}',
+                '${leaves.date}',
+                '${leaves.reason_for}',
+                '${leaves.attachement}',
+                '${leaves.status}'));
+          });
         }
       }
       loader = true;
+     
     }).catchError((onError) {
       print(onError);
     });
   }
 
-  Future<void> _apply() async {
-    // String _desc = description.text;
-    // final prefs = await SharedPreferences.getInstance();
-    final path = imageFile.readAsBytesSync();
-    this.imageDecoded = base64Encode(path);
-    print(this.imageDecoded.substring(0, 100));
-    String url = 'http://sghps.cityschools.co/studentapi/test_image';
-    // prefs.get('token');
-    http.post(url, body: {
-      // "url": url,
-      // "dates": _showDate,
-      // "reason": _desc,
-      "image": this.imageDecoded
-    }).then((Response response) {
-      print("Response body: ${response.body}");
+  void _applyLeave() async {
+    String _desc = description.text;
+    final prefs = await SharedPreferences.getInstance();
+
+    String url = 'http://sghps.cityschools.co/studentapi/leave_flutter';
+    var dataMap = {
+      'access_token': prefs.get('token'),
+      "dates": _showDate,
+      "reason": _desc,
+      "file": this.imageDecoded
+    };
+
+    print(await apiRequest(url, dataMap));
+  }
+
+  Future<String> apiRequest(String url, Map dataMap) async {
+    String jsonString = json.encode(dataMap);
+    HttpClient httpClient = new HttpClient();
+    HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
+    request.headers.contentType =
+        new ContentType("application", "json", charset: "utf-8");
+    request.headers.set('Content-Length', jsonString.length.toString());
+    request.write(jsonString);
+    print(jsonString);
+    HttpClientResponse response = await request.close();
+    String reply = await response.transform(utf8.decoder).join();
+    Map<String, dynamic> user = jsonDecode(reply);
+    setState(() {
+      visible = false;
     });
+
+    httpClient.close();
+    return reply;
   }
 
   var bodyProgress = new Container(
@@ -150,7 +233,8 @@ class _StudentLeavesState extends State<StudentLeaves> {
         Padding(
           padding: const EdgeInsets.all(12.0),
           child: Text('List Of Applied Leaves',
-              style: TextStyle(fontSize: 21, color: Color.fromRGBO(33, 23, 47, 1))),
+              style: TextStyle(
+                  fontSize: 21, color: Color.fromRGBO(33, 23, 47, 1))),
         ),
         Divider(),
         Container(
@@ -195,117 +279,134 @@ class _StudentLeavesState extends State<StudentLeaves> {
 
   Widget _commonRow(
       String srNo, String _dates, String reasons, String files, String status) {
-    return Container(
-      width: 600,
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(
-              left: 10,
+    return Table(
+      // defaultColumnWidth: FixedColumnWidth(90.0),
+      border: TableBorder.all(color: Colors.black),
+      children: [
+        TableRow(
+          children: [
+            
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: new Text(srNo),
             ),
-            child: Row(
-              children: <Widget>[
-                Text(srNo),
-                Spacer(),
-                Text(_dates),
-                Spacer(),
-                Text(reasons),
-                Spacer(),
-
-                // new Center(child: new Icon(Icons.link)),
-                // new Center(
-                //   child: new FadeInImage.memoryNetwork(
-                //      placeholder:nofound ,
-                //     image:
-                //         'http://smart.sksk.in/uploads/leaves/' + files,
-
-                //   ),
-                // ),
-                // Container(
-                //   height: 10,
-                //   width: 10,
-                //   child: Image.network(
-                //     'http://smart.sksk.in/uploads/leaves/' + files,
-                //     scale: 1.0,
-                //   ),
-                // ),
-                Spacer(),
-                Text(status),
-                Spacer(),
-              ],
-            ),
-          ),
-          SizedBox(height: 5),
-          Divider(),
-        ],
-      ),
+            Container(
+                padding: EdgeInsets.only(left: 10), child: new Text(_dates)),
+            Container(
+                padding: EdgeInsets.only(left: 10), child: new Text(reasons)),
+            IconButton(
+                icon: files == ""
+                    ? Text('')
+                    : Icon(Icons.link, color: Colors.blue),
+                onPressed: () {
+                  print(files);
+                  return showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      content: Image.network(
+                        ('http://sghps.cityschools.co/uploads/leaves/' + files),
+                        fit: BoxFit.fill,
+                      ),
+                      actions: <Widget>[
+                        new FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(context);
+                          },
+                          child: Text(
+                            'Close',
+                            style:
+                                TextStyle(color: Color.fromRGBO(33, 23, 47, 1)),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }),
+            Container(
+                color: status == 0 ? Colors.green : Colors.red,
+                padding: EdgeInsets.only(left: 10),
+                child: status == 0
+                    ? new Text(
+                        'Approved',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    : new Text('Not Approved',
+                        style: TextStyle(color: Colors.white))),
+          ],
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(33, 23, 47, 1),
         title: Text('Leave'),
         centerTitle: true,
       ),
-      body:  SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 20.0),
-              Container(
-                  width: 320,
-                  padding: EdgeInsets.all(10.0),
-                  child: TextField(
-                    // ?controller: date,
-                    // autocorrect: true,
-                    decoration: InputDecoration(
-                      hintText: _showDate,
-                      fillColor: Colors.white,
-                    ),
-                  )),
-              SizedBox(height: 10.0),
-              Container(
-                  width: 320,
-                  padding: EdgeInsets.all(10.0),
-                  child: TextField(
-                    controller: description,
-                    autocorrect: true,
-                    maxLines:2,
-                    decoration: InputDecoration(
-                      hintText: "Enter Description",
-                      fillColor: Colors.white,
-                    ),
-                  )),
-              Container(
-                height: 100,
-                width: 100,
-                child: image == null
-                    ? Text('No image selected.')
-                    : Image.file(image),
-              ),
-              SizedBox(
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 20.0),
+            Container(
+                width: 350,
+                padding: EdgeInsets.all(10.0),
+                child: TextField(
+                  // ?controller: date,
+                  // autocorrect: true,
+                  decoration: InputDecoration(
+                    hintText: _showDate,
+                    fillColor: Colors.white,
+                  ),
+                )),
+            SizedBox(height: 10.0),
+            Container(
+                width: 350,
+                padding: EdgeInsets.all(10.0),
+                child: TextField(
+                  controller: description,
+                  autocorrect: true,
+                  maxLines: 2,
+                  decoration: InputDecoration(
+                    hintText: "Enter Description",
+                    fillColor: Colors.white,
+                  ),
+                )),
+            image == null
+                ? Text('')
+                : Container(
+                    height: 100,
+                    width: 100,
+                    child: Image.file(image),
+                  ),
+            Padding(
+              padding: const EdgeInsets.only(right: 200),
+              child: SizedBox(
                 width: 150,
                 child: RaisedButton(
-                  color:Color.fromRGBO(33, 23, 47, 1),
+                  color: Color.fromRGBO(33, 23, 47, 1),
                   textColor: Colors.white,
-                  child: Text('AttachMent'),
-                  onPressed: getImage,
+                  child: Text('Attachment'),
+                  onPressed: _singleImageDialogBox,
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 53),
+              child: SizedBox(
                 height: 40.0,
                 width: 300,
                 child: RaisedButton(
                   onPressed: () {
-                    _apply();
-                
+                    setState(() {
+                      _applyLeave();
+                      visible = true;
+                    });
                   },
                   color: Color.fromRGBO(33, 23, 47, 1),
                   textColor: Colors.white,
@@ -315,14 +416,35 @@ class _StudentLeavesState extends State<StudentLeaves> {
                   ),
                 ),
               ),
-              
-              Divider(),
-              loader ?
-              _leavesList() :
-              // ...listofLeaves,
-              bodyProgress,
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Container(
+              child: Visibility(
+                visible: visible,
+                child: Column(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Please Wait....",
+                      style: TextStyle(color: Colors.blueAccent),
+                    )
+                  ],
+                ),
+              ),
+            ),
+
+            Divider(),
+            // loader ?
+            _leavesList(),
+            //  :
+            ...listofLeaves,
+            // bodyProgress,
+          ],
         ),
       ),
     );

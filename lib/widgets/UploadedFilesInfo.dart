@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:google_live/models/AssignmentImageModel.dart';
 import 'package:google_live/models/AssignmentModel.dart';
+import 'package:google_live/widgets/ShowSubjects.dart';
 import 'package:http/http.dart' as http;
 import 'package:dospace/dospace.dart' as dospace;
 import 'package:flutter/cupertino.dart';
@@ -58,6 +59,7 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
   String audioPath;
   String imgUrl;
   String assignmentImagesUrl;
+  int assignID;
   String pdfUrl;
   String audioUrl;
   String imgFileName;
@@ -151,8 +153,10 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
       setState(() {
         var assignments = json.decode(res.body);
         var assign_gets = assignments['assignment_check'];
-        // print(assign_gets);
+
         for (var asm in assign_gets) {
+          this.assignID = asm['id'];
+          // print(this.assignID);
           var img = asm['image'];
           AssignmentModel assignmentModel =
               AssignmentModel(asm['stu']['first_name'], asm['id'], img);
@@ -323,7 +327,14 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                         child: Material(
                           color: Colors.white, // button color
                           child: InkWell(
-                            onTap: () {}, // button pressed
+                            onTap: () async {
+                              var url = this.audioUrl;
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            }, // button pressed
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
@@ -342,28 +353,12 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                                           ),
                                         ],
                                       )
-                                    : Row(
-                                        children: <Widget>[
-                                          Container(
-                                            height: 40,
-                                            width: 40,
-                                            child: FloatingActionButton(
-                                              backgroundColor:
-                                                  Color.fromRGBO(33, 23, 47, 1),
-                                              onPressed: () async {
-                                                var url = this.audioUrl;
-                                                if (await canLaunch(url)) {
-                                                  await launch(url);
-                                                } else {
-                                                  throw 'Could not launch $url';
-                                                }
-                                              },
-                                              tooltip: 'Play',
-                                              child: Icon(Icons.play_arrow),
-                                              heroTag: 'btn1',
-                                            ),
-                                          ),
-                                        ],
+                                    : Text(
+                                        'Audio Lecture',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold),
                                       ),
                               ],
                             ),
@@ -465,13 +460,19 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                               children: <Widget>[
                                 widget.pdf_link == null || widget.pdf_link == ""
                                     ? Text(
+                                        'No PDF EBook',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text(
                                         'PDF EBook',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
                                       )
-                                    : Text(widget.pdf_link)
                               ],
                             ),
                           ),
@@ -888,7 +889,18 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
             child: RaisedButton(
               color: Color.fromRGBO(33, 23, 47, 1),
               onPressed: () {
-                _updateAssignMent();
+                setState(() {
+                   _updateAssignMent();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowSubjects(
+                              datepick: widget.dateT,
+                            )),
+                  );
+                  visible =true;
+                });
+               
               },
               child: Text(
                 'Update',
@@ -1085,7 +1097,6 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
   }
 
   Future<void> _updateAssignMent() async {
-    // print(listImage);
     String _remark = remarks.text;
     String _mark = marks.text;
     final prefs = await SharedPreferences.getInstance();
@@ -1095,11 +1106,12 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
     };
     var _body = {
       'access_token': prefs.get('token'),
-      'id': widget.liveClassId,
+      'id': this.assignID,
       'remarks': _remark,
       'marks': _mark,
+      // 'date':widget.dateT.toString()
     };
-    String url = 'http://sghps.cityschools.co/studentapi/live_data_update';
+    String url = 'http://sghps.cityschools.co/studentapi/updateremarks';
     final response = await http
         .post(url, body: jsonEncode(_body), headers: headers)
         .then((res) {
@@ -1388,6 +1400,14 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
               onPressed: () {
                 _updateFiles();
                 setState(() {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowSubjects(
+                              datepick: widget.dateT,
+                            )),
+                  );
+
                   visible = true;
                 });
               },

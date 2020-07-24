@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_live/models/AssignmentImageModel.dart';
 import 'package:google_live/models/SingleTimeTable.dart';
 import 'package:google_live/models/VideosModel.dart';
 import 'package:google_live/widgets/StudentsUploadedFiles.dart';
@@ -21,6 +22,7 @@ class StudentSubject extends StatefulWidget {
 class _StudentSubjectState extends State<StudentSubject> {
   Future<List<SingleTimeTable>> singleTimeTable;
   List<VideosModel> videolist = [];
+  List<ImageModel> imageList = [];
   var liveClassId;
   var sectionID;
   var periodID;
@@ -84,9 +86,10 @@ class _StudentSubjectState extends State<StudentSubject> {
 
   Future<void> _chooseSubject(secId, periId, clsId, subId) async {
     videolist = [];
+    imageList = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/class_live_data?access_token=' +
+        'http://sghps.cityschools.co/studentapi/class_live_data_students?access_token=' +
             prefs.get('token') +
             '&date=' +
             widget.datepick.toString() +
@@ -104,9 +107,18 @@ class _StudentSubjectState extends State<StudentSubject> {
         this.live_data = json.decode(res.body);
         var live_class_data = this.live_data['live_class_data'];
         var check_assignment = this.live_data['assignment_check'];
+
         if (live_class_data != null) {
           var videos = live_class_data['videos'];
+          var images = this.live_data['images'];
+            // print(images);
+             for (var v in images) {
+            this.liveClassId = v['id'];
+            ImageModel imageModel =
+                ImageModel(v['image'],v['student_assignment_id'],);
 
+            imageList.add(imageModel);
+          }
           for (var v in videos) {
             this.liveClassId = v['id'];
             VideosModel videosModel =
@@ -114,9 +126,9 @@ class _StudentSubjectState extends State<StudentSubject> {
 
             videolist.add(videosModel);
           }
-          print(videolist.length);
+          
           var liveClassDataID = live_class_data['id'];
-          print(liveClassDataID);
+          // print(liveClassDataID);
           var live_periodID = live_class_data['period_id'];
           var live_classID = live_class_data['class_id'];
           var live_sectionID = live_class_data['section'];
@@ -145,11 +157,12 @@ class _StudentSubjectState extends State<StudentSubject> {
                 text_link: live_text,
                 liveClassID: liveClassDataID,
                 assignment: check_assignment,
+                image_List: imageList,
               ),
             ),
           );
           // print('Button Click:$live_class_data');
-        } else if (live_class_data == null) {
+        } else  {
           print('No Data Founds');
         }
       });
