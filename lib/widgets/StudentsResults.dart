@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class StudentsResults extends StatefulWidget {
   @override
@@ -52,6 +53,11 @@ class _StudentsResultsState extends State<StudentsResults> {
       setState(() {
         Map<String, dynamic> result = json.decode(res.body);
         var resultAll = result['result'];
+
+        if (resultAll == "") {
+          Toast.show('No Data Founds', context,
+              duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        }
         print(result);
         print(url);
       });

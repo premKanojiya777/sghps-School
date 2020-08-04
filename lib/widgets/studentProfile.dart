@@ -20,7 +20,7 @@ class _StudentProfileState extends State<StudentProfile> {
   String section = '';
   String profileImaage;
   String classname = '';
-  bool loader = false;
+  bool loader = true;
   @override
   void initState() {
     super.initState();
@@ -304,7 +304,7 @@ class _StudentProfileState extends State<StudentProfile> {
                                   this.profileImaage == '')
                               ? AssetImage('placeholder_image.png')
                               : NetworkImage(
-                                  'http://smart.sksk.in/uploads/students/${this.profileImaage}'),
+                                  'http://sghps.cityschools.co/uploads/students/${this.profileImaage}'),
                           backgroundColor: Colors.transparent,
                         ),
                       ),

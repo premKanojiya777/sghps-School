@@ -1204,6 +1204,8 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
                       icon: Icon(Icons.remove, color: Colors.blue),
                       onPressed: () => setState(() {
                             cards.removeAt(cards.length - 1);
+                            // videoLinkTitle = videoLinkTitle[0]-1;
+                            
                           })),
                 ],
               ),

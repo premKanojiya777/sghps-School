@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HolidayHomeWork extends StatefulWidget {
   @override
@@ -129,7 +130,7 @@ class _HolidayHomeWorkState extends State<HolidayHomeWork> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(top:50),
+                      padding: const EdgeInsets.only(top: 50),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +138,7 @@ class _HolidayHomeWorkState extends State<HolidayHomeWork> {
                             RaisedButton(
                               onPressed: () {
                                 print(syllabusModel.holidayhome);
-                                setState(() {
+                                setState(() async {
                                   visible = true;
                                   if (syllabusModel.holidayhome == null ||
                                       syllabusModel.holidayhome == '') {
@@ -146,24 +147,36 @@ class _HolidayHomeWorkState extends State<HolidayHomeWork> {
                                         gravity: Toast.BOTTOM);
                                     visible = false;
                                   } else {
-                                    setState(() {
-                                      createFileOfPdfUrl(
-                                              syllabusModel.holidayhome)
-                                          .then((f) {
-                                        setState(() {
-                                          pathPDF = f.path;
-                                          print(pathPDF);
-                                          visible = false;
-                                        });
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PDFScreen(pathPDF),
-                                          ),
-                                        );
-                                      });
-                                    });
+                                    var pdfurl =
+                                        'http://sghps.cityschools.co/uploads/syllabus/' +
+                                            syllabusModel.holidayhome;
+                                    print(syllabusModel.holidayhome);
+                                    print(pdfurl);
+
+                                    if (await canLaunch(pdfurl)) {
+                                      await launch(pdfurl);
+                                    } else {
+                                      throw 'Could not launch $pdfurl';
+                                    }
+                                    //     setState(() {
+                                    //       createFileOfPdfUrl(
+                                    //               syllabusModel.holidayhome)
+                                    //           .then((f) {
+                                    //         setState(() {
+                                    //           pathPDF = f.path;
+                                    //           print(pathPDF);
+                                    //           visible = false;
+                                    //         });
+                                    //         Navigator.push(
+                                    //           context,
+                                    //           MaterialPageRoute(
+                                    //             builder: (context) =>
+                                    //                 PDFScreen(pathPDF),
+                                    //           ),
+                                    //         );
+                                    //       });
+                                    //     });
+
                                   }
                                 });
                               },

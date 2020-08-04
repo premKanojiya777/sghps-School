@@ -158,7 +158,7 @@ class LoginUserState extends State {
                             shape: BoxShape.circle, color: Colors.transparent),
                         child: CircleAvatar(
                           radius: 90.0,
-                          backgroundImage: AssetImage('icon_2.png'),
+                          backgroundImage: AssetImage('icon.png'),
                         ),
                       ),
                       SizedBox(height: 10.0),

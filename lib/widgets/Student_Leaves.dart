@@ -27,7 +27,7 @@ class _StudentLeavesState extends State<StudentLeaves> {
   String imageDecoded;
   bool loader = false;
   bool visible = false;
-  int index;
+  var index = 1;
 
   String _showDate = DateFormat.yMMMMEEEEd().format(_currentDate);
 
@@ -117,6 +117,8 @@ class _StudentLeavesState extends State<StudentLeaves> {
   }
 
   Future<String> getLeaveList(String url, accessToken) async {
+    listofLeaves= [];
+    index = 1;
     final response = await http
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {
       //print({"res", res.body});
@@ -135,10 +137,11 @@ class _StudentLeavesState extends State<StudentLeaves> {
                 '${leaves.attachement}',
                 '${leaves.status}'));
           });
+          index++;
         }
       }
       loader = true;
-     
+      print(listofLeaves.length);
     }).catchError((onError) {
       print(onError);
     });
@@ -285,10 +288,9 @@ class _StudentLeavesState extends State<StudentLeaves> {
       children: [
         TableRow(
           children: [
-            
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: new Text(srNo),
+              child: new Text(this.index.toString()),
             ),
             Container(
                 padding: EdgeInsets.only(left: 10), child: new Text(_dates)),
@@ -346,105 +348,111 @@ class _StudentLeavesState extends State<StudentLeaves> {
         title: Text('Leave'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 20.0),
-            Container(
-                width: 350,
-                padding: EdgeInsets.all(10.0),
-                child: TextField(
-                  // ?controller: date,
-                  // autocorrect: true,
-                  decoration: InputDecoration(
-                    hintText: _showDate,
-                    fillColor: Colors.white,
-                  ),
-                )),
-            SizedBox(height: 10.0),
-            Container(
-                width: 350,
-                padding: EdgeInsets.all(10.0),
-                child: TextField(
-                  controller: description,
-                  autocorrect: true,
-                  maxLines: 2,
-                  decoration: InputDecoration(
-                    hintText: "Enter Description",
-                    fillColor: Colors.white,
-                  ),
-                )),
-            image == null
-                ? Text('')
-                : Container(
-                    height: 100,
-                    width: 100,
-                    child: Image.file(image),
-                  ),
-            Padding(
-              padding: const EdgeInsets.only(right: 200),
-              child: SizedBox(
-                width: 150,
-                child: RaisedButton(
-                  color: Color.fromRGBO(33, 23, 47, 1),
-                  textColor: Colors.white,
-                  child: Text('Attachment'),
-                  onPressed: _singleImageDialogBox,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 53),
-              child: SizedBox(
-                height: 40.0,
-                width: 300,
-                child: RaisedButton(
-                  onPressed: () {
-                    setState(() {
-                      _applyLeave();
-                      visible = true;
-                    });
-                  },
-                  color: Color.fromRGBO(33, 23, 47, 1),
-                  textColor: Colors.white,
-                  padding: EdgeInsets.fromLTRB(9, 9, 9, 9),
-                  child: Text(
-                    'Apply ',
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              child: Visibility(
-                visible: visible,
-                child: Column(
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(
-                      height: 10,
+      body: RefreshIndicator(
+         onRefresh: () async {
+                  _leaveListsShow();
+                  return await Future.delayed(Duration(seconds: 3));
+                },
+              child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              Container(
+                  width: 350,
+                  padding: EdgeInsets.all(10.0),
+                  child: TextField(
+                    // ?controller: date,
+                    // autocorrect: true,
+                    decoration: InputDecoration(
+                      hintText: _showDate,
+                      fillColor: Colors.white,
                     ),
-                    Text(
-                      "Please Wait....",
-                      style: TextStyle(color: Colors.blueAccent),
-                    )
-                  ],
+                  )),
+              SizedBox(height: 10.0),
+              Container(
+                  width: 350,
+                  padding: EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: description,
+                    autocorrect: true,
+                    maxLines: 2,
+                    decoration: InputDecoration(
+                      hintText: "Enter Description",
+                      fillColor: Colors.white,
+                    ),
+                  )),
+              image == null
+                  ? Text('')
+                  : Container(
+                      height: 100,
+                      width: 100,
+                      child: Image.file(image),
+                    ),
+              Padding(
+                padding: const EdgeInsets.only(right: 200),
+                child: SizedBox(
+                  width: 150,
+                  child: RaisedButton(
+                    color: Color.fromRGBO(33, 23, 47, 1),
+                    textColor: Colors.white,
+                    child: Text('Attachment'),
+                    onPressed: _singleImageDialogBox,
+                  ),
                 ),
               ),
-            ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 53),
+                child: SizedBox(
+                  height: 40.0,
+                  width: 300,
+                  child: RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        _applyLeave();
+                        visible = true;
+                      });
+                    },
+                    color: Color.fromRGBO(33, 23, 47, 1),
+                    textColor: Colors.white,
+                    padding: EdgeInsets.fromLTRB(9, 9, 9, 9),
+                    child: Text(
+                      'Apply ',
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                child: Visibility(
+                  visible: visible,
+                  child: Column(
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Please Wait....",
+                        style: TextStyle(color: Colors.blueAccent),
+                      )
+                    ],
+                  ),
+                ),
+              ),
 
-            Divider(),
-            // loader ?
-            _leavesList(),
-            //  :
-            ...listofLeaves,
-            // bodyProgress,
-          ],
+              Divider(),
+              // loader ?
+              _leavesList(),
+              //  :
+              ...listofLeaves,
+              // bodyProgress,
+            ],
+          ),
         ),
       ),
     );

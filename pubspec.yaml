@@ -43,7 +43,7 @@ dependencies:
   path_provider: ^1.6.1
   dio: ^1.0.0
   image_picker: ^0.6.1+10
-  flutter_launcher_icons: "^0.7.3"
+  flutter_launcher_icons: ^0.7.3
   http_parser: ^3.1.4
   async: ^2.4.0
   firebase_messaging: ^6.0.13
@@ -64,7 +64,7 @@ dependencies:
 flutter_icons:
   android: true 
   ios: true
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon.png"
 
   
   
@@ -87,12 +87,11 @@ flutter:
   uses-material-design: true
 
   assets:
-   - icon_2.png
+   - icon.png
    - overdue.jpeg
    - returned.jpeg
    - book.jpg
    - splach.png
-   - icon.png
    - placeholder_image.png
   #  - images/a_dot_ham.jpeg
 

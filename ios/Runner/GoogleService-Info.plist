@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>872344387674-07v9707j823dk3q2jgqfh34fjqpoeuc2.apps.googleusercontent.com</string>
+	<string>102897263909-p5vm0oiavdcge6phj2euim3sr270jqg0.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.872344387674-07v9707j823dk3q2jgqfh34fjqpoeuc2</string>
+	<string>com.googleusercontent.apps.102897263909-p5vm0oiavdcge6phj2euim3sr270jqg0</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>872344387674-d35momc178rirdctrmv83gciiekan371.apps.googleusercontent.com</string>
+	<string>102897263909-l91kqr9qi36u988j75a5gmqrh3dp4utp.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC30CZ40pm7A8UE0opMgCg8eKTWuYjY9wA</string>
+	<string>AIzaSyAiLrPr6FNFORDBzqI6rGfuZaztuU2m8nI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>872344387674</string>
+	<string>102897263909</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.sksksk.school</string>
+	<string>com.ionic3.sghps</string>
 	<key>PROJECT_ID</key>
-	<string>sksk-school-686e1</string>
+	<string>sghps-school-7a936</string>
 	<key>STORAGE_BUCKET</key>
-	<string>sksk-school-686e1.appspot.com</string>
+	<string>sghps-school-7a936.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:872344387674:ios:d8802837ace1f788b31863</string>
+	<string>1:102897263909:ios:9d5bfe0fc7e74715d8e6cc</string>
 	<key>DATABASE_URL</key>
-	<string>https://sksk-school-686e1.firebaseio.com</string>
+	<string>https://sghps-school-7a936.firebaseio.com</string>
 </dict>
 </plist>

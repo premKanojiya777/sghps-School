@@ -50,6 +50,7 @@ class _ClassAttendanceState extends State<ClassAttendance> {
             s['status'],
             s['class_roll'],
             this.stuID,
+            false
           );
           stuList.add(filterModel);
         }

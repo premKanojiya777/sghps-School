@@ -261,9 +261,9 @@ class _UploadFilesState extends State<UploadFiles> {
   }
 
   void _uploadFiles() async {
-    _galleryImageUpload();
-    _mp3Upload();
-    _pdfUpload();
+   singleImage == null ? print('noImage') :  _galleryImageUpload();
+   audioFile == null ? print('noAudio') : _mp3Upload();
+   pdfFile == null ? print('noPDF') : _pdfUpload();
     String _text = enterText.text;
     List videoLinkTitle = [];
     for (int i = 0; i < _linkTitle.length; i++) {

@@ -157,7 +157,9 @@ class _StudentNotificState extends State<StudentNotific> {
                                       color: Colors.blue,
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold),
-                                  text:  'Link',
+                                  text: snapshot.data[i].message
+                                                .lastIndexOf('https') !=
+                                            -1 ? 'Link':'',
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
                                       RegExp exp = new RegExp(

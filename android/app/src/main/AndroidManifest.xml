@@ -16,8 +16,9 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="SGHPS School "
-        android:icon="@mipmap/app_icon"
+        android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
+
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDvOYlMuaKQDL3WadpM8D-2gQtLhbo6d80"/>

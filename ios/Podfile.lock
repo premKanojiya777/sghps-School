@@ -1,6 +1,4 @@
 PODS:
-  - assets_audio_player (0.0.1):
-    - Flutter
   - background_fetch (0.5.4):
     - Flutter
   - BSGridCollectionViewLayout (1.2.5)
@@ -228,7 +226,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - assets_audio_player (from `.symlinks/plugins/assets_audio_player/ios`)
   - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Firebase
@@ -295,8 +292,6 @@ SPEC REPOS:
     - SDWebImageFLPlugin
 
 EXTERNAL SOURCES:
-  assets_audio_player:
-    :path: ".symlinks/plugins/assets_audio_player/ios"
   background_fetch:
     :path: ".symlinks/plugins/background_fetch/ios"
   file_picker:
@@ -353,7 +348,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
-  assets_audio_player: 828c5761d1e51c569f40e622db3a2cbfd61ecb7d
   background_fetch: c0d7c541f8495527ed7f167eb9ee2eeab0790703
   BSGridCollectionViewLayout: 333dcb457a5a3bdd9212607ab5756553dcfe06cb
   BSImagePicker: 07404254f2fcdaf5a2eb403c0f8c337267ce8738

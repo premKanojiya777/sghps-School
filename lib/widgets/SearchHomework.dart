@@ -21,7 +21,7 @@ class _SearchHomeworkState extends State<SearchHomework> {
   List<SearchModel> model = [];
   SearchModel searchModel;
   String _currentMonth = DateFormat.yMMMMEEEEd().format(dateTime);
-  bool loader = true;
+  bool loader = false;
   var attch;
   var todayhome;
   var todtask;
@@ -45,11 +45,12 @@ class _SearchHomeworkState extends State<SearchHomework> {
       //print({"res", res.body});
       setState(() {
         Map<String, dynamic> user = jsonDecode(res.body);
+        loader = true;
         var a = user['homework'];
         this.todayhome = a[0]['attach'];
         this.toddate = a[0]['date'];
         this.todtask = a[0]['task'];
-        loader = true;
+        
       });
     }).catchError((onError) {
       print(onError);

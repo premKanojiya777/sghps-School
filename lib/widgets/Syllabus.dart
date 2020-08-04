@@ -12,6 +12,7 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Syllabus extends StatefulWidget {
   @override
@@ -206,34 +207,47 @@ class _SyllabusState extends State<Syllabus> {
                       style: TextStyle(fontSize: 15),
                     ),
                     Spacer(),
-
+                      snapshot.data[i].pdf_file == null || snapshot.data[i].pdf_file == ""?
+                      Container():
                     RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         print('${snapshot.data[i].pdf_file}');
-                        setState(() {
-                          loader = true;
-                          if (snapshot.data[i].pdf_file == null || snapshot.data[i].pdf_file == '') {
-                            Toast.show('No Pdf Link Found', context,
-                                duration: Toast.LENGTH_LONG,
-                                gravity: Toast.BOTTOM);
-                            loader = false;
-                          } else {
-                            createFileOfPdfUrl('${snapshot.data[i].pdf_file}')
-                                .then((f) {
-                              setState(() {
-                                pathPDF = f.path;
-                                print(pathPDF);
-                                loader = false;
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PDFScreen(pathPDF),
-                                ),
-                              );
-                            });
-                          }
-                        });
+                          // print('${snapshot.data[i].pdf_file}');
+                        var pdfurl =
+                            'http://sghps.cityschools.co/uploads/syllabus/' +
+                                '${snapshot.data[i].pdf_file}';
+                        print('${snapshot.data[i].pdf_file}');
+                        print(pdfurl);
+
+                        if (await canLaunch(pdfurl)) {
+                          await launch(pdfurl);
+                        } else {
+                          throw 'Could not launch $pdfurl';
+                        }
+                        // setState(() {
+                        //   loader = true;
+                        //   if (snapshot.data[i].pdf_file == null || snapshot.data[i].pdf_file == '') {
+                        //     Toast.show('No Pdf Link Found', context,
+                        //         duration: Toast.LENGTH_LONG,
+                        //         gravity: Toast.BOTTOM);
+                        //     loader = false;
+                        //   } else {
+                        //     createFileOfPdfUrl('${snapshot.data[i].pdf_file}')
+                        //         .then((f) {
+                        //       setState(() {
+                        //         pathPDF = f.path;
+                        //         print(pathPDF);
+                        //         loader = false;
+                        //       });
+                        //       Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) => PDFScreen(pathPDF),
+                        //         ),
+                        //       );
+                        //     });
+                        //   }
+                        // });
                       },
                       child: Text('PDF Link'),
                     ),
