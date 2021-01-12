@@ -46,12 +46,7 @@ class _ClassAttendanceState extends State<ClassAttendance> {
           this.stuName = s['stu_name'];
           this.stuID = s['student_id'];
           ClassAttenModel filterModel = ClassAttenModel(
-            this.stuName,
-            s['status'],
-            s['class_roll'],
-            this.stuID,
-            false
-          );
+              this.stuName, s['status'], s['class_roll'], this.stuID, false);
           stuList.add(filterModel);
         }
         loader = true;
@@ -210,10 +205,9 @@ class _ClassAttendanceState extends State<ClassAttendance> {
                                 ],
                               ),
                               Container(
-                                height: 450,
                                 child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  padding: EdgeInsets.all(1),
                                   itemCount: stuList.length,
                                   itemBuilder: (BuildContext context, int i) {
                                     Spacer();
@@ -235,18 +229,24 @@ class _ClassAttendanceState extends State<ClassAttendance> {
                                                     EdgeInsets.only(left: 10),
                                                 child: new Text(
                                                     snapshot.data[i].stu_name)),
-                                            CheckboxListTile(
-                                              checkColor: Colors.indigo,
-                                              value: stuList[i].status == "P",
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  if (val == true) {
-                                                    stuList[i].status = "P";
-                                                  } else {
-                                                    stuList[i].status = "A";
-                                                  }
-                                                });
-                                              },
+                                            Container(
+                                              color: stuList[i].status == "P"
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                              child: CheckboxListTile(
+                                                activeColor: Colors.white,
+                                                checkColor: Colors.black,
+                                                value: stuList[i].status == "P",
+                                                onChanged: (val) {
+                                                  setState(() {
+                                                    if (val == true) {
+                                                      stuList[i].status = "P";
+                                                    } else {
+                                                      stuList[i].status = "A";
+                                                    }
+                                                  });
+                                                },
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -267,10 +267,11 @@ class _ClassAttendanceState extends State<ClassAttendance> {
                                       setState(() {
                                         _submit();
                                         print(selectedStuList.length);
+                                         Navigator.pop(context);
                                       });
                                     },
                                     color: Colors.grey,
-                                    textColor: Colors.black,
+                                    textColor: Colors.white,
                                     padding: EdgeInsets.fromLTRB(9, 9, 9, 9),
                                     child: Text(
                                       'Submit',

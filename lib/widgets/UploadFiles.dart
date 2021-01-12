@@ -351,6 +351,7 @@ class _UploadFilesState extends State<UploadFiles> {
                 ),
               ),
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: cards.length,
                 itemBuilder: (BuildContext context, int index) {

@@ -344,13 +344,12 @@ class _TeacherTimeTableState extends State<TeacherTimeTable> {
             child: Row(
               children: <Widget>[
                 Text(label),
-                SizedBox(
-                  width: 120,
-                ),
+                Spacer(),
                 Text(
                   "$value",
                   style: TextStyle(fontSize: 12),
                 ),
+                Spacer(),
               ],
             ),
           ),

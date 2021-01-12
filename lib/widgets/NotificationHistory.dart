@@ -116,17 +116,15 @@ class _NotificationHistoryState extends State<NotificationHistory> {
                 return historyModel;
               },
               child: ListView.builder(
-                padding: EdgeInsets.fromLTRB(15, 30, 15, 10),
+                padding: EdgeInsets.all(8),
+                shrinkWrap: true,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int i) {
-                  Spacer();
-                  return Container(
-                    height: 130,
-                    width: 100,
-                    child: Card(
-                      child: Stack(
-                        children: <Widget>[
-                          Column(
+                  return Card(
+                    child: 
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
@@ -184,31 +182,27 @@ class _NotificationHistoryState extends State<NotificationHistory> {
                                   ],
                                 ),
                               ),
+                              ListTile(
+                                leading:  Text(
+                            '${snapshot.data[i].clss}' +
+                                '-'
+                                    '${snapshot.data[i].section}',
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 12),
+                          ),
+                          trailing: Text(
+                            '${snapshot.data[i].issue_date}',
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 12),
+                          ),
+                              ),
                             ],
+                            
                           ),
-                          Positioned(
-                            left: 5,
-                            top: 100,
-                            child: Text(
-                              '${snapshot.data[i].clss}' +
-                                  '-'
-                                      '${snapshot.data[i].section}',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                            ),
-                          ),
-                          Positioned(
-                            top: 100,
-                            left: 200,
-                            child: Text(
-                              '${snapshot.data[i].issue_date}',
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 12),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                        ),
+                       
+                        
+                     
                   );
                 },
               ),

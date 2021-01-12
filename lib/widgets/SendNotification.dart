@@ -54,7 +54,7 @@ class _SendNotificationState extends State<SendNotification> {
       setState(() {
         Map<String, dynamic> classes = json.decode(res.body);
         var classname = classes['classes'];
-        
+
         data = classname;
         sectionListBuffer = SectionModelList.fromJson(classes['sections']);
         print(sectionList.length);
@@ -345,14 +345,16 @@ class _SendNotificationState extends State<SendNotification> {
                             TableRow(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: new Text(snapshot.data[i].class_roll_no
-                                      .toString()),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: new Text(snapshot.data[i].class_roll_no
+                                        .toString()),
+                                  ),
                                 ),
-                                Container(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child:
-                                        new Text(snapshot.data[i].first_name)),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(child: new Text(snapshot.data[i].first_name)),
+                                ),
                                 IconButton(
                                   icon: Icon(listForFilters[i]['first_name']
                                               .toString() ==
@@ -423,133 +425,129 @@ class _SendNotificationState extends State<SendNotification> {
   }
 
   Widget _sectionWidget() {
-    return Padding(
-      padding: EdgeInsets.only(top: 1),
-      child: Column(
-        children: <Widget>[
-          new ListView.builder(
-              shrinkWrap: true,
-              itemCount: sectionList.length,
-              itemBuilder: (context, i) {
-                if (sectionList.length == 0) {
-                  return CircularProgressIndicator();
-                } else {
-                  return Container(
-                    margin: EdgeInsets.only(right: 25),
-                    color: Color(0xfff9f9f9),
-                    child: new ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.only(left: 83),
-                        child: new Text(
-                          "Section-${sectionList[i].section_name}",
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(
-                            selectedSection == sectionList[i].section_name
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_unchecked),
-                        onPressed: () {
-                          isClick = true;
-                          // print('name:${sectionList[i].section_name}');
-                          setState(() {
-                            selectedSection = sectionList[i].section_name;
-                            this.classid = sectionList[i].class_id;
-                            this.sectionId = sectionList[i].id;
-                          });
-                        },
-                        color: Colors.black,
-                      ),
+    return Column(
+      children: <Widget>[
+        new ListView.builder(
+            shrinkWrap: true,
+            itemCount: sectionList.length,
+            itemBuilder: (context, i) {
+              if (sectionList.length == 0) {
+                return CircularProgressIndicator();
+              } else {
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: 100,
                     ),
-                  );
-                }
-              }),
-          sectionList.length > 1
-              ? Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 96, vertical: 10),
-                      child: Text(
-                        'Both Section',
-                        style: TextStyle(fontSize: 14),
-                      ),
+                    new Text(
+                      "Section-${sectionList[i].section_name}",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 0),
-                      child: IconButton(
-                        icon: selectedSection == section.class_id.toString()
-                            ? Icon(Icons.radio_button_checked)
-                            : Icon(Icons.radio_button_unchecked),
-                        onPressed: () {
-                          setState(() {
-                            this.sectionId = 0;
-                            this.classid = sectionList[0].class_id;
-                            selectedSection = section.class_id.toString();
-                            isClick = true;
-                            this.bothSection = 0;
-                            // print(this.sectionId);
-                            // print(this.classid);
-                          });
-                        },
-                      ),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(selectedSection == sectionList[i].section_name
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_unchecked),
+                      onPressed: () {
+                        isClick = true;
+                        // print('name:${sectionList[i].section_name}');
+                        setState(() {
+                          selectedSection = sectionList[i].section_name;
+                          this.classid = sectionList[i].class_id;
+                          this.sectionId = sectionList[i].id;
+                        });
+                      },
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      width: 50,
                     ),
                   ],
-                )
-              : Container(),
-          (isClick
-              ? Column(children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      width: 360,
-                      height: 45,
-                      child: RaisedButton(
-                        onPressed: () {
-                          _sendToAll();
-                        },
-                        color: Color.fromRGBO(33, 23, 47, 1),
-                        textColor: Colors.white,
-                        padding: EdgeInsets.fromLTRB(9, 9, 9, 9),
-                        child: Text(
-                          'Send To All',
-                        ),
-                      ),
-                    ),
+                );
+              }
+            }),
+        sectionList.length > 1
+            ? Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 100,
+                  ),
+                  Text(
+                    'Both Section',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  IconButton(
+                    icon: selectedSection == section.class_id.toString()
+                        ? Icon(Icons.radio_button_checked)
+                        : Icon(Icons.radio_button_unchecked),
+                    onPressed: () {
+                      setState(() {
+                        this.sectionId = 0;
+                        this.classid = sectionList[0].class_id;
+                        selectedSection = section.class_id.toString();
+                        isClick = true;
+                        this.bothSection = 0;
+                        // print(this.sectionId);
+                        // print(this.classid);
+                      });
+                    },
                   ),
                   SizedBox(
-                    height: 5,
+                    width: 50,
                   ),
-                  Container(
-                    width: 360,
-                    height: 45,
+                ],
+              )
+            : Container(),
+        (isClick
+            ? Column(children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * .9,
+                    height: MediaQuery.of(context).size.height * .05,
                     child: RaisedButton(
                       onPressed: () {
-                        setState(() {
-                          _filterList = [];
-                          if (this.sectionId == 0) {
-                            Toast.show('Please Select Section A or B', context,
-                                duration: Toast.LENGTH_LONG,
-                                gravity: Toast.BOTTOM);
-                          } else {
-                            _filter = _filterSection();
-                          }
-                        });
+                        _sendToAll();
                       },
                       color: Color.fromRGBO(33, 23, 47, 1),
                       textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(9, 9, 9, 9),
                       child: Text(
-                        'Filter',
+                        'Send To All',
                       ),
                     ),
                   ),
-                ])
-              : Container()),
-        ],
-      ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * .9,
+                  height: MediaQuery.of(context).size.height * .05,
+                  child: RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        _filterList = [];
+                        if (this.sectionId == 0) {
+                          Toast.show('Please Select Section A or B', context,
+                              duration: Toast.LENGTH_LONG,
+                              gravity: Toast.BOTTOM);
+                        } else {
+                          _filter = _filterSection();
+                        }
+                      });
+                    },
+                    color: Color.fromRGBO(33, 23, 47, 1),
+                    textColor: Colors.white,
+                    child: Text(
+                      'Filter',
+                    ),
+                  ),
+                ),
+              ])
+            : Container()),
+      ],
     );
   }
 }

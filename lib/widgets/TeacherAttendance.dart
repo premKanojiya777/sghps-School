@@ -279,6 +279,10 @@ class _TeacherAttendanceState extends State<TeacherAttendance> {
         this.holiarray.insert(i, suncount);
         this.presarray.insert(i, presntcount);
         this.absarray.insert(i, absentcount);
+        _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+        this.pr = presarray[_targetDateTime.month];
+        this.ab = absarray[_targetDateTime.month];
+        this.hol = this.holiarray[_targetDateTime.month];
       }
       respons = true;
     });
@@ -486,7 +490,7 @@ class _TeacherAttendanceState extends State<TeacherAttendance> {
                       Card(
                         // height: 350,
                         // width: 350,
-                        color: Colors.blueGrey[200],
+                        color: Colors.grey[200],
 
                         // margin: EdgeInsets.symmetric(horizontal: 20.0),
                         child: _calendarCarouselNoHeader,

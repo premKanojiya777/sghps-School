@@ -25,7 +25,7 @@ class TeacherHome extends StatefulWidget {
 class _TeacherHomeState extends State<TeacherHome> {
   var checkIncharge;
   var cordi;
-  
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +44,6 @@ class _TeacherHomeState extends State<TeacherHome> {
       setState(() {
         this.checkIncharge = permission['allo'];
         this.cordi = permission['cordi'];
-
       });
 
       print('CHeck: $checkIncharge');
@@ -63,8 +62,6 @@ class _TeacherHomeState extends State<TeacherHome> {
     };
     await apiRequestDriver(url, dataMap);
   }
-
-  
 
   Future<String> apiRequestDriver(String url, Map dataMap) async {
     String jsonString = json.encode(dataMap);
@@ -105,265 +102,181 @@ class _TeacherHomeState extends State<TeacherHome> {
       body: SingleChildScrollView(
         child: Center(
           child: this.checkIncharge == true
-              ? Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Column(
+              ? Column(
+                children: <Widget>[
                   
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: 
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: SizedBox.fromSize(
-                                size: Size(110, 110), // button width and height
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                    child: InkWell(
-                                      splashColor: Colors.green, // splash color
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TeacherProfile()),
-                                        );
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.school,
-                                            color: Colors.white,
-                                          ),
-                                          Text(
-                                            "Profile",
-                                            style: TextStyle(color: Colors.white),
-                                          ), // text
-                                        ],
-                                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(width: 7,),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TeacherProfile()),
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.school,
+                                      color: Colors.white,
                                     ),
-                                  ),
+                                    Text(
+                                      "Profile",
+                                      style:
+                                          TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child:
-                             Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: SizedBox.fromSize(
-                                size: Size(110, 110), // button width and height
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                    child: InkWell(
-                                      splashColor: Colors.green, // splash color
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TeacherTimeTable()),
-                                        );
-                                      }, // button pressed
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.line_style,
-                                            color: Colors.white,
-                                          ), // icon
-                                          Text(
-                                            "Time Table",
-                                            style: TextStyle(color: Colors.white),
-                                          ), // text
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                        ),
+                        Spacer(),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TeacherTimeTable()),
+                                  );
+                                }, // button pressed
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.line_style,
+                                      color: Colors.white,
+                                    ), // icon
+                                    Text(
+                                      "Time Table",
+                                      style:
+                                          TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: 
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: SizedBox.fromSize(
-                                size: Size(110, 110), // button width and height
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                    child: InkWell(
-                                      splashColor: Colors.green, // splash color
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TeacherAttendance()),
-                                        );
-                                      }, // button pressed
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(Icons.calendar_today,
-                                              color: Colors.white), // icon
-                                          Text(
-                                            "Attendance",
-                                            style: TextStyle(color: Colors.white),
-                                          ), // text
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                        ),
+                        Spacer(),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TeacherAttendance()),
+                                  );
+                                }, // button pressed
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(Icons.calendar_today,
+                                        color: Colors.white), // icon
+                                    Text(
+                                      "Attendance",
+                                      style:
+                                          TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: 
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: SizedBox.fromSize(
-                                size: Size(110, 110), // button width and height
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                    child: InkWell(
-                                      splashColor: Colors.green, // splash color
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NotificationPage()),
-                                        );
-                                      }, // button pressed
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.line_weight,
-                                            color: Colors.white,
-                                          ), // icon
-                                          Text(
-                                            "Notifications",
-                                            style: TextStyle(color: Colors.white),
-                                          ), // text
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                        ),
+                        SizedBox(width: 7,),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(width: 7,),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            NotificationPage()),
+                                  );
+                                }, // button pressed
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.line_weight,
+                                      color: Colors.white,
+                                    ), // icon
+                                    Text(
+                                      "Notifications",
+                                      style:
+                                          TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child:
-                          this.cordi== true ?
-                           Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: SizedBox.fromSize(
-                                size: Size(110, 110), // button width and height
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                    child: InkWell(
-                                      splashColor: Colors.green, // splash color
-                                      onTap: () {
-                                            Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => SendHomework()),
-                                        );
-                                      }, // button pressed
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.library_books,
-                                            color: Colors.white,
-                                          ), // icon
-                                          Text(
-                                            "Homework",
-                                            style: TextStyle(color: Colors.white),
-                                          ), // text
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ) : Container(),
-                          ),
-                          Expanded(
-                            child: 
-                            Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: SizedBox.fromSize(
-                                size: Size(110, 110), // button width and height
-                                child: ClipOval(
-                                  child: Material(
-                                    color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                    child: InkWell(
-                                      splashColor: Colors.green, // splash color
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ClassTimeTable()),
-                                        );
-                                      }, // button pressed
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(Icons.textsms,
-                                              color: Colors.white), // icon
-                                          Text(
-                                            "Class TimeTable",
-                                            style: TextStyle(color: Colors.white),
-                                          ), // text
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.only(left: 3),
-                            child: SizedBox.fromSize(
-                              size: Size(110, 110), // button width and height
+                        ),
+                        Spacer(),
+                        this.cordi == true
+                            ? SizedBox.fromSize(
+                              size: Size(
+                                  120, 120), // button width and height
                               child: ClipOval(
                                 child: Material(
-                                  color: Color.fromRGBO(33, 23, 47, 1), // button color
+                                  color: Color.fromRGBO(
+                                      33, 23, 47, 1), // button color
                                   child: InkWell(
-                                    splashColor: Colors.green, // splash color
+                                    splashColor:
+                                        Colors.green, // splash color
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ClassAttendance()),
+                                                SendHomework()),
                                       );
                                     }, // button pressed
                                     child: Column(
@@ -371,72 +284,153 @@ class _TeacherHomeState extends State<TeacherHome> {
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         Icon(
-                                          Icons.line_weight,
+                                          Icons.library_books,
                                           color: Colors.white,
                                         ), // icon
                                         Text(
-                                          "Cl Attendance",
-                                          style: TextStyle(color: Colors.white),
+                                          "Homework",
+                                          style: TextStyle(
+                                              color: Colors.white),
                                         ), // text
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: SizedBox.fromSize(
-                            size: Size(110, 110), // button width and height
-                            child: ClipOval(
-                              child: Material(
-                                color: Color.fromRGBO(33, 23, 47, 1), // button color
-                                child: InkWell(
-                                  splashColor: Colors.green, // splash color
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              OnlineTeaching()),
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.school,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        "Online Teaching",
-                                        style: TextStyle(color: Colors.white),
-                                      ), // text
-                                    ],
-                                  ),
+                            )
+                            : Container(),
+                            Spacer(),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassTimeTable()),
+                                  );
+                                }, // button pressed
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(Icons.textsms,
+                                        color: Colors.white), // icon
+                                    Text(
+                                      "Class TimeTable",
+                                      style:
+                                          TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ],)
-                    ],
+                        SizedBox(width: 7,),
+                      ],
+                    ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                      children: <Widget>[
+                        SizedBox(width: 7,),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassAttendance()),
+                                  );
+                                }, // button pressed
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.line_weight,
+                                      color: Colors.white,
+                                    ), // icon
+                                    Text(
+                                      "Cl Attendance",
+                                      style: TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Spacer(),
+                        SizedBox(width: 9,),
+                        SizedBox.fromSize(
+                          size: Size(120, 120), // button width and height
+                          child: ClipOval(
+                            child: Material(
+                              color: Color.fromRGBO(
+                                  33, 23, 47, 1), // button color
+                              child: InkWell(
+                                splashColor: Colors.green, // splash color
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OnlineTeaching()),
+                                  );
+                                },
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.school,
+                                      color: Colors.white,
+                                    ),
+                                    Text(
+                                      "Online Teaching",
+                                      style: TextStyle(color: Colors.white),
+                                    ), // text
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 7,),
+                      ],
+                    ),
+                  )
+                ],
               )
               : Column(
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        // Expanded(
-                        //   child:
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: SizedBox.fromSize(
-                            size: Size(110, 110), // button width and height
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Row(
+                        children: <Widget>[
+                         SizedBox(width: 7,),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
                             child: ClipOval(
                               child: Material(
-                                color: Color.fromRGBO(33, 23, 47, 1), // button color
+                                color: Color.fromRGBO(
+                                    33, 23, 47, 1), // button color
                                 child: InkWell(
                                   splashColor: Colors.green, // splash color
                                   onTap: () {
@@ -464,17 +458,13 @@ class _TeacherHomeState extends State<TeacherHome> {
                               ),
                             ),
                           ),
-                        ),
-                        // ),
-                        // Expanded(
-                        //   child:
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: SizedBox.fromSize(
-                            size: Size(110, 110), // button width and height
+                          Spacer(),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
                             child: ClipOval(
                               child: Material(
-                                color: Color.fromRGBO(33, 23, 47, 1), // button color
+                                color: Color.fromRGBO(
+                                    33, 23, 47, 1), // button color
                                 child: InkWell(
                                   splashColor: Colors.green, // splash color
                                   onTap: () {
@@ -502,17 +492,13 @@ class _TeacherHomeState extends State<TeacherHome> {
                               ),
                             ),
                           ),
-                        ),
-                        // ),
-                        // Expanded(
-                        // child:
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: SizedBox.fromSize(
-                            size: Size(110, 110), // button width and height
+                         Spacer(),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
                             child: ClipOval(
                               child: Material(
-                                color: Color.fromRGBO(33, 23, 47, 1), // button color
+                                color: Color.fromRGBO(
+                                    33, 23, 47, 1), // button color
                                 child: InkWell(
                                   splashColor: Colors.green, // splash color
                                   onTap: () {
@@ -538,19 +524,21 @@ class _TeacherHomeState extends State<TeacherHome> {
                               ),
                             ),
                           ),
-                        ),
-                        // ),
-                      ],
+                          SizedBox(width: 7,),
+                        ],
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10),
+                      padding: const EdgeInsets.only(top: 5),
                       child: Row(
                         children: <Widget>[
+                          SizedBox(width: 7,),
                           SizedBox.fromSize(
-                            size: Size(110, 110), // button width and height
+                            size: Size(120, 120), // button width and height
                             child: ClipOval(
                               child: Material(
-                                color: Color.fromRGBO(33, 23, 47, 1), // button color
+                                color: Color.fromRGBO(
+                                    33, 23, 47, 1), // button color
                                 child: InkWell(
                                   splashColor: Colors.green, // splash color
                                   onTap: () {
@@ -578,78 +566,7 @@ class _TeacherHomeState extends State<TeacherHome> {
                               ),
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 3),
-                          //   child: SizedBox.fromSize(
-                          //     size: Size(110, 110), // button width and height
-                          //     child: ClipOval(
-                          //       child: Material(
-                          //         color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          //         child: InkWell(
-                          //           splashColor: Colors.green, // splash color
-                          //           onTap: () {
-                          //             Navigator.push(
-                          //               context,
-                          //               MaterialPageRoute(
-                          //                   builder: (context) =>
-                          //                       ClassAttendance()),
-                          //             );
-                          //           }, // button pressed
-                          //           child: Column(
-                          //             mainAxisAlignment:
-                          //                 MainAxisAlignment.center,
-                          //             children: <Widget>[
-                          //               Icon(
-                          //                 Icons.line_weight,
-                          //                 color: Colors.white,
-                          //               ), // icon
-                          //               Text(
-                          //                 "Cl Attendance",
-                          //                 style: TextStyle(color: Colors.white),
-                          //               ), // text
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 3),
-                          //   child: SizedBox.fromSize(
-                          //     size: Size(110, 110), // button width and height
-                          //     child: ClipOval(
-                          //       child: Material(
-                          //         color: Colors.blue, // button color
-                          //         child: InkWell(
-                          //           splashColor: Colors.green, // splash color
-                          //           onTap: () {
-                          //             Navigator.push(
-                          //               context,
-                          //               MaterialPageRoute(
-                          //                   builder: (context) =>
-                          //                       TeacherNotification()),
-                          //             );
-                          //           }, // button pressed
-                          //           child: Column(
-                          //             mainAxisAlignment:
-                          //                 MainAxisAlignment.center,
-                          //             children: <Widget>[
-                          //               Icon(
-                          //                 Icons.line_weight,
-                          //                 color: Colors.white,
-                          //               ), // icon
-                          //               Text(
-                          //                 "Upload File",
-                          //                 style: TextStyle(color: Colors.white),
-                          //               ), // text
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                          Spacer(),
                           
                         ],
                       ),

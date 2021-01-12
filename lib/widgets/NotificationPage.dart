@@ -48,157 +48,166 @@ class _NotificationPageState extends State<NotificationPage> {
         centerTitle: true,
         backgroundColor: Color.fromRGBO(33, 23, 47, 1),
       ),
-      body:
-       SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: <Widget>[
-              this.cordi == true ?
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TeacherNotification()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.markunread,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "Receive",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+              this.cordi == true
+                  ? Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 7,
+                          ),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
+                            child: ClipOval(
+                              child: Material(
+                                color:
+                                    Color.fromRGBO(33, 23, 47, 1), // button color
+                                child: InkWell(
+                                  splashColor: Colors.green, // splash color
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TeacherNotification()),
+                                    );
+                                  }, // button pressed
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.markunread,
+                                        color: Colors.white,
+                                      ), // icon
+                                      Text(
+                                        "Receive",
+                                        style: TextStyle(color: Colors.white),
+                                      ), // text
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        NotificationHistory()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.history,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "History",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                          Spacer(),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
+                            child: ClipOval(
+                              child: Material(
+                                color:
+                                    Color.fromRGBO(33, 23, 47, 1), // button color
+                                child: InkWell(
+                                  splashColor: Colors.green, // splash color
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              NotificationHistory()),
+                                    );
+                                  }, // button pressed
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.history,
+                                        color: Colors.white,
+                                      ), // icon
+                                      Text(
+                                        "History",
+                                        style: TextStyle(color: Colors.white),
+                                      ), // text
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SendNotification()),
-                              );
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.send, color: Colors.white), // icon
-                                Text(
-                                  "Send",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                          Spacer(),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
+                            child: ClipOval(
+                              child: Material(
+                                color:
+                                    Color.fromRGBO(33, 23, 47, 1), // button color
+                                child: InkWell(
+                                  splashColor: Colors.green, // splash color
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SendNotification()),
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(Icons.send,
+                                          color: Colors.white), // icon
+                                      Text(
+                                        "Send",
+                                        style: TextStyle(color: Colors.white),
+                                      ), // text
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ) :
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: SizedBox.fromSize(
-                      size: Size(110, 110), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Color.fromRGBO(33, 23, 47, 1), // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TeacherNotification()),
-                              );
-                            }, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.markunread,
-                                  color: Colors.white,
-                                ), // icon
-                                Text(
-                                  "Receive",
-                                  style: TextStyle(color: Colors.white),
-                                ), // text
-                              ],
+                  )
+                  : Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 7,
+                          ),
+                          SizedBox.fromSize(
+                            size: Size(120, 120), // button width and height
+                            child: ClipOval(
+                              child: Material(
+                                color:
+                                    Color.fromRGBO(33, 23, 47, 1), // button color
+                                child: InkWell(
+                                  splashColor: Colors.green, // splash color
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TeacherNotification()),
+                                    );
+                                  }, // button pressed
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.markunread,
+                                        color: Colors.white,
+                                      ), // icon
+                                      Text(
+                                        "Receive",
+                                        style: TextStyle(color: Colors.white),
+                                      ), // text
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
                   ),
-                 
-                ],
-              ),
             ],
           ),
         ),

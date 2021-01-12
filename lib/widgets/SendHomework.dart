@@ -29,6 +29,7 @@ class _SendHomeworkState extends State<SendHomework> {
   var desc;
   var attach;
   var oldID;
+  bool logalert = false;
 
   @override
   void initState() {
@@ -170,6 +171,7 @@ class _SendHomeworkState extends State<SendHomework> {
         body: body, headers: {"Accept": "application/json"}).then((res) {
       setState(() {
         print(body);
+        logalert = true;
       });
     }).catchError((onError) {
       print(onError);
@@ -267,7 +269,7 @@ class _SendHomeworkState extends State<SendHomework> {
                                 }
                               });
                             },
-                            // value: _mySelection,
+                            value: _mySelection,
                             hint: Text('Select Class'),
                           ),
                         ),
@@ -299,7 +301,6 @@ class _SendHomeworkState extends State<SendHomework> {
                                       ? Icons.radio_button_checked
                                       : Icons.radio_button_unchecked),
                                   onPressed: () {
-                                    
                                     print('${sectionList[i].id}');
                                     setState(() {
                                       selectedSection =
@@ -425,6 +426,29 @@ class _SendHomeworkState extends State<SendHomework> {
                                     onPressed: () {
                                       setState(() {
                                         _sendHomeWork();
+                                        logalert = true;
+                                        showDialog(
+                                          context: context,
+                                          useRootNavigator: true,
+                                          barrierDismissible: false,
+                                          builder: (_) => AlertDialog(
+                                            backgroundColor: Color.fromRGBO(
+                                                213, 237, 242, 1),
+                                            content: Row(
+                                              children: [
+                                                Visibility(
+                                                    visible: logalert,
+                                                    child:
+                                                        CircularProgressIndicator()),
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: 7),
+                                                    child: Text("Loading...")),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                        // Navigator.pop(context);
                                       });
                                     },
                                     color: Color.fromRGBO(33, 23, 47, 1),

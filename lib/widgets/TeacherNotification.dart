@@ -60,7 +60,7 @@ class _TeacherNotificationState extends State<TeacherNotification> {
     return notifications;
   }
 
- var bodyProgress = new Container(
+  var bodyProgress = new Container(
     child: new Stack(
       children: <Widget>[
         new Container(
@@ -124,90 +124,84 @@ class _TeacherNotificationState extends State<TeacherNotification> {
             return bodyProgress;
           } else {
             return RefreshIndicator(
-              onRefresh: (){
+              onRefresh: () {
                 _studentnotification();
                 return _notifications;
               },
-                          child: ListView.builder(
+              child: ListView.builder(
                 padding: EdgeInsets.fromLTRB(15, 30, 15, 10),
+                shrinkWrap: true,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int i) {
-                  Spacer();
                   return Container(
-                    height: 130,
-                    width: 100,
                     child: Card(
-                      child: Stack(
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                '${snapshot.data[i].title}',
-                                style:
-                                    TextStyle(color: Colors.black, fontSize: 17),
-                              ),
-
-                              SizedBox(
-                                height: 3,
-                              ),
-                              // subtitle:
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                        style: TextStyle(color: Colors.black),
-                                        child: (snapshot.data[i].message
-                                                    .lastIndexOf('https') !=
-                                                -1)
-                                            ? Text(snapshot.data[i].message
-                                                .substring(
-                                                    0,
-                                                    snapshot.data[i].message
-                                                        .lastIndexOf('https')))
-                                            : Text(snapshot.data[i].message)),
-                                    TextSpan(
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                      text: 'Link',
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
-                                          RegExp exp = new RegExp(
-                                              r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
-                                          Iterable<RegExpMatch> matches =
-                                              exp.allMatches(
-                                                  snapshot.data[i].message);
-
-                                          matches.forEach((match) {
-                                            this.link = snapshot.data[i].message
-                                                .substring(
-                                                    match.start, match.end);
-                                          });
-
-                                          var url = '${this.link}';
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          } else {
-                                            throw 'Could not launch $url';
-                                          }
-                                        },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            top: 100,
-                            left: 200,
-                            child: Text(
-                              '${snapshot.data[i].issue_date}',
-                              style: TextStyle(color: Colors.black, fontSize: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${snapshot.data[i].title}',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 17),
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              height: 3,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  WidgetSpan(
+                                      style: TextStyle(color: Colors.black),
+                                      child: (snapshot.data[i].message
+                                                  .lastIndexOf('https') !=
+                                              -1)
+                                          ? Text(snapshot.data[i].message
+                                              .substring(
+                                                  0,
+                                                  snapshot.data[i].message
+                                                      .lastIndexOf('https')))
+                                          : Text(snapshot.data[i].message)),
+                                  TextSpan(
+                                    style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold),
+                                    text: 'Link',
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        RegExp exp = new RegExp(
+                                            r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+                                        Iterable<RegExpMatch> matches =
+                                            exp.allMatches(
+                                                snapshot.data[i].message);
+
+                                        matches.forEach((match) {
+                                          this.link = snapshot.data[i].message
+                                              .substring(
+                                                  match.start, match.end);
+                                        });
+
+                                        var url = '${this.link}';
+                                        if (await canLaunch(url)) {
+                                          await launch(url);
+                                        } else {
+                                          throw 'Could not launch $url';
+                                        }
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            ListTile(
+                              trailing: Text(
+                                '${snapshot.data[i].issue_date}',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );

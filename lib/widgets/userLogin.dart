@@ -199,7 +199,6 @@ class LoginUserState extends State {
                             _sendToServer();
                             setState(() {
                               loader = false;
-                              // visible = true;
                             });
                           },
                           color: Color.fromRGBO(33, 23, 47, 1),

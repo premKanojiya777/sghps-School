@@ -319,27 +319,30 @@ class _ClassTimeTableState extends State<ClassTimeTable> {
       child: Column(
         children: <Widget>[
           Container(
-            color: this.colors
-                ? Colors.green
-                //Color.fromRGBO(33, 23, 47, 1)
-                : Colors.white,
-           
-            child: Row(
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    label,
-                    // style: TextStyle(color: Colors.red),
+            color: this.colors ? Colors.green : Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                          color: this.colors ? Colors.white : Colors.black),
+                    ),
                   ),
-                ),
-               
-                Container(
-                  child: Text(
-                    "$value",
-                    // style: TextStyle(color: Colors.red)
+                  SizedBox(width: 60,),
+                  // Spacer(),
+                  Container(
+                    child: Text(
+                      "$value",
+                      style: TextStyle(
+                          color: this.colors ? Colors.white : Colors.black),
+                    ),
                   ),
-                ),
-              ],
+                  Spacer(),
+                ],
+              ),
             ),
           ),
           SizedBox(height: 5),

@@ -333,16 +333,20 @@ class _TimeTableState extends State<TimeTable> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text('$label'),
-            Spacer(),
-            Text(
-              "$value",
-              style: TextStyle(fontSize: 12),
-            ),
-            Spacer(),
-          ],
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Text('$label'),
+              Spacer(),
+              // SizedBox(width: 90,),
+              Text(
+                "$value",
+                style: TextStyle(fontSize: 12),
+              ),
+              Spacer(),
+            ],
+          ),
         ),
         Divider(),
       ],
