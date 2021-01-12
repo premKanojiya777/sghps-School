@@ -45,7 +45,7 @@ class _ImageGalleryState extends State<ImageGallery> {
     return imagelist;
   }
 
-  var bodyProgress = new Container(
+ var bodyProgress = new Container(
     child: new Stack(
       children: <Widget>[
         new Container(
@@ -53,32 +53,35 @@ class _ImageGalleryState extends State<ImageGallery> {
           decoration: new BoxDecoration(
             color: Colors.white70,
           ),
-          child:  new Container(
+          child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),
@@ -104,7 +107,7 @@ class _ImageGalleryState extends State<ImageGallery> {
           _getImageGallery();
           return await Future.delayed(Duration(seconds: 3));
         },
-              child: new FutureBuilder(
+        child: new FutureBuilder(
           future: imagelist,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
@@ -135,7 +138,11 @@ class _ImageGalleryState extends State<ImageGallery> {
                               onPressed: () {
                                 Navigator.of(context).pop(context);
                               },
-                              child: Text('Close',style: TextStyle(color: Color.fromRGBO(33, 23, 47, 1)),),
+                              child: Text(
+                                'Close',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(33, 23, 47, 1)),
+                              ),
                             )
                           ],
                         ),

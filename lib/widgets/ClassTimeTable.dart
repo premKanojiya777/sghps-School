@@ -316,42 +316,35 @@ class _ClassTimeTableState extends State<ClassTimeTable> {
 
   Widget _commonRow(String label, String value) {
     return SingleChildScrollView(
-      child: Container(
-        width: 600,
-        child: Column(
-          children: <Widget>[
-            Container(
-              color: this.colors
-                  ? Colors.green
-                  //Color.fromRGBO(33, 23, 47, 1)
-                  : Colors.white,
-              padding: EdgeInsets.only(
-                left: 10,
-              ),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      label,
-                      // style: TextStyle(color: Colors.red),
-                    ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            color: this.colors
+                ? Colors.green
+                //Color.fromRGBO(33, 23, 47, 1)
+                : Colors.white,
+           
+            child: Row(
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    label,
+                    // style: TextStyle(color: Colors.red),
                   ),
-                  SizedBox(
-                    width: 120,
+                ),
+               
+                Container(
+                  child: Text(
+                    "$value",
+                    // style: TextStyle(color: Colors.red)
                   ),
-                  Container(
-                    child: Text(
-                      "$value",
-                      // style: TextStyle(color: Colors.red)
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(height: 5),
-            Divider(),
-          ],
-        ),
+          ),
+          SizedBox(height: 5),
+          Divider(),
+        ],
       ),
     );
   }
@@ -366,30 +359,33 @@ class _ClassTimeTableState extends State<ClassTimeTable> {
           ),
           child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),

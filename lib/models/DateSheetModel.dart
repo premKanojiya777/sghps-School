@@ -8,7 +8,7 @@ class DateSheetModel{
     this.resulttype,this.error,
  });
  factory DateSheetModel.fromJson(Map<String, dynamic> parsedJson){
-   print({ "parsedJson['resulttype']" ,parsedJson['resulttype'] });
+   print({ "DateSheet:${parsedJson['resulttype']}" });
     return DateSheetModel(
       error: parsedJson['error'],
       resulttype: DateSheetList.fromJson(parsedJson['resulttype']),

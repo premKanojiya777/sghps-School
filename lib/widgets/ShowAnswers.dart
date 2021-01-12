@@ -26,10 +26,12 @@ class _ShowAnswerState extends State<ShowAnswer> {
   Future<List<AnswerModel>> _getAnswers() async {
     List<AnswerModel> listOfAnsers = [];
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/answers?access_token=' +
-        prefs.get('token') +
-        '&exam_id=' +
-        widget.exam_id.toString();
+    String url =
+        'http://sghps.cityschools.co/studentapi/answers?access_token=' +
+            prefs.get('token') +
+            '&exam_id=' +
+            widget.exam_id.toString();
+    print(widget.exam_id);
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {
       Map<String, dynamic> answers = json.decode(res.body);
@@ -61,30 +63,33 @@ class _ShowAnswerState extends State<ShowAnswer> {
           ),
           child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),
@@ -105,130 +110,131 @@ class _ShowAnswerState extends State<ShowAnswer> {
         title: Text('Show Answers'),
         centerTitle: true,
       ),
-      body: Stack(
-        children: <Widget>[
-          FutureBuilder(
-            future: answerList,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.data == null) {
-                return bodyProgress;
-              } else {
-                return Container(
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            return Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 1),
-                              child: Card(
-                                child: new Column(
-                                  children: <Widget>[
-                                    Align(
-                                        alignment: Alignment(-0.9, 0.0),
-                                        child: Text(
-                                          ' ${snapshot.data[i].ques_desc}',
-                                          style: new TextStyle(
-                                            fontSize: 18.0,
-                                          ),
-                                        )),
-                                    new Row(
-                                      children: <Widget>[
-                                        Align(
-                                            alignment: Alignment(-0.8, 0.0),
-                                            child: Text(
-                                              '   1: ${snapshot.data[i].choice_1}',
-                                              style: new TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15.0,
-                                              ),
-                                            )),
-                                        new FlatButton(
-                                          child: Icon(
-                                              Icons.radio_button_unchecked),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Align(
-                                          alignment: Alignment(-0.8, 0.0),
-                                          child: Text(
-                                            '   2: ${snapshot.data[i].choice_2}',
-                                            style: new TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15.0,
-                                            ),
-                                          ),
-                                        ),
-                                        new FlatButton(
-                                          child: Icon(
-                                              Icons.radio_button_unchecked),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Align(
-                                            alignment: Alignment(-0.8, 0.0),
-                                            child: Text(
-                                              '   3: ${snapshot.data[i].choice_3}',
-                                              style: new TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15.0,
-                                              ),
-                                            )),
-                                        new FlatButton(
-                                          child: Icon(
-                                              Icons.radio_button_unchecked),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    ),
-                                    Divider(),
-                                    Align(
-                                      alignment: Alignment(-0.9, 0.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            'Correct Answer:${snapshot.data[i].answer}',
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.green),
-                                          ),
-                                          Text(
-                                            'Your Answer:${snapshot.data[i].user_answer}',
-                                            style: TextStyle(
-                                                fontSize: 18,
-                                                color:
-                                                    snapshot.data[i].answer ==
-                                                            snapshot.data[i]
-                                                                .user_answer
-                                                        ? Colors.green
-                                                        : Colors.red),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
+      body: FutureBuilder(
+        future: answerList,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) {
+            return bodyProgress;
+          } else {
+            return Container(
+              child: ListView.builder(
+                itemCount: snapshot.data.length,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int i) {
+                  return Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 1),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${i + 1}. ${snapshot.data[i].ques_desc}',
+                              style: new TextStyle(
+                                fontSize: 18.0,
                               ),
-                            );
-                          },
+                            ),
+                            Divider(),
+                            new Row(
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width *
+                                      .5,
+                                  child: Text(
+                                    '1. ${snapshot.data[i].choice_1}',
+                                    style: new TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                new FlatButton(
+                                  child: Icon(Icons.radio_button_unchecked),
+                                  onPressed: () {},
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width *
+                                      .5,
+                                  child: Text(
+                                    '2. ${snapshot.data[i].choice_2}',
+                                    style: new TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                new FlatButton(
+                                  child: Icon(Icons.radio_button_unchecked),
+                                  onPressed: () {},
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width *
+                                      .5,
+                                  child: Text(
+                                    '3. ${snapshot.data[i].choice_3}',
+                                    style: new TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                new FlatButton(
+                                  child: Icon(Icons.radio_button_unchecked),
+                                  onPressed: () {},
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                              ],
+                            ),
+                            Divider(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Correct Answer:${snapshot.data[i].answer}',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.green),
+                                ),
+                                Text(
+                                  'Your Answer:${snapshot.data[i].user_answer}',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: snapshot.data[i].answer ==
+                                              snapshot.data[i].user_answer
+                                          ? Colors.green
+                                          : Colors.red),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
-        ],
+                    ),
+                  );
+                },
+              ),
+            );
+          }
+        },
       ),
     );
   }

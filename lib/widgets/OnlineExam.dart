@@ -61,6 +61,7 @@ class _OnlineExamsState extends State<OnlineExams> {
             s['exam']['id'],
             this.isSubmit);
         listOfExams.add(examModel);
+        // print('Exam Name:${s['exam']['name']}');
       }
       print('Lenght: ${listOfExams.length}');
     }).catchError((onError) {
@@ -92,30 +93,33 @@ class _OnlineExamsState extends State<OnlineExams> {
           ),
           child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),
@@ -133,7 +137,7 @@ class _OnlineExamsState extends State<OnlineExams> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(33, 23, 47, 1),
-        title: Text('Exam'),
+        title: Text('Online Exam'),
         centerTitle: true,
       ),
       body: RefreshIndicator(
@@ -151,206 +155,185 @@ class _OnlineExamsState extends State<OnlineExams> {
             } else {
               return ListView.builder(
                 itemCount: snapshot.data.length,
+                shrinkWrap: true,
                 itemBuilder: (BuildContext context, int i) {
                   return Container(
-                    height: 100,
-                    padding: EdgeInsets.only(left: 12, right: 12),
                     child: Card(
                       borderOnForeground: true,
-                      child: Row(
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Align(
-                                    alignment: Alignment(-0.8, 0.0),
-                                    child: Text(
-                                      'Exam',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Color.fromRGBO(33, 23, 47, 1)),
-                                    ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Exam',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Color.fromRGBO(33, 23, 47, 1)),
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * .4,
+                                  child: Text(
+                                    '${snapshot.data[i].name}',
+                                    style: TextStyle(
+                                        // fontSize: 5,
+                                        color: Color.fromRGBO(33, 23, 47, 1)),
                                   ),
-                                  Divider(),
-                                  Align(
-                                    alignment: Alignment(-0.8, 0.0),
-                                    child: Text(
-                                      '${snapshot.data[i].name}',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: Color.fromRGBO(33, 23, 47, 1)),
-                                    ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Subject',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Color.fromRGBO(33, 23, 47, 1)),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * .23,
+                                  child: Text(
+                                    '${snapshot.data[i].subject_name}',
+                                    style: TextStyle(
+                                        // fontSize: 15,
+                                        color: Color.fromRGBO(33, 23, 47, 1)),
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          Column(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Align(
-                                    alignment: Alignment(-0.8, 0.0),
-                                    child: Text(
-                                      'Subject',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Color.fromRGBO(33, 23, 47, 1)),
-                                    ),
-                                  ),
-                                  Divider(),
-                                  Align(
-                                    alignment: Alignment(-0.8, 0.0),
-                                    child: Text(
-                                      '${snapshot.data[i].subject_name}',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: Color.fromRGBO(33, 23, 47, 1)),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          Column(
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Align(
-                                    alignment: Alignment(-0.8, 0.0),
-                                    child: Text(
-                                      'Action',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Color.fromRGBO(33, 23, 47, 1)),
-                                    ),
-                                  ),
-                                  Divider(),
-                                  Column(
-                                    children: <Widget>[
-                                      _currentDate.isAfter(DateTime.parse(
-                                              snapshot.data[i].end_date))
-                                          ? Align(
-                                              alignment: Alignment(-0.8, 0.0),
-                                              child: RaisedButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ShowAnswer(
-                                                        exam_id:
-                                                            snapshot.data[i].id,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Text(
-                                                  'Show Answer',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                color: Color.fromRGBO(
-                                                    33, 23, 47, 1),
-                                              ),
-                                            )
-                                          : (snapshot.data[i].isSubmit
-                                              ? Text(
-                                                  'Finish',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                )
-                                              : Align(
-                                                  alignment:
-                                                      Alignment(-0.8, 0.0),
-                                                  child: RaisedButton(
-                                                    onPressed: () {
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            AlertDialog(
-                                                          title: Text(
-                                                              '${snapshot.data[i].name}'),
-                                                          content: Text(
-                                                              'Exam: ${snapshot.data[i].name}'
-                                                              '\n'
-                                                              'Subject: ${snapshot.data[i].subject_name}'
-                                                              '\n'
-                                                              'Total Marks: ${snapshot.data[i].total_marks}'
-                                                              '\n'
-                                                              'Pass Marks: ${snapshot.data[i].pass_marks}'
-                                                              '\n'
-                                                              'Duration: ${snapshot.data[i].duration}'
-                                                              '\n'
-                                                              'Start Date: ${snapshot.data[i].start_date}'
-                                                              '\n'
-                                                              'End Date: ${snapshot.data[i].end_date}'
-                                                              '\n'
-                                                              'Description: ${snapshot.data[i].description}'),
-                                                          actions: <Widget>[
-                                                            snapshot.data[i]
-                                                                    .startexam
-                                                                ? new FlatButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator
-                                                                          .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              Quiz(
-                                                                            exam_id:
-                                                                                snapshot.data[i].id,
-                                                                            examTime:
-                                                                                snapshot.data[i].duration,
-                                                                          ),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                    child: Text(
-                                                                        'START EXAM'),
-                                                                  )
-                                                                : Container(),
-                                                            new FlatButton(
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(
-                                                                        context);
-                                                              },
-                                                              child: Text(
-                                                                  'CANCEL'),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Text(
-                                                      'View',
-                                                      style: TextStyle(
-                                                          color: Color.fromRGBO(
-                                                              33, 23, 47, 1)),
-                                                    ),
-                                                    color: Color.fromRGBO(
-                                                        33, 23, 47, 1),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  'Action',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Color.fromRGBO(33, 23, 47, 1)),
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    _currentDate.isAfter(DateTime.parse(
+                                            snapshot.data[i].end_date))
+                                        ? RaisedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ShowAnswer(
+                                                    exam_id:
+                                                        snapshot.data[i].id,
                                                   ),
-                                                )),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 90,
-                              )
-                            ],
-                          ),
-                        ],
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              'Show Answer',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            color:
+                                                Color.fromRGBO(33, 23, 47, 1),
+                                          )
+                                        : (snapshot.data[i].isSubmit
+                                            ? Text(
+                                                'Finish',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              )
+                                            : Align(
+                                                alignment: Alignment(-0.8, 0.0),
+                                                child: RaisedButton(
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (_) =>
+                                                          AlertDialog(
+                                                        title: Text(
+                                                            '${snapshot.data[i].name}'),
+                                                        content: Text(
+                                                            'Exam: ${snapshot.data[i].name}'
+                                                            '\n'
+                                                            'Subject: ${snapshot.data[i].subject_name}'
+                                                            '\n'
+                                                            'Total Marks: ${snapshot.data[i].total_marks}'
+                                                            '\n'
+                                                            'Pass Marks: ${snapshot.data[i].pass_marks}'
+                                                            '\n'
+                                                            'Duration: ${snapshot.data[i].duration}'
+                                                            '\n'
+                                                            'Start Date: ${snapshot.data[i].start_date}'
+                                                            '\n'
+                                                            'End Date: ${snapshot.data[i].end_date}'
+                                                            '\n'
+                                                            'Description: ${snapshot.data[i].description}'),
+                                                        actions: <Widget>[
+                                                          snapshot.data[i]
+                                                                  .startexam
+                                                              ? new FlatButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                Quiz(
+                                                                          exam_id: snapshot
+                                                                              .data[i]
+                                                                              .id,
+                                                                          examTime: snapshot
+                                                                              .data[i]
+                                                                              .duration,
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  child: Text(
+                                                                      'START EXAM'),
+                                                                )
+                                                              : Container(),
+                                                          new FlatButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop(context);
+                                                            },
+                                                            child:
+                                                                Text('CANCEL'),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    'View',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            33, 23, 47, 1)),
+                                                  ),
+                                                  color: Color.fromRGBO(
+                                                      33, 23, 47, 1),
+                                                ),
+                                              )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

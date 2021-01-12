@@ -30,15 +30,15 @@ class _TimeTableState extends State<TimeTable> {
 
   Future<void> _timeTable() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/stuTime?access_token=' +
-        prefs.get('token');
+    String url =
+        'http://sghps.cityschools.co/studentapi/stuTime?access_token=' +
+            prefs.get('token');
     await getTimeTable(url, prefs.get('token'));
   }
 
   Future<String> getTimeTable(String url, accessToken) async {
     final response = await http
-        .get(url, 
-        headers: {"Content-Type": "application/json"}).then((res) {
+        .get(url, headers: {"Content-Type": "application/json"}).then((res) {
       //print({"res", res.body});
       Map<String, dynamic> user = jsonDecode(res.body);
       timeTableData = TimeTableModel.fromJson(user);
@@ -46,7 +46,7 @@ class _TimeTableState extends State<TimeTable> {
       if (timeTableData.error) {
         print('error');
       } else {
-          mondayWidgets = [];
+        mondayWidgets = [];
         tuesdayWidgets = [];
         wednesdayWidgets = [];
         thursdayWidgets = [];
@@ -89,32 +89,35 @@ class _TimeTableState extends State<TimeTable> {
           decoration: new BoxDecoration(
             color: Colors.white70,
           ),
-          child:  new Container(
+          child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),
@@ -130,35 +133,36 @@ class _TimeTableState extends State<TimeTable> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(33, 23, 47, 1),
-        title: Text('Time Table'),
-        centerTitle: true,
-      ),
-      body: loader ? RefreshIndicator(
-        onRefresh: () async{
-          _timeTable();
-          return await Future.delayed(Duration(seconds: 3));
-        },
-              child: Card(
-          margin: EdgeInsets.all(10),
-                child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Tabs(refresh: () => setState(() {})),
-                value == 0 ? _monTabWidget() : Container(),
-                value == 1 ? _tueTabWidget() : Container(),
-                value == 2 ? _wedTabWidget() : Container(),
-                value == 3 ? _thusTabWidget() : Container(),
-                value == 4 ? _friTabWidget() : Container(),
-                value == 5 ? _satTabWidget() : Container(),
-              ],
-            ),
-          ),
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(33, 23, 47, 1),
+          title: Text('Time Table'),
+          centerTitle: true,
         ),
-      ) : bodyProgress
-    );
+        body: loader
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  _timeTable();
+                  return await Future.delayed(Duration(seconds: 3));
+                },
+                child: Card(
+                  margin: EdgeInsets.all(10),
+                  child: SafeArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Tabs(refresh: () => setState(() {})),
+                        value == 0 ? _monTabWidget() : Container(),
+                        value == 1 ? _tueTabWidget() : Container(),
+                        value == 2 ? _wedTabWidget() : Container(),
+                        value == 3 ? _thusTabWidget() : Container(),
+                        value == 4 ? _friTabWidget() : Container(),
+                        value == 5 ? _satTabWidget() : Container(),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : bodyProgress);
   }
 
   Widget _monTabWidget() {
@@ -326,24 +330,22 @@ class _TimeTableState extends State<TimeTable> {
   }
 
   Widget _commonRow(String label, String value) {
-    return Container(
-      width: 600,
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 10,),
-            child: Row(
-              children: <Widget>[
-                Text(label),
-                SizedBox(width: 120,),
-                Text("$value",style: TextStyle(fontSize:12),),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text('$label'),
+            Spacer(),
+            Text(
+              "$value",
+              style: TextStyle(fontSize: 12),
             ),
-          ),
-          SizedBox(height: 5),
-          Divider(),
-        ],
-      ),
+            Spacer(),
+          ],
+        ),
+        Divider(),
+      ],
     );
   }
 }
@@ -368,37 +370,36 @@ class _TabsState extends State<Tabs> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          
           MyTab(
               text: 'Mon',
               isSelected: value == 0,
               onTap: () => _updateValue(0)),
-              SizedBox(width: 5),
+          SizedBox(width: 5),
           MyTab(
               text: 'Tue',
               isSelected: value == 1,
               onTap: () => _updateValue(1)),
-              SizedBox(width: 5),
+          SizedBox(width: 5),
           MyTab(
               text: 'Wed',
               isSelected: value == 2,
               onTap: () => _updateValue(2)),
-              SizedBox(width: 5),
+          SizedBox(width: 5),
           MyTab(
               text: 'Thurs',
               isSelected: value == 3,
               onTap: () => _updateValue(3)),
-              SizedBox(width: 5),
+          SizedBox(width: 5),
           MyTab(
               text: 'Fri',
               isSelected: value == 4,
               onTap: () => _updateValue(4)),
-              SizedBox(width: 5),
+          SizedBox(width: 5),
           MyTab(
               text: 'Sat',
               isSelected: value == 5,
               onTap: () => _updateValue(5)),
-              SizedBox(width: 5),
+          SizedBox(width: 5),
         ],
       ),
     );

@@ -28,24 +28,35 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Visibility(
-                child: Container(
-              margin: EdgeInsets.only(bottom: 30),
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.black,
-              ),
-            )),
-            LoggedIn(),
-            LocalNotification(),
-          ],
+    return Stack(
+      children: [
+        Image.asset(
+          "splach.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
         ),
-      ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Visibility(
+                    child: Container(
+                  margin: EdgeInsets.only(bottom: 30),
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.black,
+                  ),
+                )),
+                LoggedIn(),
+                LocalNotification(),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

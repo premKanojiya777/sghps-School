@@ -86,10 +86,11 @@ class _QuizState extends State<Quiz> {
 
   Future<List<QuestionModel>> _getQuiz() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/exam_ques?access_token=' +
-        prefs.get('token') +
-        '&id=' +
-        widget.exam_id.toString();
+    String url =
+        'http://sghps.cityschools.co/studentapi/exam_ques?access_token=' +
+            prefs.get('token') +
+            '&id=' +
+            widget.exam_id.toString();
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {
       Map<String, dynamic> quiz = json.decode(res.body);
@@ -242,21 +243,9 @@ class _QuizState extends State<Quiz> {
                     children: <Widget>[
                       Expanded(
                         child: ListView.builder(
+                          shrinkWrap: true,
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int i) {
-                            // int choiceId1 = 1 + i;
-                            // int choiceId2 = 2 + i;
-                            //
-
-                            // List answerList1 = snapshot.data[i].choice_1.toString().split("_");
-                            // int choice1Id = int.parse(answerList1[1]);
-
-                            // List answerList2 = snapshot.data[i].choice_2.toString().split("_");
-                            // int choice2Id = int.parse(answerList2[1]);
-
-                            // List answerList3 = snapshot.data[i].choice_3.toString().split("_");
-                            // int choice3Id = int.parse(answerList3[1]);
-
                             return Container(
                               padding: EdgeInsets.fromLTRB(20, 5, 20, 1),
                               child: Card(
@@ -373,7 +362,12 @@ class _QuizState extends State<Quiz> {
 
                         //   print("Answer: $answr");
                         // },
-                        child: Text('SUBMIT',style: TextStyle(color: Color.fromRGBO(33, 23, 47, 1),),),
+                        child: Text(
+                          'SUBMIT',
+                          style: TextStyle(
+                            color: Color.fromRGBO(33, 23, 47, 1),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -402,7 +396,9 @@ class _QuizState extends State<Quiz> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               Text(
                 this.subjectName,
-                style: TextStyle(fontSize: 18,),
+                style: TextStyle(
+                  fontSize: 18,
+                ),
               ),
               Divider(),
               Text('Total Marks',

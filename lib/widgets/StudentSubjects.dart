@@ -8,7 +8,6 @@ import 'package:google_live/models/VideosModel.dart';
 import 'package:google_live/widgets/StudentsUploadedFiles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
 
 class StudentSubject extends StatefulWidget {
   final DateTime datepick;
@@ -111,11 +110,13 @@ class _StudentSubjectState extends State<StudentSubject> {
         if (live_class_data != null) {
           var videos = live_class_data['videos'];
           var images = this.live_data['images'];
-            // print(images);
-             for (var v in images) {
+          // print(images);
+          for (var v in images) {
             this.liveClassId = v['id'];
-            ImageModel imageModel =
-                ImageModel(v['image'],v['student_assignment_id'],);
+            ImageModel imageModel = ImageModel(
+              v['image'],
+              v['student_assignment_id'],
+            );
 
             imageList.add(imageModel);
           }
@@ -126,7 +127,7 @@ class _StudentSubjectState extends State<StudentSubject> {
 
             videolist.add(videosModel);
           }
-          
+
           var liveClassDataID = live_class_data['id'];
           // print(liveClassDataID);
           var live_periodID = live_class_data['period_id'];
@@ -162,7 +163,7 @@ class _StudentSubjectState extends State<StudentSubject> {
             ),
           );
           // print('Button Click:$live_class_data');
-        } else  {
+        } else {
           print('No Data Founds');
         }
       });
@@ -207,21 +208,21 @@ class _StudentSubjectState extends State<StudentSubject> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(2),
-                        child: SizedBox.fromSize(
-                          size: Size(80, 80), // button width and height
-                          child: ClipOval(
-                            child: Material(
-                              color: Colors.white, // button color
-                              child: InkWell(
-                                onTap: () {
-                                  _chooseSubject(
-                                    snapshot.data[i].class_id,
-                                    snapshot.data[i].period_ID,
-                                    snapshot.data[i].section_id,
-                                    snapshot.data[i].subject_id,
-                                  );
-                                }, // button pressed
+                        child: ClipOval(
+                          child: Material(
+                            color: Colors.white, // button color
+                            child: InkWell(
+                              onTap: () {
+                                _chooseSubject(
+                                  snapshot.data[i].class_id,
+                                  snapshot.data[i].period_ID,
+                                  snapshot.data[i].section_id,
+                                  snapshot.data[i].subject_id,
+                                );
+                              }, // button pressed
 
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -236,7 +237,8 @@ class _StudentSubjectState extends State<StudentSubject> {
                                     ),
                                     Text('${snapshot.data[i].teacher_name}',
                                         style: TextStyle(
-                                            color: Colors.black, fontSize: 12)),
+                                          color: Colors.black,
+                                        )),
                                   ],
                                 ),
                               ),

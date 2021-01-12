@@ -40,6 +40,8 @@
 	<string>Privacy - Location Always and When In Use Usage Description</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Always/When in use description</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Always Usage Description</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>NSLocationAlwaysUsageDescription</string>
 	<key>NSMicrophoneUsageDescription</key>

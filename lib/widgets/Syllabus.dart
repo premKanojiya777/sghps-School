@@ -42,30 +42,19 @@ class _SyllabusState extends State<Syllabus> {
     final response = await http
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {
       Map<String, dynamic> syllabus = jsonDecode(res.body);
-      // newSyllabus = NewSyllabus.fromJson(syllabus);
-      //  if (newSyllabus.error) {
-      //   print('error');
-      // } else {
-      //       for (Syllabus syll in newSyllabus.subjects.syllabusList) {
-      //     mondayWidgets.add(_commonRow('${syll.subject_name}', '${syll.pdf_file}'));
-      //   }
       var subjects = syllabus['subjects'];
-
       for (var s in subjects) {
         var sub = s['subject']['subject_name'];
 
         pdf = s['pdf'];
-        print(pdf);
         if (pdf.length != 0) {
           for (var p in pdf) {
             pdf_file = p['pdf_file'];
             print('hii');
-            // isPdf = true;
           }
         } else {
           print('bye');
           pdf_file = '';
-          // isPdf = false;
         }
 
         SyllabusModel syllabusModel = SyllabusModel(sub, pdf_file);
@@ -98,14 +87,15 @@ class _SyllabusState extends State<Syllabus> {
           child: Row(
             children: <Widget>[
               Text(
-                'Subject Name',
-                style: TextStyle(fontSize: 17),
+                'SUBJECT NAME',
+                style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
               ),
-              SizedBox(width: 90),
+              Spacer(),
               Text(
-                'Link',
-                style: TextStyle(fontSize: 19),
+                'LINK',
+                style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
               ),
+              SizedBox(width: 110),
             ],
           ),
         ),
@@ -123,18 +113,15 @@ class _SyllabusState extends State<Syllabus> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-            _getSyllabus();
+          _getSyllabus();
           return await Future.delayed(Duration(seconds: 3));
         },
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Card(
-            child: Stack(
-              children: <Widget>[
-                _headerFun(),
-                _data(),
-              ],
-            ),
+        child: Card(
+          child: Column(
+            children: <Widget>[
+              _headerFun(),
+              _data(),
+            ],
           ),
         ),
       ),
@@ -151,30 +138,33 @@ class _SyllabusState extends State<Syllabus> {
           ),
           child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),
@@ -194,87 +184,68 @@ class _SyllabusState extends State<Syllabus> {
         if (snapshot.data == null) {
           return bodyProgress;
         } else {
-          return Padding(
-            padding: const EdgeInsets.only(top: 50),
-            child: ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int i) {
-                return Container(
-                  padding: EdgeInsets.only(left: 17, right: 12),
-                  child: Row(children: <Widget>[
-                    Text(
-                      '${snapshot.data[i].subject_name}',
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    Spacer(),
-                      snapshot.data[i].pdf_file == null || snapshot.data[i].pdf_file == ""?
-                      Container():
-                    RaisedButton(
-                      onPressed: () async {
-                        print('${snapshot.data[i].pdf_file}');
-                          // print('${snapshot.data[i].pdf_file}');
-                        var pdfurl =
-                            'http://sghps.cityschools.co/uploads/syllabus/' +
-                                '${snapshot.data[i].pdf_file}';
-                        print('${snapshot.data[i].pdf_file}');
-                        print(pdfurl);
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int i) {
+              return Padding(
+                padding: const EdgeInsets.only(left: 20,right: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          '${snapshot.data[i].subject_name}',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Spacer(),
+                        snapshot.data[i].pdf_file == null ||
+                                snapshot.data[i].pdf_file == ""
+                            ? Text('Link not Available')
+                            : RaisedButton(
+                                onPressed: () async {
+                                  print('${snapshot.data[i].pdf_file}');
+                                  // print('${snapshot.data[i].pdf_file}');
+                                  var pdfurl =
+                                      'http://sghps.cityschools.co/uploads/syllabus/' +
+                                          '${snapshot.data[i].pdf_file}';
+                                  print('${snapshot.data[i].pdf_file}');
+                                  print(pdfurl);
 
-                        if (await canLaunch(pdfurl)) {
-                          await launch(pdfurl);
-                        } else {
-                          throw 'Could not launch $pdfurl';
-                        }
-                        // setState(() {
-                        //   loader = true;
-                        //   if (snapshot.data[i].pdf_file == null || snapshot.data[i].pdf_file == '') {
-                        //     Toast.show('No Pdf Link Found', context,
-                        //         duration: Toast.LENGTH_LONG,
-                        //         gravity: Toast.BOTTOM);
-                        //     loader = false;
-                        //   } else {
-                        //     createFileOfPdfUrl('${snapshot.data[i].pdf_file}')
-                        //         .then((f) {
-                        //       setState(() {
-                        //         pathPDF = f.path;
-                        //         print(pathPDF);
-                        //         loader = false;
-                        //       });
-                        //       Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //           builder: (context) => PDFScreen(pathPDF),
-                        //         ),
-                        //       );
-                        //     });
-                        //   }
-                        // });
-                      },
-                      child: Text('PDF Link'),
-                    ),
-                    // : Container(),
-                    SizedBox(
-                      width: 65,
-                    ),
-                    Visibility(
-                      
-                      visible: loader,
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(
-                            height: 10,
+                                  if (await canLaunch(pdfurl)) {
+                                    await launch(pdfurl);
+                                  } else {
+                                    throw 'Could not launch $pdfurl';
+                                  }
+                                },
+                                child: Text('PDF Link'),
+                              ),
+                        SizedBox(
+                          width: 65,
+                        ),
+                        Visibility(
+                          visible: loader,
+                          child: Column(
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Please Wait....",
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ],
                           ),
-                          Text(
-                            "Please Wait....",
-                            style: TextStyle(color: Colors.blueAccent),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ]),
-                );
-              },
-            ),
+                    Divider(),
+                  ],
+                  
+                ),
+              );
+            },
           );
         }
       },

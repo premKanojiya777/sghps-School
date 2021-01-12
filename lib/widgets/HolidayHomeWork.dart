@@ -41,6 +41,7 @@ class _HolidayHomeWorkState extends State<HolidayHomeWork> {
       setState(() {
         Map<String, dynamic> data = jsonDecode(res.body);
         this.homework = data['holidayhome'];
+        _checkHomeWork(this.homework);
         this.syllabusModel = HolidayModel(data['holidayhome'], data['url']);
         print('pdf:' + syllabusModel.holidayhome);
 
@@ -65,6 +66,17 @@ class _HolidayHomeWorkState extends State<HolidayHomeWork> {
     return file;
   }
 
+  void _checkHomeWork(String homework) {
+    if (homework == '') {
+      Toast.show('No Data Founds', context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      Navigator.pop(context);
+    } else {
+      Toast.show('HomeWork Founds', context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+    }
+  }
+
   var bodyProgress = new Container(
     child: new Stack(
       children: <Widget>[
@@ -75,30 +87,33 @@ class _HolidayHomeWorkState extends State<HolidayHomeWork> {
           ),
           child: new Container(
             decoration: new BoxDecoration(
-                color: Colors.grey,
-                borderRadius: new BorderRadius.circular(10.0)),
+                color: Colors.blue[100],
+                borderRadius: new BorderRadius.circular(3.0)),
             width: 140,
-            height: 120,
+            height: 70,
             alignment: AlignmentDirectional.center,
-            child: new Column(
+            child: new Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Center(
                   child: new SizedBox(
-                    height: 50.0,
-                    width: 50.0,
+                    height: 30.0,
+                    width: 30.0,
                     child: new CircularProgressIndicator(
                       value: null,
-                      strokeWidth: 7.0,
+                      strokeWidth: 4.0,
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 9,
+                ),
                 new Container(
-                  margin: const EdgeInsets.only(top: 25.0),
+                  // margin: const EdgeInsets.only(top: 25.0),
                   child: new Center(
                     child: new Text(
-                      "loading.. wait...",
+                      "Loading",
                       style: new TextStyle(color: Colors.black),
                     ),
                   ),
