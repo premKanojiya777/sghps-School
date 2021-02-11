@@ -166,16 +166,19 @@ class _StudentProfileState extends State<StudentProfile> {
                                               fontSize: 17,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        // Spacer(),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 100),
-                                          child: Text(
-                                              '${this.firstname}' +
-                                                  '\t' +
-                                                  '${this.lastname}',
-                                              style: TextStyle(fontSize: 15)),
-                                        ),
+                                        Spacer(),
+                                        lastname == null
+                                            ? Text('${this.firstname}',
+                                                style: TextStyle(
+                                                    fontSize: 15))
+                                            : Text(
+                                                '${this.firstname}' +
+                                                    '\t' +
+                                                    '${this.lastname}',
+                                                style: TextStyle(
+                                                    fontSize: 15)),
+                                  SizedBox(width: 150,),
+
                                       ]),
                                   SizedBox(height: 15.0),
                                   Divider(),

@@ -25,6 +25,7 @@ class _SyllabusState extends State<Syllabus> {
   String pathPDF = "";
   var pdf_file;
   bool loader = false;
+  bool visible = false;
   List pdf;
   bool isPdf = false;
   @override
@@ -43,9 +44,12 @@ class _SyllabusState extends State<Syllabus> {
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {
       Map<String, dynamic> syllabus = jsonDecode(res.body);
       var subjects = syllabus['subjects'];
+      setState(() {
+        loader = true;
+        print(loader);
+      });
       for (var s in subjects) {
         var sub = s['subject']['subject_name'];
-
         pdf = s['pdf'];
         if (pdf.length != 0) {
           for (var p in pdf) {
@@ -88,12 +92,12 @@ class _SyllabusState extends State<Syllabus> {
             children: <Widget>[
               Text(
                 'SUBJECT NAME',
-                style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
               Spacer(),
               Text(
                 'LINK',
-                style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
               SizedBox(width: 110),
             ],
@@ -106,26 +110,27 @@ class _SyllabusState extends State<Syllabus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(33, 23, 47, 1),
-        title: Text('Syllabus'),
-        centerTitle: true,
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          _getSyllabus();
-          return await Future.delayed(Duration(seconds: 3));
-        },
-        child: Card(
-          child: Column(
-            children: <Widget>[
-              _headerFun(),
-              _data(),
-            ],
-          ),
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(33, 23, 47, 1),
+          title: Text('Syllabus'),
+          centerTitle: true,
         ),
-      ),
-    );
+        body: loader
+            ? RefreshIndicator(
+                onRefresh: () async {
+                  _getSyllabus();
+                  return await Future.delayed(Duration(seconds: 3));
+                },
+                child: Card(
+                  child: Column(
+                    children: <Widget>[
+                      _headerFun(),
+                      _data(),
+                    ],
+                  ),
+                ),
+              )
+            : bodyProgress);
   }
 
   var bodyProgress = new Container(
@@ -182,14 +187,14 @@ class _SyllabusState extends State<Syllabus> {
       future: syllabuses,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.data == null) {
-          return bodyProgress;
+          return Container();
         } else {
           return ListView.builder(
             shrinkWrap: true,
             itemCount: snapshot.data.length,
             itemBuilder: (BuildContext context, int i) {
               return Padding(
-                padding: const EdgeInsets.only(left: 20,right: 20),
+                padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Column(
                   children: [
                     Row(
@@ -204,6 +209,9 @@ class _SyllabusState extends State<Syllabus> {
                             ? Text('Link not Available')
                             : RaisedButton(
                                 onPressed: () async {
+                                  setState(() {
+                                    visible = true;
+                                  });
                                   print('${snapshot.data[i].pdf_file}');
                                   // print('${snapshot.data[i].pdf_file}');
                                   var pdfurl =
@@ -221,28 +229,29 @@ class _SyllabusState extends State<Syllabus> {
                                 child: Text('PDF Link'),
                               ),
                         SizedBox(
-                          width: 65,
-                        ),
-                        Visibility(
-                          visible: loader,
-                          child: Column(
-                            children: [
-                              CircularProgressIndicator(),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Please Wait....",
-                                style: TextStyle(color: Colors.blueAccent),
-                              ),
-                            ],
-                          ),
-                        ),
+                          width: 50,
+                        )
+
+                        // Visibility(
+                        //   visible: visible,
+                        //   child: Column(
+                        //     children: [
+                        //       CircularProgressIndicator(),
+                        //       SizedBox(
+                        //         height: 10,
+                        //       ),
+                        //       Text(
+                        //         "Please Wait....",
+                        //         style: TextStyle(color: Colors.blueAccent),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(width: 30,)
                       ],
                     ),
                     Divider(),
                   ],
-                  
                 ),
               );
             },

@@ -137,27 +137,25 @@ class _StudentsResultsState extends State<StudentsResults> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.only(left: 120),
-                          // width: 200,
-                          child: new DropdownButton(
-                            items: data.map((item) {
-                              return new DropdownMenuItem(
-                                child: new Text('${item['type']}'),
-                                value: item['id'].toString(),
-                              );
-                            }).toList(),
-                            onChanged: (newVal) {
-                              setState(() {
-                                _mySelection = newVal;
-                                print(_mySelection);
-                                _getResult();
-                              });
-                            },
-                            value: _mySelection,
-                            hint: Text('Select Term'),
-                          ),
+                        Spacer(),
+                        new DropdownButton(
+                          items: data.map((item) {
+                            return new DropdownMenuItem(
+                              child: new Text('${item['type']}'),
+                              value: item['id'].toString(),
+                            );
+                          }).toList(),
+                          onChanged: (newVal) {
+                            setState(() {
+                              _mySelection = newVal;
+                              print(_mySelection);
+                              _getResult();
+                            });
+                          },
+                          value: _mySelection,
+                          hint: Text('Select Term'),
                         ),
+                        SizedBox(width: 20,),
                       ],
                     ),
                   ),

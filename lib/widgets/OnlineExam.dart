@@ -202,56 +202,57 @@ class _OnlineExamsState extends State<OnlineExams> {
                                   child: Text(
                                     '${snapshot.data[i].subject_name}',
                                     style: TextStyle(
-                                        // fontSize: 15,
                                         color: Color.fromRGBO(33, 23, 47, 1)),
                                   ),
                                 ),
                               ],
                             ),
-                            Spacer(),
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  'Action',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Color.fromRGBO(33, 23, 47, 1)),
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    _currentDate.isAfter(DateTime.parse(
-                                            snapshot.data[i].end_date))
-                                        ? RaisedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ShowAnswer(
-                                                    exam_id:
-                                                        snapshot.data[i].id,
-                                                  ),
+                            // Spacer(),
+                            Container(
+                              width: MediaQuery.of(context).size.width*.3,
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                                    'Action',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Color.fromRGBO(33, 23, 47, 1)),
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width*.3,
+                                    child: Column(
+                                      children: <Widget>[
+                                        _currentDate.isAfter(DateTime.parse(
+                                                snapshot.data[i].end_date))
+                                            ? RaisedButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ShowAnswer(
+                                                        exam_id:
+                                                            snapshot.data[i].id,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Show Answer',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                 ),
-                                              );
-                                            },
-                                            child: Text(
-                                              'Show Answer',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            color:
-                                                Color.fromRGBO(33, 23, 47, 1),
-                                          )
-                                        : (snapshot.data[i].isSubmit
-                                            ? Text(
-                                                'Finish',
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                                color:
+                                                    Color.fromRGBO(33, 23, 47, 1),
                                               )
-                                            : Align(
-                                                alignment: Alignment(-0.8, 0.0),
-                                                child: RaisedButton(
+                                            : (snapshot.data[i].isSubmit
+                                                ? Text(
+                                                    'Finish',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )
+                                                : RaisedButton(
                                                   onPressed: () {
                                                     showDialog(
                                                       context: context,
@@ -323,14 +324,15 @@ class _OnlineExamsState extends State<OnlineExams> {
                                                   ),
                                                   color: Color.fromRGBO(
                                                       33, 23, 47, 1),
-                                                ),
-                                              )),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                )
-                              ],
+                                                )),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),

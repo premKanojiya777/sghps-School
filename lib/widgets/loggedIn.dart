@@ -41,8 +41,9 @@ class _LoggedInState extends State<LoggedIn> {
   void _studentApiGetRole() async {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.get('token');
-    String url = 'http://sghps.cityschools.co/studentapi/getrole?access_token=' +
-        prefs.get('token');
+    String url =
+        'http://sghps.cityschools.co/studentapi/getrole?access_token=' +
+            prefs.get('token');
 
     Map dataMap = {
       'access_token': prefs.get('token'),
@@ -84,9 +85,7 @@ class _LoggedInState extends State<LoggedIn> {
       });
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => TeacherHome()));
-      
-    }
-    else {
+    } else {
       print('else');
       setState(() {
         visible = false;
@@ -100,7 +99,6 @@ class _LoggedInState extends State<LoggedIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-    );
+    return Container();
   }
 }

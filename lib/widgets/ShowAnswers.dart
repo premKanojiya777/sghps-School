@@ -210,12 +210,12 @@ class _ShowAnswerState extends State<ShowAnswer> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'Correct Answer:${snapshot.data[i].answer}',
+                                  'Correct Answer : ${snapshot.data[i].answer}',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.green),
                                 ),
                                 Text(
-                                  'Your Answer:${snapshot.data[i].user_answer}',
+                                  'Your Answer : ${snapshot.data[i].user_answer}',
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: snapshot.data[i].answer ==

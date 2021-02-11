@@ -275,11 +275,14 @@ class _SearchHomeworkState extends State<SearchHomework> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                '${todayHomeWorkList[i].task}',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width*.4,
+                                                child: Text(
+                                                  '${todayHomeWorkList[i].task}',
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 14),
+                                                ),
                                               ),
                                               Text(
                                                 '${todayHomeWorkList[i].date}',
@@ -317,7 +320,6 @@ class _SearchHomeworkState extends State<SearchHomework> {
                               }),
                           ListView.builder(
                               shrinkWrap: true,
-                              padding: EdgeInsets.all(1),
                               itemCount: searchedHomeWorkList.length,
                               itemBuilder: (BuildContext context, int i) {
                                 return Card(
@@ -337,11 +339,14 @@ class _SearchHomeworkState extends State<SearchHomework> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                '${searchedHomeWorkList[i].task}',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14),
+                                              Container(
+                                                width: MediaQuery.of(context).size.width*.4,
+                                                child: Text(
+                                                  '${searchedHomeWorkList[i].task}',
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 14),
+                                                ),
                                               ),
                                               Text(
                                                 '${searchedHomeWorkList[i].date}',
