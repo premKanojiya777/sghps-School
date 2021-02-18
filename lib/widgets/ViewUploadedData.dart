@@ -231,7 +231,7 @@ class _ViewUploadedDataState extends State<ViewUploadedData> {
   
   Future<File> _openPDF() async {
     var url =
-        'http://sghps.cityschools.co/uploads/online/pdf/${widget.pdfLink}';
+        'https://sghps.cityschools.co/uploads/online/pdf/${widget.pdfLink}';
     final filename = url.substring(url.lastIndexOf("/") + 1);
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -312,13 +312,13 @@ class _ViewUploadedDataState extends State<ViewUploadedData> {
                             child: singleImage == null
                                 ? GestureDetector(
                                     child: Image.network(
-                                        'http://sghps.cityschools.co/uploads/online/images/${widget.imageLink}'),
+                                        'https://sghps.cityschools.co/uploads/online/images/${widget.imageLink}'),
                                     onTap: () {
                                       return showDialog(
                                         context: context,
                                         builder: (_) => AlertDialog(
                                           content: Image.network(
-                                            ('http://sghps.cityschools.co/uploads/online/images/${widget.imageLink}'),
+                                            ('https://sghps.cityschools.co/uploads/online/images/${widget.imageLink}'),
                                             fit: BoxFit.fill,
                                           ),
                                           actions: <Widget>[

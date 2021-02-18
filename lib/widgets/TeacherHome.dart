@@ -6,7 +6,6 @@ import 'package:google_live/widgets/Digital.dart';
 import 'package:google_live/widgets/NotificationPage.dart';
 import 'package:google_live/widgets/OnlineTeaching.dart';
 import 'package:google_live/widgets/SendHomework.dart';
-import 'package:google_live/widgets/TextField.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +35,7 @@ class _TeacherHomeState extends State<TeacherHome> {
   void _checkIncharge() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/incharge_check?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/incharge_check?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {
@@ -54,7 +53,7 @@ class _TeacherHomeState extends State<TeacherHome> {
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/logout?access_token=' +
+    String url = 'https://sghps.cityschools.co/studentapi/logout?access_token=' +
         prefs.get('token');
     print(prefs.get('token'));
     Map dataMap = {

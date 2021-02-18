@@ -27,7 +27,7 @@ class _ShowAnswerState extends State<ShowAnswer> {
     List<AnswerModel> listOfAnsers = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/answers?access_token=' +
+        'https://sghps.cityschools.co/studentapi/answers?access_token=' +
             prefs.get('token') +
             '&exam_id=' +
             widget.exam_id.toString();

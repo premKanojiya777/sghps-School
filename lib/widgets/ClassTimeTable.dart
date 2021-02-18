@@ -34,7 +34,7 @@ class _ClassTimeTableState extends State<ClassTimeTable> {
   Future<void> _timeTable() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/classtimetable?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/classtimetable?access_token=' +
             prefs.get('token');
     await getTimeTable(url, prefs.get('token'));
   }

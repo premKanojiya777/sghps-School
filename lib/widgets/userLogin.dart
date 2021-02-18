@@ -27,7 +27,7 @@ class LoginUserState extends State {
   void _sendToServer() async {
     String username = emailController.text;
     String password = passwordController.text;
-    String url = 'http://sghps.cityschools.co/applogin';
+    String url = 'https://sghps.cityschools.co/applogin';
     Map dataMap = {
       'username': username,
       'password': password,
@@ -98,7 +98,7 @@ class LoginUserState extends State {
   Future<String> _getRole() async {
     // final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/getrole?access_token=' +
+        'https://sghps.cityschools.co/studentapi/getrole?access_token=' +
             this.token;
 
     final response = await http

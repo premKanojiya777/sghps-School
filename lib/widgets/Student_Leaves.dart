@@ -117,7 +117,7 @@ class _StudentLeavesState extends State<StudentLeaves> {
     listofLeaves = [];
     index = 1;
     String url =
-        'http://sghps.cityschools.co/studentapi/student_leaves?access_token=' +
+        'https://sghps.cityschools.co/studentapi/student_leaves?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {
@@ -153,7 +153,7 @@ class _StudentLeavesState extends State<StudentLeaves> {
     String _desc = description.text;
     final prefs = await SharedPreferences.getInstance();
 
-    String url = 'http://sghps.cityschools.co/studentapi/leave_flutter';
+    String url = 'https://sghps.cityschools.co/studentapi/leave_flutter';
     var dataMap = {
       'access_token': prefs.get('token'),
       "dates": _showDate,
@@ -328,7 +328,7 @@ class _StudentLeavesState extends State<StudentLeaves> {
                     context: context,
                     builder: (_) => AlertDialog(
                       content: Image.network(
-                        ('http://sghps.cityschools.co/uploads/leaves/' + files),
+                        ('https://sghps.cityschools.co/uploads/leaves/' + files),
                         fit: BoxFit.fill,
                       ),
                       actions: <Widget>[

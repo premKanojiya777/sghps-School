@@ -38,7 +38,7 @@ class _SyllabusState extends State<Syllabus> {
     List<SyllabusModel> syllabusList = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/syllabus?access_token=' +
+        'https://sghps.cityschools.co/studentapi/syllabus?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {
@@ -72,7 +72,7 @@ class _SyllabusState extends State<Syllabus> {
   }
 
   Future<File> createFileOfPdfUrl(String endUrl) async {
-    final url = "http://sghps.cityschools.co/uploads/syllabus/" + endUrl;
+    final url = "https://sghps.cityschools.co/uploads/syllabus/" + endUrl;
     final filename = url.substring(url.lastIndexOf("/") + 1);
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -215,7 +215,7 @@ class _SyllabusState extends State<Syllabus> {
                                   print('${snapshot.data[i].pdf_file}');
                                   // print('${snapshot.data[i].pdf_file}');
                                   var pdfurl =
-                                      'http://sghps.cityschools.co/uploads/syllabus/' +
+                                      'https://sghps.cityschools.co/uploads/syllabus/' +
                                           '${snapshot.data[i].pdf_file}';
                                   print('${snapshot.data[i].pdf_file}');
                                   print(pdfurl);

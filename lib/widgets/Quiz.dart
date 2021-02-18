@@ -87,7 +87,7 @@ class _QuizState extends State<Quiz> {
   Future<List<QuestionModel>> _getQuiz() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/exam_ques?access_token=' +
+        'https://sghps.cityschools.co/studentapi/exam_ques?access_token=' +
             prefs.get('token') +
             '&id=' +
             widget.exam_id.toString();
@@ -158,7 +158,7 @@ class _QuizState extends State<Quiz> {
     final now = Duration(seconds: secondPassed);
     print("${_printDuration(now)}");
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/exam_ques_ans';
+    String url = 'https://sghps.cityschools.co/studentapi/exam_ques_ans';
     Map dataMap = {
       'access_token': prefs.get('token'),
       'url': url,

@@ -33,7 +33,7 @@ class _TeacherProfileState extends State<TeacherProfile> {
   Future<void> _teacherProfile() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/teacherprofile?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/teacherprofile?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {

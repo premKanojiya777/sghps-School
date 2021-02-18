@@ -122,7 +122,7 @@ class _CalendarPage2State extends State<CalendarPage2> {
   Future<void> _studentAttendence() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/attendance?access_token=' +
+        'https://sghps.cityschools.co/studentapi/attendance?access_token=' +
             prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),

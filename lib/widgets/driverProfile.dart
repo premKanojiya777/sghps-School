@@ -33,7 +33,7 @@ class _DriverProfileState extends State<DriverProfile> {
 
   void _driverProfile() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/driverapi/profile?access_token=' +
+    String url = 'https://sghps.cityschools.co/driverapi/profile?access_token=' +
         prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),

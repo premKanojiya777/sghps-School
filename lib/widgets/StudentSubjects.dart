@@ -46,7 +46,7 @@ class _StudentSubjectState extends State<StudentSubject> {
     List<SingleTimeTable> list = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/singletimetable?access_token=' +
+        'https://sghps.cityschools.co/studentapi/singletimetable?access_token=' +
             prefs.get('token') +
             '&date=' +
             widget.datepick.toString();
@@ -88,7 +88,7 @@ class _StudentSubjectState extends State<StudentSubject> {
     imageList = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/class_live_data_students?access_token=' +
+        'https://sghps.cityschools.co/studentapi/class_live_data_students?access_token=' +
             prefs.get('token') +
             '&date=' +
             widget.datepick.toString() +

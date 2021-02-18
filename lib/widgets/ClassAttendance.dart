@@ -31,7 +31,7 @@ class _ClassAttendanceState extends State<ClassAttendance> {
     final prefs = await SharedPreferences.getInstance();
 
     String url =
-        'http://sghps.cityschools.co/teacherapi/class_attendance?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/class_attendance?access_token=' +
             prefs.get('token');
 
     final response = await http
@@ -75,7 +75,7 @@ class _ClassAttendanceState extends State<ClassAttendance> {
       'stu': selectedStuList,
     };
     String url =
-        'http://sghps.cityschools.co/teacherapi/update_class_attendance';
+        'https://sghps.cityschools.co/teacherapi/update_class_attendance';
 
     final response = await http
         .post(url, body: jsonEncode(_body), headers: headers)

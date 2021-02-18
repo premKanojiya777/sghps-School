@@ -28,7 +28,7 @@ class _TeacherNotificationState extends State<TeacherNotification> {
     List<StudNotification> notifications = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/teachernotification?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/teachernotification?access_token=' +
             prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),

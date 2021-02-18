@@ -120,7 +120,7 @@ class _TeacherAttendanceState extends State<TeacherAttendance> {
   Future<void> _teacherAttendence() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/attendance?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/attendance?access_token=' +
             prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),

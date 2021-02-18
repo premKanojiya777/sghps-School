@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
 
 DateTime selectedDate = DateTime.now();
 
@@ -34,7 +33,7 @@ class _StudentOnlineTeachingState extends State<StudentOnlineTeaching> {
   void _checkSessionForTeaching() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/session?access_token=' +
+        'https://sghps.cityschools.co/studentapi/session?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {

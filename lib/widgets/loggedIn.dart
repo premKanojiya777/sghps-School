@@ -42,7 +42,7 @@ class _LoggedInState extends State<LoggedIn> {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.get('token');
     String url =
-        'http://sghps.cityschools.co/studentapi/getrole?access_token=' +
+        'https://sghps.cityschools.co/studentapi/getrole?access_token=' +
             prefs.get('token');
 
     Map dataMap = {

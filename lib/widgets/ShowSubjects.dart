@@ -42,7 +42,7 @@ class _ShowSubjectsState extends State<ShowSubjects> {
     List<SingleTimeTable> list = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/singletimetable_teacher?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/singletimetable_teacher?access_token=' +
             prefs.get('token') +
             '&date=' +
             widget.datepick.toString();

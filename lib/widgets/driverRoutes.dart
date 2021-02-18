@@ -28,7 +28,7 @@ class _DriverRoutesState extends State<DriverRoutes> {
   Future<List<RouteModel>> _apiRequestDriver() async {
     List<RouteModel> routes = [];
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/driverapi/route?access_token=' +
+    String url = 'https://sghps.cityschools.co/driverapi/route?access_token=' +
         prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),
@@ -67,7 +67,7 @@ class _DriverRoutesState extends State<DriverRoutes> {
   Future<void> _chooseRoute(String routeId, int vehicleId) async {
     final prefs = await SharedPreferences.getInstance();
     this.token = prefs.get('token');
-    String url = 'http://sghps.cityschools.co/driverapi/route_status?access_token=' +
+    String url = 'https://sghps.cityschools.co/driverapi/route_status?access_token=' +
         prefs.get('token') +
         '&vehicle_id=' +
         vehicleId.toString() +

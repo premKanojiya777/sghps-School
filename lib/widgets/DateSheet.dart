@@ -31,7 +31,7 @@ class _DateSheetState extends State<DateSheet> {
   }
 
   Future<File> createFileOfPdfUrl(String endUrl) async {
-    final url = "http://smart.sksk.in/uploads/datesheet/" + endUrl;
+    final url = "https://smart.sksk.in/uploads/datesheet/" + endUrl;
     final filename = url.substring(url.lastIndexOf("/") + 1);
     var request = await HttpClient().getUrl(Uri.parse(url));
     var response = await request.close();
@@ -45,7 +45,7 @@ class _DateSheetState extends State<DateSheet> {
   void _dateSheet() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/datesheet?access_token=' +
+        'https://sghps.cityschools.co/studentapi/datesheet?access_token=' +
             prefs.get('token');
     getDateSheet(url, prefs.get('token'));
   }
@@ -174,7 +174,7 @@ class _DateSheetState extends State<DateSheet> {
                           //   );
                           // });
                           var pdfUrl =
-                              "http://smart.sksk.in/uploads/datesheet/" +
+                              "https://smart.sksk.in/uploads/datesheet/" +
                                   '${this.datesvalue.date_sheet}';
                           if (await canLaunch(pdfUrl)) {
                             await launch(pdfUrl);

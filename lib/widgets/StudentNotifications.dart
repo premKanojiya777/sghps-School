@@ -29,7 +29,7 @@ class _StudentNotificState extends State<StudentNotific> {
     List<StudNotification> notifications = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/notification?access_token=' +
+        'https://sghps.cityschools.co/studentapi/notification?access_token=' +
             prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),

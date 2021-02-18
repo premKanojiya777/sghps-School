@@ -32,7 +32,7 @@ class _LocationHomeState extends State<LocationHome> {
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/logout?access_token=' +
+    String url = 'https://sghps.cityschools.co/studentapi/logout?access_token=' +
         prefs.get('token');
     print(prefs.get('token'));
     Map dataMap = {

@@ -36,7 +36,7 @@ class _SearchHomeworkState extends State<SearchHomework> {
     todayHomeWorkList = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/homework?access_token=' +
+        'https://sghps.cityschools.co/studentapi/homework?access_token=' +
             prefs.get('token');
 
     final response = await http
@@ -86,7 +86,7 @@ class _SearchHomeworkState extends State<SearchHomework> {
     // searchedHomeWorkList = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/gethomework?access_token=' +
+        'https://sghps.cityschools.co/studentapi/gethomework?access_token=' +
             prefs.get('token');
     Map dataMap = {
       'url': url,

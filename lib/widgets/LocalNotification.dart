@@ -20,7 +20,7 @@ class _LocalNotificationState extends State<LocalNotification> {
 
     var android = new AndroidInitializationSettings('mipmap/ic_launcher');
     var ios = new IOSInitializationSettings();
-    var platform = new InitializationSettings(android, ios);
+    var platform = new InitializationSettings(android: android, iOS: ios);
     flutterLocalNotificationsPlugin.initialize(platform);
 
     firebaseMessaging.configure(
@@ -56,7 +56,7 @@ class _LocalNotificationState extends State<LocalNotification> {
     String title = msg['notification']['title'];
     String description = msg['notification']['body'];
     var iOS = new IOSNotificationDetails();
-    var platform = new NotificationDetails(android, iOS);
+    var platform = new NotificationDetails(android: android, iOS: iOS);
     await flutterLocalNotificationsPlugin.show(0, title, description, platform);
   }
 

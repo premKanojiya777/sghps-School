@@ -29,7 +29,7 @@ class _OnlineTeachingState extends State<OnlineTeaching> {
   void _checkSessionForTeaching() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/session?access_token=' +
+        'https://sghps.cityschools.co/studentapi/session?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {

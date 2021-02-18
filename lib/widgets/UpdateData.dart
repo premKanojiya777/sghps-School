@@ -292,7 +292,7 @@ class _UpdateDataState extends State<UpdateData> {
     String _text = enterText.text;
     String _liveClass = liveClass.text;
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/live_data_update';
+    String url = 'https://sghps.cityschools.co/studentapi/live_data_update';
 
     Map dataMap = {
       "access_token": prefs.get('token'),

@@ -25,7 +25,7 @@ class _NotificationPageState extends State<NotificationPage> {
   void _checkIncharge() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/teacherapi/incharge_check?access_token=' +
+        'https://sghps.cityschools.co/teacherapi/incharge_check?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {

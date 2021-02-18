@@ -26,7 +26,7 @@ class _NotificationHistoryState extends State<NotificationHistory> {
   Future<List<HistoryNotiModel>> _getNotiHistory() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/coordinator/noti_history?access_token=' +
+        'https://sghps.cityschools.co/coordinator/noti_history?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {

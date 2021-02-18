@@ -47,7 +47,7 @@ dependencies:
   http_parser: ^3.1.4
   async: ^2.4.0
   firebase_messaging: ^6.0.13
-  flutter_local_notifications:
+  flutter_local_notifications: ^3.0.1
   firebase_database: ^3.1.5
   multi_image_picker: ^4.6.7
   file_picker: ^1.9.0+1

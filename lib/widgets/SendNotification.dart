@@ -47,7 +47,7 @@ class _SendNotificationState extends State<SendNotification> {
   Future<List<SectionModel>> _getClasses() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/coordinator/class_sec?access_token=' +
+        'https://sghps.cityschools.co/coordinator/class_sec?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {
@@ -125,7 +125,7 @@ class _SendNotificationState extends State<SendNotification> {
       'desc': _desc,
       'title': _title
     };
-    String url = 'http://sghps.cityschools.co/coordinator/send_noti';
+    String url = 'https://sghps.cityschools.co/coordinator/send_noti';
 
     final response = await http.post(url,
         body: _body, headers: {"Accept": "application/json"}).then((res) {
@@ -145,7 +145,7 @@ class _SendNotificationState extends State<SendNotification> {
       'class_id': this.classid.toString(),
       'section_id': this.sectionId.toString(),
     };
-    String url = 'http://sghps.cityschools.co/coordinator/filter_stu';
+    String url = 'https://sghps.cityschools.co/coordinator/filter_stu';
 
     final response = await http.post(url,
         body: _body, headers: {"Accept": "application/json"}).then((res) {
@@ -186,7 +186,7 @@ class _SendNotificationState extends State<SendNotification> {
       'desc': _desc,
       'title': _title
     };
-    String url = 'http://sghps.cityschools.co/coordinator/send_to_selected';
+    String url = 'https://sghps.cityschools.co/coordinator/send_to_selected';
 
     final response = await http
         .post(url, body: jsonEncode(_body), headers: headers)

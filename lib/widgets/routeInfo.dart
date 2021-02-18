@@ -36,7 +36,7 @@ class _RouteInfoState extends State<RouteInfo> {
     String routename = routenameController.text;
     String notes = notesController.text;
 
-    String url = 'http://sghps.cityschools.co/driverapi/route_points';
+    String url = 'https://sghps.cityschools.co/driverapi/route_points';
     Map dataMap = {
       'latitude': widget.latitude,
       'longitude': widget.longitude,

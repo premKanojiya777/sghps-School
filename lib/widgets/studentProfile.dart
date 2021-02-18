@@ -30,7 +30,7 @@ class _StudentProfileState extends State<StudentProfile> {
   Future<void> _studentProfile() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/profile?access_token=' +
+        'https://sghps.cityschools.co/studentapi/profile?access_token=' +
             prefs.get('token');
     Map dataMap = {
       'access_token': prefs.get('token'),
@@ -310,7 +310,7 @@ class _StudentProfileState extends State<StudentProfile> {
                                   this.profileImaage == '')
                               ? AssetImage('placeholder_image.png')
                               : NetworkImage(
-                                  'http://sghps.cityschools.co/uploads/students/${this.profileImaage}'),
+                                  'https://sghps.cityschools.co/uploads/students/${this.profileImaage}'),
                           backgroundColor: Colors.transparent,
                         ),
                       ),

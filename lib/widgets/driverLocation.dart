@@ -155,7 +155,7 @@ class _MyAppState extends State<MyApp> {
       
     });
 
-    String url = 'http://sghps.cityschools.co/location_flutter';
+    String url = 'https://sghps.cityschools.co/location_flutter';
 
     Map dataMap = {
       'latitude': locationData.latitude,
@@ -197,7 +197,7 @@ class _MyAppState extends State<MyApp> {
 
   void _checkTrnasport() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://smart.sksk.in/driverapi/module?access_token=' +
+    String url = 'https://sghps.cityschools.co/driverapi/module?access_token=' +
         prefs.get('token');
 
     Map dataMap = {

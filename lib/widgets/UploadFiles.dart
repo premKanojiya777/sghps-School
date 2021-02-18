@@ -276,7 +276,7 @@ class _UploadFilesState extends State<UploadFiles> {
     print(videoLinkTitle);
     String _liveClass = liveClass.text;
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/live_data_upload';
+    String url = 'https://sghps.cityschools.co/studentapi/live_data_upload';
 
     Map dataMap = {
       "access_token": prefs.get('token'),

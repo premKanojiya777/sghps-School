@@ -142,7 +142,7 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
     assignList = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/get_assignment?access_token=' +
+        'https://sghps.cityschools.co/studentapi/get_assignment?access_token=' +
             prefs.get('token') +
             '&date=' +
             widget.dateT.toString() +
@@ -1111,7 +1111,7 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
       'marks': _mark,
       // 'date':widget.dateT.toString()
     };
-    String url = 'http://sghps.cityschools.co/studentapi/updateremarks';
+    String url = 'https://sghps.cityschools.co/studentapi/updateremarks';
     final response = await http
         .post(url, body: jsonEncode(_body), headers: headers)
         .then((res) {
@@ -1141,7 +1141,7 @@ class _UploadedFilesInfoState extends State<UploadedFilesInfo> {
     String _text = enterText.text;
     String _liveClass = liveClass.text;
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/live_data_update';
+    String url = 'https://sghps.cityschools.co/studentapi/live_data_update';
 
     Map dataMap = {
       "access_token": prefs.get('token'),

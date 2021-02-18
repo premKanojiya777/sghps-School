@@ -26,7 +26,7 @@ class _LibraryListState extends State<LibraryList> {
   Future<List<LibraryModel>> _getLibrary() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/issuebooks?access_token=' +
+        'https://sghps.cityschools.co/studentapi/issuebooks?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {

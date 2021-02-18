@@ -107,7 +107,7 @@ class _SendHomeworkState extends State<SendHomework> {
   Future<List<SectionModel>> _getClasses() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/coordinator/class_sec?access_token=' +
+        'https://sghps.cityschools.co/coordinator/class_sec?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {
@@ -133,7 +133,7 @@ class _SendHomeworkState extends State<SendHomework> {
     this.oldID = '';
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/coordinator/getclasshw?access_token=' +
+        'https://sghps.cityschools.co/coordinator/getclasshw?access_token=' +
             prefs.get('token') +
             '&section_id=${this.sectionId}' +
             '&class_id=${this.classid}';
@@ -157,7 +157,7 @@ class _SendHomeworkState extends State<SendHomework> {
     var task = descController.text;
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/coordinator/updateclasshw_flutter';
+        'https://sghps.cityschools.co/coordinator/updateclasshw_flutter';
 
     Map body = {
       'access_token': prefs.get('token'),
@@ -356,7 +356,7 @@ class _SendHomeworkState extends State<SendHomework> {
                                                 context: context,
                                                 builder: (_) => AlertDialog(
                                                   content: Image.network(
-                                                    'http://sghps.cityschools.co/uploads/homework/${this.attach}',
+                                                    'https://sghps.cityschools.co/uploads/homework/${this.attach}',
                                                     fit: BoxFit.fill,
                                                   ),
                                                   actions: <Widget>[
@@ -372,7 +372,7 @@ class _SendHomeworkState extends State<SendHomework> {
                                               );
                                             },
                                             child: Image.network(
-                                                'http://sghps.cityschools.co/uploads/homework/${this.attach}'),
+                                                'https://sghps.cityschools.co/uploads/homework/${this.attach}'),
                                           )
                                         : GestureDetector(
                                             child: Image.file(singleImage),

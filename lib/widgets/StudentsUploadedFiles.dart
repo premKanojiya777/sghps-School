@@ -222,7 +222,7 @@ class _StudentsUploadedFilesInfoState extends State<StudentsUploadedFilesInfo> {
       'names': _fileNameList,
       'id': widget.liveClassID,
     };
-    String url = 'http://sghps.cityschools.co/studentapi/upload_assignment';
+    String url = 'https://sghps.cityschools.co/studentapi/upload_assignment';
 
     final response = await http
         .post(url, body: jsonEncode(_body), headers: headers)

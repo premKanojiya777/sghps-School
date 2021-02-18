@@ -24,7 +24,7 @@ class _StudentsResultsState extends State<StudentsResults> {
   Future<String> _getTerms() async {
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/result_type?access_token=' +
+        'https://sghps.cityschools.co/studentapi/result_type?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Accept": "application/json"}).then((res) {
@@ -44,7 +44,7 @@ class _StudentsResultsState extends State<StudentsResults> {
 
   void _getResult() async {
     final prefs = await SharedPreferences.getInstance();
-    String url = 'http://sghps.cityschools.co/studentapi/result?access_token=' +
+    String url = 'https://sghps.cityschools.co/studentapi/result?access_token=' +
         prefs.get('token') +
         '&unit=' +
         _mySelection;

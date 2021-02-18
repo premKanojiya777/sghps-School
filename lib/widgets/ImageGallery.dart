@@ -26,7 +26,7 @@ class _ImageGalleryState extends State<ImageGallery> {
     List<ImageGalleryModel> imagelist = [];
     final prefs = await SharedPreferences.getInstance();
     String url =
-        'http://sghps.cityschools.co/studentapi/studentgallery?access_token=' +
+        'https://sghps.cityschools.co/studentapi/studentgallery?access_token=' +
             prefs.get('token');
     final response = await http
         .get(url, headers: {"Content-Type": "application/json"}).then((res) {
@@ -121,7 +121,7 @@ class _ImageGalleryState extends State<ImageGallery> {
                   return GestureDetector(
                     child: GridTile(
                       child: Image.network(
-                        ('http://sghps.cityschools.co/uploads/gallery/${snapshot.data[i].image}'),
+                        ('https://sghps.cityschools.co/uploads/gallery/${snapshot.data[i].image}'),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -130,7 +130,7 @@ class _ImageGalleryState extends State<ImageGallery> {
                         context: context,
                         builder: (_) => AlertDialog(
                           content: Image.network(
-                            ('http://sghps.cityschools.co/uploads/gallery/${snapshot.data[i].image}'),
+                            ('https://sghps.cityschools.co/uploads/gallery/${snapshot.data[i].image}'),
                             fit: BoxFit.fill,
                           ),
                           actions: <Widget>[
